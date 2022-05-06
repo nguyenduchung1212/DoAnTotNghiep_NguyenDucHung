@@ -232,4 +232,10 @@ return [
 
     ],
 
+     'image' => [
+        'ratio' => 1048576,
+        'max' =>  10,
+        'url'=> 'storage/image/product/',
+        'default' => 'storage/image/product/default.png'
+    ],
 ];

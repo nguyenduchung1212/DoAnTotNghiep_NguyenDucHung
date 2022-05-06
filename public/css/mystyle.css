@@ -1,0 +1,35 @@
+.noti{
+    text-align: center;
+    margin: 0;
+    font-weight: bold;
+    color: black;
+}
+.act{
+    width: 10%;
+}
+.form-group .required:after {
+    content: " (*)";
+    color: red;
+    font-weight: bold;
+}
+.img-ctr{
+    height: 50px; 
+    width: 100px
+}
+.img-vie{
+    margin-top:10px;
+    height: 100px; 
+    width: 200px
+}
+.ico{
+    font-size: 22px;
+    padding-right: 10px;
+}
+.btn-ico{
+    border: none;
+    background-color: transparent !important;
+    padding:0
+}
+.pd-12{
+    padding-left: 12px;
+}
