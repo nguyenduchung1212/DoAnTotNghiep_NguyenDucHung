@@ -15,12 +15,18 @@ class CreateInvoiceExportTable extends Migration
     {
         Schema::create('invoice_export', function (Blueprint $table) {
             $table->id();
-            $table->integer('into_money');
-            $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('status_ship_id')->constrained('status_ship');
-            $table->boolean('pay_cod')->default(false);
+            $table->string('code_invoice')->unique();
+            $table->integer('into_money')->default(0);
+            $table->foreignId('user_id')->constrained('users')->default(null);
+            $table->foreignId('admin_id')->constrained('users')->default(null);
+            $table->string('status_ship')->default(null);
+            $table->boolean('is_pay_cod')->default(false);
             $table->boolean('is_payment')->default(false);
-            $table->boolean('is_done')->default(false);
+            $table->text('reason')->default(null);
+            $table->text('message')->default(null);
+            $table->string('email_user');
+            $table->string('phone_user');
+            $table->string('name_user');
             $table->timestamps();
         });
     }

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Category;
 use App\Traits\ResponseTraits;
 use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,6 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Lang;
 
 class Product extends Model
 {
@@ -35,15 +36,12 @@ class Product extends Model
 
     private $url;
 
-     /**
+    /**
      * Constructor
-     *
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     public function __construct()
     {
-        $this->url =  Config::get('app.image.url');
+        $this->url = Config::get('app.image.url');
     }
 
     /**
@@ -79,14 +77,14 @@ class Product extends Model
     /**
      * Get products
      *
-     * @return void
+     * @return array|void
      */
     public function getProducts()
     {
         try {
             $products = Product::where('is_deleted', false)
-                                ->orderBy('id', 'DESC')
-                                ->get();
+                ->orderBy('id', 'DESC')
+                ->get();
             $status = true;
             $message = null;
             $data = $products;
@@ -101,25 +99,24 @@ class Product extends Model
     /**
      * Get product
      *
-     * @return void
+     * @param $id
+     * @return array|void
      */
     public function getProduct($id)
     {
         try {
             $status = false;
             $data = null;
-            $message =  "Can't find product !!!";
+            $message = Lang::get('message.can_not_find');
             $products = Product::find($id);
 
-            if ($products && !$products->is_deleted){
+            if ($products && !$products->is_deleted) {
                 $status = true;
-                $message =  null;
-                $data =  $products;
+                $message = null;
+                $data = $products;
             }
         } catch (Exception $e) {
-            $status = false;
             $message = $e->getMessage();
-            $data = null;
         }
         return $this->responseData($status, $message, $data);
     }
@@ -127,8 +124,8 @@ class Product extends Model
     /**
      * Add product
      *
-     * @param mixed $request
-     * @return void
+     * @param $request
+     * @return array|void
      */
     public function addProduct($request)
     {
@@ -151,12 +148,12 @@ class Product extends Model
                     throw new Exception($image['message']);
                 }
             }
-            if ($request->active){
+            if ($request->active) {
                 $product->active = true;
             }
             $product->save();
             $status = true;
-            $message = 'Add product successful !';
+            $message = Lang::get('message.add_done');
         } catch (Exception $e) {
             $status = false;
             $message = $e->getMessage();
@@ -167,15 +164,16 @@ class Product extends Model
     /**
      * Update product
      *
-     * @param mixed $request
-     * @return void
+     * @param $request
+     * @param $id
+     * @return array|void
      */
     public function updateProduct($request, $id)
     {
         try {
             $product = Product::find($id);
-            if(!$product){
-                $message = "Can't find product";
+            if (!$product) {
+                $message = Lang::get('message.can_not_find');
                 throw new Exception($message);
             }
             $product->name = $request->name;
@@ -188,7 +186,7 @@ class Product extends Model
             if ($request->image) {
                 $image = $this->checkImage($request->image);
                 if ($image['status']) {
-                    if(File::exists($product->image)){
+                    if (File::exists($product->image)) {
                         File::delete($product->image);
                     }
                     $new_image = date('Ymdhis') . '.' . $request->image->getClientOriginalExtension();
@@ -200,12 +198,12 @@ class Product extends Model
                 }
             }
 
-            if ($request->active){
+            if ($request->active) {
                 $product->active = true;
             }
             $product->save();
             $status = true;
-            $message = 'Update product successful !';
+            $message = Lang::get('message.update_done');
 
         } catch (Exception $e) {
             $status = false;
@@ -214,24 +212,25 @@ class Product extends Model
         return $this->responseData($status, $message);
     }
 
-
     /**
      * Delete product
      *
-     * @param  mixed $id
-     * @return void
+     * @param $id
+     * @return array|void
      */
-    public function deleteProduct($id){
-        try{
+    public function deleteProduct($id)
+    {
+        try {
             $status = false;
-            $message = "Can't delete product";
+            $message = Lang::get('message.delete_fail');
+
             $product = Product::find($id);
-            if($product){
+            if ($product) {
                 $product->is_deleted = true;
                 $product->save();
                 $status = true;
-                $message = "Delete product successful !";
-                 if(File::exists($product->image)){
+                $message = Lang::get('message.delete_done');
+                if (File::exists($product->image)) {
                     File::delete($product->image);
                 }
             }
@@ -246,21 +245,21 @@ class Product extends Model
      * Check image
      *
      * @param $image
-     * @return void
+     * @return array|void
      */
-    public function checkImage($image)
+    private function checkImage($image)
     {
         $status = true;
         $message = null;
         $allowed = array('gif', 'png', 'jpg', 'jpeg');
         if (!in_array($image->getClientOriginalExtension(), $allowed)) {
             $status = false;
-            $message = "This isn't an image file";
+            $message = Lang::get('message.not_image');
         } else {
             $size = number_format($image->getSize() / Config::get('app.image.ratio'), 2);
             if ($size > Config::get('app.image.max')) {
                 $status = false;
-                $message = 'Files larger than ' . Config::get('app.image.max') . ' MB';
+                $message = Lang::get('message.file_langer') . Config::get('app.image.max') . Config::get('app.image.unit_file');
             }
         }
         return $this->responseData($status, $message);

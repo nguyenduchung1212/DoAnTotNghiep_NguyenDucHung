@@ -27,19 +27,10 @@ trait ResponseTraits
     }
 
     /**
-     * Get role auth
-     *
-     * @return mixed
-     */
-    public function getMyRole()
-    {
-        return Auth::user()->role->name;
-    }
-
-    /**
      * Check role manager
      *
-     * @return void
+     * @return bool
+     * @throws RoleAdminException
      */
     public function checkRoleManager()
     {
@@ -53,7 +44,8 @@ trait ResponseTraits
     /**
      * Check role admin
      *
-     * @return void
+     * @return bool
+     * @throws RoleAdminException
      */
     public function checkRoleAdmin()
     {
@@ -80,10 +72,10 @@ trait ResponseTraits
     /**
      * Response data
      *
-     * @param  mixed $status
-     * @param  mixed $message
-     * @param  mixed $data
-     * @return void
+     * @param $status
+     * @param $message
+     * @param $data
+     * @return array
      */
     public function responseData($status = null, $message = null, $data = null)
     {

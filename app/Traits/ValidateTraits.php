@@ -120,4 +120,19 @@ trait ValidateTraits
             'phone' => 'required',
         ]);
     }
+
+    /**
+     * Validate product
+     *
+     * @param $request
+     * @return void
+     */
+    public function validateDetailInvoiceImport($request)
+    {
+        $request->validate([
+            'product' => 'required',
+            'quantity' => 'required',
+            'price' => 'required',
+        ]);
+    }
 }

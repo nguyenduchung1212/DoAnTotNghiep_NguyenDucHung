@@ -2,10 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\RoleAdminException;
 use App\Models\User;
 use App\Traits\ResponseTraits;
 use App\Traits\ValidateTraits;
 use Illuminate\Http\Request;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
+use Exception;
+use Illuminate\Support\Facades\Lang;
 
 class AdminController extends Controller
 {
@@ -22,10 +30,12 @@ class AdminController extends Controller
     {
         $this->model = new User();
     }
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View|RedirectResponse
+     * @throws RoleAdminException
      */
     public function index()
     {
@@ -33,7 +43,7 @@ class AdminController extends Controller
         $response = $this->model->getAdmins();
         $admins = $response['data'];
         $message = $response['message'];
-        if (!$response['status']){
+        if (!$response['status']) {
             return back()->with('message', $message);
         }
         return view('admin.account.accounts', compact('admins'));
@@ -42,7 +52,8 @@ class AdminController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
+     * @throws RoleAdminException
      */
     public function create()
     {
@@ -53,12 +64,12 @@ class AdminController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return RedirectResponse
      */
     public function store(Request $request)
     {
-       try{
+        try {
             $this->checkRoleManager();
             $this->validateAccount($request);
             $response = $this->model->addAccount($request);
@@ -72,8 +83,8 @@ class AdminController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return RedirectResponse
      */
     public function show($id)
     {
@@ -83,8 +94,8 @@ class AdminController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return RedirectResponse
      */
     public function edit($id)
     {
@@ -94,9 +105,9 @@ class AdminController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param $id
+     * @return RedirectResponse
      */
     public function update(Request $request, $id)
     {
@@ -106,17 +117,18 @@ class AdminController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return Application|RedirectResponse|Redirector
      */
     public function destroy($id)
     {
-        try{
-            if($this->checkRoleManager()){
+        try {
+            if ($this->checkRoleManager()) {
                 $response = $this->model->deleteAdmin($id);
                 $message = $response['message'];
             } else {
-                return redirect(route('screen_admin_login'))->with('message', 'Role must admin!');
+                $message = Lang::get('message.not_have_role');
+                return redirect(route('screen_admin_login'))->with('message', $message);
             }
         } catch (Exception $e) {
             $message = $e->getMessage();

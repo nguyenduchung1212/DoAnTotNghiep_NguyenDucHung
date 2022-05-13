@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Lang;
 
 class Category extends Model
 {
@@ -37,15 +38,16 @@ class Category extends Model
     /**
      * Get categories
      *
-     * @return void
+     * @return array|void
      */
-    public function getCategories(){
-        try{
+    public function getCategories()
+    {
+        try {
             $categories = Category::orderBy('id', 'DESC')->get();
             $status = true;
             $message = null;
             $data = $categories;
-        } catch(Exception $e){
+        } catch (Exception $e) {
             $status = false;
             $message = $e->getMessage();
             $data = null;
@@ -56,20 +58,22 @@ class Category extends Model
     /**
      * Get category
      *
-     * @return void
+     * @param $id
+     * @return array|void
      */
-    public function getCategory($id){
-        try{
+    public function getCategory($id)
+    {
+        try {
             $status = false;
-            $message =  "Can't find category !!!";
+            $message = Lang::get('message.can_not_find');
             $category = Category::find($id);
             $data = null;
-            if ($category){
+            if ($category) {
                 $status = true;
-                $message =  null;
-                $data =  $category;
+                $message = null;
+                $data = $category;
             }
-        }catch(Exception $e){
+        } catch (Exception $e) {
             $status = false;
             $message = $e->getMessage();
             $data = null;
@@ -77,16 +81,16 @@ class Category extends Model
         return $this->responseData($status, $message, $data);
     }
 
-
-     /**
+    /**
      * Add category
      *
-     * @param  mixed $request
-     * @return void
+     * @param $request
+     * @return array|void
      */
-    public function addCategory($request){
-        try{
-            if (Category::where('name', $request->name)->first()){
+    public function addCategory($request)
+    {
+        try {
+            if (Category::where('name', $request->name)->first()) {
                 $message = 'Exist category !!!';
                 $status = false;
                 return $this->responseData($status, $message);
@@ -97,8 +101,8 @@ class Category extends Model
             $category->user_id = Auth::id();
             $category->save();
             $status = true;
-            $message = 'Add category successful !';
-        }catch(Exception $e){
+            $message = Lang::get('message.add_done');
+        } catch (Exception $e) {
             $status = false;
             $message = $e->getMessage();
         }
@@ -108,28 +112,29 @@ class Category extends Model
     /**
      * Update category with id
      *
-     * @param  mixed $request
-     * @param  mixed $id
-     * @return void
+     * @param $request
+     * @param $id
+     * @return array|void
      */
-    public function updateCategory($request, $id){
-        try{
-            $status =  false;
-            $message =  "Exist category !!!";
+    public function updateCategory($request, $id)
+    {
+        try {
+            $status = false;
+            $message = Lang::get('message.exist');
             $data = null;
             $category = Category::find($id);
-            if ($category){
+            if ($category) {
                 $category_check = Category::where('name', $request->name)->first();
-                if ($category_check && $category->id !== $category_check->id){
+                if ($category_check && $category->id !== $category_check->id) {
                     return $this->responseData($status, $message);
                 }
                 $category->name = $request->name;
                 $category->user_id = Auth::id();
                 $category->save();
-                $status =  true;
-                $message =  "Update successful";
-            } else{
-                $message =  "Can't find category !!!";
+                $status = true;
+                $message = Lang::get('message.update_done');
+            } else {
+                $message = Lang::get('message.can_not_find');
             }
         } catch (Exception $e) {
             $status = false;
