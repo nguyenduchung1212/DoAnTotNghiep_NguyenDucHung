@@ -7,6 +7,11 @@ use App\Models\Brand;
 use App\Traits\ResponseTraits;
 use App\Traits\ValidateTraits;
 use Illuminate\Http\Request;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
 use Exception;
 
 class BrandController extends Controller
@@ -28,7 +33,8 @@ class BrandController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View|RedirectResponse
+     * @throws RoleAdminException
      */
     public function index()
     {
@@ -36,7 +42,7 @@ class BrandController extends Controller
         $response = $this->model->getBrands();
         $brands = $response['data'];
         $message = $response['message'];
-        if (!$response['status']){
+        if (!$response['status']) {
             return back()->with('message', $message);
         }
         return view('admin.brand.brands', compact('brands'));
@@ -45,7 +51,8 @@ class BrandController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
+     * @throws RoleAdminException
      */
     public function create()
     {
@@ -56,12 +63,12 @@ class BrandController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return RedirectResponse
      */
     public function store(Request $request)
     {
-        try{
+        try {
             $this->checkRoleAdmin();
             $this->validateBrand($request);
             $response = $this->model->addBrand($request);
@@ -75,8 +82,8 @@ class BrandController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return RedirectResponse
      */
     public function show($id)
     {
@@ -86,14 +93,15 @@ class BrandController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return Application|Factory|View|RedirectResponse|Redirector
+     * @throws RoleAdminException
      */
     public function edit($id)
     {
         $this->checkRoleAdmin();
         $response = $this->model->getBrand($id);
-        if (!$response['status']){
+        if (!$response['status']) {
             $message = $response['message'];
             return redirect(route('admin.brand.index'))->with('message', $message);
         }
@@ -104,31 +112,31 @@ class BrandController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param $id
+     * @return Application|RedirectResponse|Redirector
      */
     public function update(Request $request, $id)
     {
-        try{
-            if($this->checkRoleAdmin()){
+        try {
+            if ($this->checkRoleAdmin()) {
                 $this->validateBrand($request);
                 $response = $this->model->updateBrand($request, $id);
                 $message = $response['message'];
             } else {
-                Throw new RoleAdminException();
+                throw new RoleAdminException();
             }
-        } catch(Exception $e){
+        } catch (Exception $e) {
             $message = $e->getMessage();
         }
-        return redirect(route('admin.brand.edit', ['brand'=>$id]))->with('message', $message);
+        return redirect(route('admin.brand.edit', ['brand' => $id]))->with('message', $message);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return RedirectResponse
      */
     public function destroy($id)
     {

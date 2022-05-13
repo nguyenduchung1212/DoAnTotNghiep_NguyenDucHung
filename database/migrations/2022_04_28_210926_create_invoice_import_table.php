@@ -15,7 +15,7 @@ class CreateInvoiceImportTable extends Migration
     {
         Schema::create('invoice_import', function (Blueprint $table) {
             $table->id();
-            $table->integer('into_money');
+            $table->integer('into_money')->default(0);
             $table->foreignId('user_id')->constrained('users');
             $table->boolean('status')->default(false);
             $table->timestamps();

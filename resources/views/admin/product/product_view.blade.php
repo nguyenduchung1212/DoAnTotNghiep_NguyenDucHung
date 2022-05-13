@@ -2,7 +2,6 @@
 @section('admin_content')
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
-
         <!-- Sidebar -->
         <div class="sidebar">
             <!-- Sidebar user panel (optional) -->
@@ -11,11 +10,11 @@
                     <a class="d-block">{{ auth()->user()->name }}</a>
                 </div>
             </div>
-
             <!-- SidebarSearch Form -->
             <div class="form-inline">
                 <div class="input-group" data-widget="sidebar-search">
-                    <input class="form-control form-control-sidebar" type="search" placeholder="Tìm kiếm" aria-label="Search">
+                    <input class="form-control form-control-sidebar" type="search" placeholder="Tìm kiếm"
+                           aria-label="Search">
                     <div class="input-group-append">
                         <button class="btn btn-sidebar">
                             <i class="fas fa-search fa-fw"></i>
@@ -23,10 +22,10 @@
                     </div>
                 </div>
             </div>
-
             <!-- Sidebar Menu -->
             <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                    data-accordion="false">
                     <li class="nav-item">
                         <a href="{{ URL::to(route('screen_admin_home')) }}" class="nav-link">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -34,7 +33,7 @@
                         </a>
                     </li>
                     <li class="nav-header">Sản phẩm</li>
-                     <li class="nav-item">
+                    <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-bookmark"></i>
                             <p>
@@ -114,13 +113,13 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="{{ URL::to(route('admin.import_invoice.index')) }}" class="nav-link">
+                                <a href="{{ URL::to(route('admin.invoice_import.index')) }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Danh sách hóa đơn</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ URL::to(route('admin.import_invoice.create')) }}" class="nav-link">
+                                <a href="{{ URL::to(route('admin.invoice_import.create')) }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Nhập hàng</p>
                                 </a>
@@ -128,31 +127,56 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ URL::to(route('admin.export_invoice.create')) }}" class="nav-link">
+                        <a href="{{ URL::to(route('admin.invoice_export.order')) }}" class="nav-link">
                             <i class="nav-icon fas fa-paste"></i>
                             <p>Đơn đặt hàng</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ URL::to(route('admin.export_invoice.index')) }}" class="nav-link">
+                        <a href="{{ URL::to(route('admin.invoice_export.invoice')) }}" class="nav-link">
                             <i class="nav-icon fas fa-file-export"></i>
                             <p>Hóa đơn bán</p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{ URL::to(route('admin.invoice_export.close_orders')) }}" class="nav-link">
+                            <i class="nav-icon fas fa-times-circle"></i>
+                            <p>Đơn đã hủy</p>
+                        </a>
+                    </li>
+                    <li class="nav-header">Thống kê</li>
+                    <li class="nav-item">
+                        <a href="{{ URL::to(route('admin.statistical.products')) }}" class="nav-link">
+                            <i class="nav-icon fas fa-chart-bar"></i>
+                            <p>Thống kê sản phẩm</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ URL::to(route('admin.statistical.invoices')) }}" class="nav-link">
+                            <i class="nav-icon fas fa-file-invoice-dollar"></i>
+                            <p>Thống kê hóa đơn</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ URL::to(route('admin.statistical.users')) }}" class="nav-link">
+                            <i class="nav-icon fas fa-id-card-alt"></i>
+                            <p>Thống kê khách hàng</p>
+                        </a>
+                    </li>
                     @if(auth()->user()->role->name === Config::get('auth.roles.manager'))
-                    <li class="nav-header">Tài khoản</li>
-                    <li class="nav-item">
-                        <a href="{{ URL::to(route('admin.account.index')) }}" class="nav-link">
-                            <i class="nav-icon fas fa-address-book"></i>
-                            <p>Danh sách tài khoản</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ URL::to(route('admin.account.create')) }}" class="nav-link">
-                            <i class="nav-icon fas fa-user-plus"></i>
-                            <p>Cấp tài khoản mới</p>
-                        </a>
-                    </li>
+                        <li class="nav-header">Tài khoản</li>
+                        <li class="nav-item">
+                            <a href="{{ URL::to(route('admin.account.index')) }}" class="nav-link">
+                                <i class="nav-icon fas fa-address-book"></i>
+                                <p>Danh sách tài khoản</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ URL::to(route('admin.account.create')) }}" class="nav-link">
+                                <i class="nav-icon fas fa-user-plus"></i>
+                                <p>Cấp tài khoản mới</p>
+                            </a>
+                        </li>
                     @endif
                 </ul>
             </nav>
@@ -160,7 +184,6 @@
         </div>
         <!-- /.sidebar -->
     </aside>
-
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
@@ -172,7 +195,8 @@
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="{{ URL::to(route('screen_admin_home')) }}">Trang chủ</a></li>
+                            <li class="breadcrumb-item"><a href="{{ URL::to(route('screen_admin_home')) }}">Trang
+                                    chủ</a></li>
                             <li class="breadcrumb-item active">Sản phẩm</li>
                         </ol>
                     </div><!-- /.col -->
@@ -180,7 +204,6 @@
             </div><!-- /.container-fluid -->
         </div>
         <!-- /.content-header -->
-
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
@@ -193,66 +216,72 @@
                                 <div class="card-header">
                                     <p class="noti">{{ session('message') }}</p>
                                 </div>
-                            @endif
-                            <!-- /.card-header -->
+                        @endif
+                        <!-- /.card-header -->
                             <!-- form start -->
-                                <div class="card-body">
-                                    <div class="form-group">
-                                        <label class="required">Tên sản phẩm</label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label class="required">Tên sản phẩm</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
                                                 <span class="input-group-text">
                                                     <i class="fas fa-address-card"></i>
                                                 </span>
-                                            </div>
-                                            <input type="text" name="name" class="form-control" placeholder="Nhập vào tên sản phẩm" value="{{ $product->name }}" disabled>
                                         </div>
+                                        <input type="text" name="name" class="form-control"
+                                            placeholder="Nhập vào tên sản phẩm" value="{{ $product->name }}"
+                                            disabled>
                                     </div>
-                                     <div class="form-group">
-                                        <label class="required">Thương hiệu</label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text"><i class="fas fa-th"></i></span>
-                                            </div>
-                                            <select class="form-control select2bs4" name="brand" disabled>
-                                                    <option>
-                                                        {{ $product->brand->name }}
-                                                    </option>
-                                            </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="required">Thương hiệu</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-th"></i></span>
                                         </div>
+                                        <select class="form-control select2bs4" name="brand" disabled>
+                                            <option>
+                                                {{ $product->brand->name }}
+                                            </option>
+                                        </select>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="required">Danh mục</label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text"><i class="fas fa-th"></i></span>
-                                            </div>
-                                            <select class="form-control select2bs4" name="category" disabled>
-                                                    <option>
-                                                        {{ $product->category->name }}
-                                                    </option>
-                                            </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="required">Danh mục</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-th"></i></span>
                                         </div>
+                                        <select class="form-control select2bs4" name="category" disabled>
+                                            <option>
+                                                {{ $product->category->name }}
+                                            </option>
+                                        </select>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="required">Giá</label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
-                                            </div>
-                                            <input type="number" name="price" class="form-control" placeholder="Nhập vào giá" value="{{$product->price}}" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label class="required">Giá</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
                                         </div>
+                                        <input type="text" name="price" class="form-control" placeholder="Nhập vào giá"
+                                            value="{{Lang::get('message.before_unit_money'). number_format($product->price, 0, ",", "."). Lang::get('message.after_unit_money')}}"
+                                            disabled>
                                     </div>
-                                    <div class="form-group">
-                                        <label>Mô tả</label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text"><i class="fas fa-info-circle"></i></span>
-                                            </div>
-                                            <textarea class="form-control" name="short_description" rows="2" placeholder="Nhập vào mô tả" disabled>{{$product->short_description}}</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Mô tả</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-info-circle"></i></span>
                                         </div>
+                                        <textarea class="form-control" name="short_description" rows="2"
+                                                  placeholder="Nhập vào mô tả"
+                                                  disabled>{{$product->short_description}}</textarea>
                                     </div>
-                                    @if($product->image)
+                                </div>
+                                @if($product->image)
                                     <div class="form-group">
                                         <label>Hình ảnh</label>
                                         <div class="input-group">
@@ -260,17 +289,18 @@
                                         </div>
                                         <img class="img-vie" src="{{asset (''.$product->image) }}"/>
                                     </div>
-                                    @endif
-                                    <div class="form-group row pt-3">
-                                        <div class="col-md-6">
-                                            <div class="custom-control custom-switch">
-                                                <input type="checkbox" name="active" class="custom-control-input" id="customSwitch1" disabled   @if ($product->active) checked @endif>
-                                                <label class="custom-control-label" for="customSwitch1">Hoạt dộng</label>
-                                            </div>
+                                @endif
+                                <div class="form-group row pt-3">
+                                    <div class="col-md-6">
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" name="active" class="custom-control-input"
+                                                   id="customSwitch1" disabled @if ($product->active) checked @endif>
+                                            <label class="custom-control-label" for="customSwitch1">Hoạt dộng</label>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- /.card-body -->
+                            </div>
+                            <!-- /.card-body -->
                             </form>
                         </div>
                         <!-- /.card -->

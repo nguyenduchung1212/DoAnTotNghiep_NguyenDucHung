@@ -39,7 +39,7 @@ return [
     |
     */
 
-    'debug' => (bool) env('APP_DEBUG', false),
+    'debug' => (bool)env('APP_DEBUG', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -232,10 +232,11 @@ return [
 
     ],
 
-     'image' => [
+    'image' => [
         'ratio' => 1048576,
-        'max' =>  10,
-        'url'=> 'storage/image/product/',
-        'default' => 'storage/image/product/default.png'
+        'max' => 5,
+        'url' => 'storage/image/product/',
+        'default' => 'storage/image/product/default.png',
+        'unit_file' => 'MB',
     ],
 ];

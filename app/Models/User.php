@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Lang;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Config;
 use Exception;
@@ -18,9 +19,9 @@ class User extends Authenticatable
 
     protected $table = 'users';
 
-    public CONST MANAGER = 'manager';
-    public CONST ADMIN   = 'admin';
-    public CONST USER    = 'user';
+    public const MANAGER = 'manager';
+    public const ADMIN = 'admin';
+    public const USER = 'user';
 
     /**
      * The attributes that are mass assignable.
@@ -69,11 +70,12 @@ class User extends Authenticatable
     /**
      * Get admin
      *
-     * @return void
+     * @return array|void
      */
-    public function getAdmins(){
-        try{
-            $roleAdmin = Role::where ('name', Config::get('auth.roles.admin'))->first();
+    public function getAdmins()
+    {
+        try {
+            $roleAdmin = Role::where('name', Config::get('auth.roles.admin'))->first();
             $admins = User::where([
                 ['role_id', $roleAdmin->id],
                 ['is_deleted', false]])
@@ -82,7 +84,7 @@ class User extends Authenticatable
             $status = true;
             $message = null;
             $data = $admins;
-        } catch(Exception $e){
+        } catch (Exception $e) {
             $status = false;
             $message = $e->getMessage();
             $data = null;
@@ -93,18 +95,19 @@ class User extends Authenticatable
     /**
      * Add brand
      *
-     * @param  mixed $request
-     * @return void
+     * @param $request
+     * @return array|void
      */
-    public function addAccount($request){
-        try{
-            if (User::where('email', $request->email)->first()){
-                $message = 'Exist email !!!';
+    public function addAccount($request)
+    {
+        try {
+            if (User::where('email', $request->email)->first()) {
+                $message = Lang::get('message.email_exist');
                 $status = false;
                 return $this->responseData($status, $message);
             }
-            if (User::where('username', $request->username)->first()){
-                $message = 'Exist user name !!!';
+            if (User::where('username', $request->username)->first()) {
+                $message = Lang::get('message.username_exist');
                 $status = false;
                 return $this->responseData($status, $message);
             }
@@ -119,8 +122,8 @@ class User extends Authenticatable
             $account->role_id = $role->id;
             $account->save();
             $status = true;
-            $message = 'Add account successful !';
-        }catch(Exception $e){
+            $message = Lang::get('message.add_done');
+        } catch (Exception $e) {
             $status = false;
             $message = $e->getMessage();
         }
@@ -130,19 +133,20 @@ class User extends Authenticatable
     /**
      * Delete product
      *
-     * @param  mixed $id
-     * @return void
+     * @param $id
+     * @return array|void
      */
-    public function deleteAdmin($id){
-        try{
+    public function deleteAdmin($id)
+    {
+        try {
             $status = false;
-            $message = "Can't delete account";
+            $message = Lang::get('message.delete_fail');
             $admin = User::find($id);
-            if($admin){
+            if ($admin) {
                 $admin->is_deleted = true;
                 $admin->save();
                 $status = true;
-                $message = "Delete account successful !";
+                $message = Lang::get('message.delete_done');
             }
         } catch (Exception $e) {
             $status = false;
@@ -150,4 +154,31 @@ class User extends Authenticatable
         }
         return $this->responseData($status, $message);
     }
+
+    /**
+     * Get admin
+     *
+     * @return array|void
+     */
+    public function getUsers()
+    {
+        try {
+            $roleUser = Role::where('name', Config::get('auth.roles.user'))->get();
+            $users = User::where([
+                ['role_id', $roleUser->id],
+                ['is_deleted', false]])
+                ->orderBy('id', 'DESC')
+                ->get();
+            $status = true;
+            $message = null;
+            $data = $users;
+        } catch (Exception $e) {
+            $status = false;
+            $message = $e->getMessage();
+            $data = null;
+        }
+        return $this->responseData($status, $message, $data);
+    }
 }
+
+

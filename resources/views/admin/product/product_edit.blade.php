@@ -2,7 +2,6 @@
 @section('admin_content')
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
-
         <!-- Sidebar -->
         <div class="sidebar">
             <!-- Sidebar user panel (optional) -->
@@ -11,7 +10,6 @@
                     <a class="d-block">{{ auth()->user()->name }}</a>
                 </div>
             </div>
-
             <!-- SidebarSearch Form -->
             <div class="form-inline">
                 <div class="input-group" data-widget="sidebar-search">
@@ -24,7 +22,6 @@
                     </div>
                 </div>
             </div>
-
             <!-- Sidebar Menu -->
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
@@ -116,13 +113,13 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="{{ URL::to(route('admin.import_invoice.index')) }}" class="nav-link">
+                                <a href="{{ URL::to(route('admin.invoice_import.index')) }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Danh sách hóa đơn</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ URL::to(route('admin.import_invoice.create')) }}" class="nav-link">
+                                <a href="{{ URL::to(route('admin.invoice_import.create')) }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Nhập hàng</p>
                                 </a>
@@ -130,13 +127,13 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ URL::to(route('admin.export_invoice.create')) }}" class="nav-link">
+                        <a href="{{ URL::to(route('admin.invoice_export.order')) }}" class="nav-link">
                             <i class="nav-icon fas fa-paste"></i>
                             <p>Đơn đặt hàng</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ URL::to(route('admin.export_invoice.index')) }}" class="nav-link">
+                        <a href="{{ URL::to(route('admin.invoice_export.invoice')) }}" class="nav-link">
                             <i class="nav-icon fas fa-file-export"></i>
                             <p>Hóa đơn bán</p>
                         </a>
@@ -152,13 +149,13 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="{{ URL::to(route('admin.import_invoice.index')) }}" class="nav-link">
+                                <a href="{{ URL::to(route('admin.invoice_import.index')) }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Danh sách hóa đơn</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ URL::to(route('admin.import_invoice.create')) }}" class="nav-link">
+                                <a href="{{ URL::to(route('admin.invoice_import.create')) }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Nhập hàng</p>
                                 </a>
@@ -166,15 +163,40 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ URL::to(route('admin.export_invoice.create')) }}" class="nav-link">
+                        <a href="{{ URL::to(route('admin.invoice_export.order')) }}" class="nav-link">
                             <i class="nav-icon fas fa-paste"></i>
                             <p>Đơn đặt hàng</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ URL::to(route('admin.export_invoice.index')) }}" class="nav-link">
+                        <a href="{{ URL::to(route('admin.invoice_export.invoice')) }}" class="nav-link">
                             <i class="nav-icon fas fa-file-export"></i>
                             <p>Hóa đơn bán</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ URL::to(route('admin.invoice_export.close_orders')) }}" class="nav-link">
+                            <i class="nav-icon fas fa-times-circle"></i>
+                            <p>Đơn đã hủy</p>
+                        </a>
+                    </li>
+                    <li class="nav-header">Thống kê</li>
+                    <li class="nav-item">
+                        <a href="{{ URL::to(route('admin.statistical.products')) }}" class="nav-link">
+                            <i class="nav-icon fas fa-chart-bar"></i>
+                            <p>Thống kê sản phẩm</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ URL::to(route('admin.statistical.invoices')) }}" class="nav-link">
+                            <i class="nav-icon fas fa-file-invoice-dollar"></i>
+                            <p>Thống kê hóa đơn</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ URL::to(route('admin.statistical.users')) }}" class="nav-link">
+                            <i class="nav-icon fas fa-id-card-alt"></i>
+                            <p>Thống kê khách hàng</p>
                         </a>
                     </li>
                     @if(auth()->user()->role->name === Config::get('auth.roles.manager'))
@@ -198,7 +220,6 @@
         </div>
         <!-- /.sidebar -->
     </aside>
-
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
@@ -219,7 +240,6 @@
             </div><!-- /.container-fluid -->
         </div>
         <!-- /.content-header -->
-
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">

@@ -8,6 +8,11 @@ use App\Traits\ResponseTraits;
 use App\Traits\ValidateTraits;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Routing\Redirector;
 
 class CategoryController extends Controller
 {
@@ -28,7 +33,8 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View|RedirectResponse
+     * @throws RoleAdminException
      */
     public function index()
     {
@@ -36,7 +42,7 @@ class CategoryController extends Controller
         $response = $this->model->getCategories();
         $categories = $response['data'];
         $message = $response['message'];
-        if (!$response['status']){
+        if (!$response['status']) {
             return back()->with('message', $message);
         }
         return view('admin.category.categories', compact('categories'));
@@ -46,7 +52,8 @@ class CategoryController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
+     * @throws RoleAdminException
      */
     public function create()
     {
@@ -57,12 +64,12 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return RedirectResponse
      */
     public function store(Request $request)
     {
-        try{
+        try {
             $this->checkRoleAdmin();
             $this->validateCategory($request);
             $response = $this->model->addCategory($request);
@@ -76,8 +83,8 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return RedirectResponse
      */
     public function show($id)
     {
@@ -87,14 +94,15 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return Application|Factory|View|RedirectResponse|Redirector
+     * @throws RoleAdminException
      */
     public function edit($id)
     {
         $this->checkRoleAdmin();
         $response = $this->model->getCategory($id);
-        if (!$response['status']){
+        if (!$response['status']) {
             $message = $response['message'];
             return redirect(route('admin.category.index'))->with('message', $message);
         }
@@ -105,31 +113,31 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param $id
+     * @return Application|RedirectResponse|Redirector
      */
     public function update(Request $request, $id)
     {
-        try{
-            if($this->checkRoleAdmin()){
+        try {
+            if ($this->checkRoleAdmin()) {
                 $this->validateCategory($request);
                 $response = $this->model->updateCategory($request, $id);
                 $message = $response['message'];
             } else {
-                Throw new RoleAdminException();
+                throw new RoleAdminException();
             }
-        } catch(Exception $e){
+        } catch (Exception $e) {
             $message = $e->getMessage();
         }
-        return redirect(route('admin.category.edit', ['category'=>$id]))->with('message', $message);
+        return redirect(route('admin.category.edit', ['category' => $id]))->with('message', $message);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return RedirectResponse
      */
     public function destroy($id)
     {

@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Support\Facades\Lang;
 use Throwable;
 
 class RoleAdminException extends Exception
@@ -10,7 +11,7 @@ class RoleAdminException extends Exception
 
     public function __construct (mixed $message = null, int $code = 0, Throwable|null $previous = null)
     {
-        $message = "Dont't have role!";
+        $message = Lang::get('message.not_have_role');
         parent::__construct((string)$message, $code, $previous);
     }
 }
