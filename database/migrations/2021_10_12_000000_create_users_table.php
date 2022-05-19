@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('username')->unique();
             $table->string('password');
             $table->string('phone');
+            $table->string('address')->nullable();
             $table->foreignId('role_id')->constrained('roles');
             $table->boolean('is_deleted')->default(false);
             $table->rememberToken()->default(Str::random('35'));

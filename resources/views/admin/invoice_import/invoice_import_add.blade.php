@@ -14,7 +14,7 @@
             <div class="form-inline">
                 <div class="input-group" data-widget="sidebar-search">
                     <input class="form-control form-control-sidebar" type="search" placeholder="Tìm kiếm"
-                           aria-label="Search">
+                        aria-label="Search">
                     <div class="input-group-append">
                         <button class="btn btn-sidebar">
                             <i class="fas fa-search fa-fw"></i>
@@ -24,8 +24,7 @@
             </div>
             <!-- Sidebar Menu -->
             <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                    data-accordion="false">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                     <li class="nav-item">
                         <a href="{{ URL::to(route('screen_admin_home')) }}" class="nav-link">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -212,25 +211,26 @@
                             <div class="card-header">
                                 <p class="noti">{{ session('message') }}</p>
                             </div>
-                    @endif
-                    <!-- Main content -->
+                        @endif
+                        <!-- Main content -->
                         <div class="invoice p-3 mb-3">
                             <!-- Table row -->
                             <div class="row">
                                 <!-- accepted payments column -->
                                 <div class="col-6">
                                     <form id="quickForm" action="{{ URL::to(route('admin.invoice_import.store')) }}"
-                                          method="POST">
+                                        method="POST">
                                         @csrf
                                         <div class="card-body">
                                             <div class="form-group">
-                                                <label for="exampleInputEmail1" class="required">Chọn sản phẩm</label>
+                                                <label for="exampleInputEmail1" class="required">Chọn sản
+                                                    phẩm</label>
                                                 <div class="input-group">
                                                     <select class="form-control select2bs4" name="product">
                                                         <option selected="selected" disabled>Chọn 1 sản phẩm</option>
                                                         @foreach ($products as $product)
-                                                            <option
-                                                                value="{{ $product->id }}">{{ $product->name }}</option>
+                                                            <option value="{{ $product->id }}">{{ $product->name }}
+                                                            </option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -239,14 +239,14 @@
                                                 <label for="exampleInputEmail1" class="required">Số lượng</label>
                                                 <div class="input-group">
                                                     <input type="number" name="quantity" class="form-control"
-                                                           placeholder="Nhập vào số lượng">
+                                                        placeholder="Nhập vào số lượng">
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1" class="required">Giá</label>
                                                 <div class="input-group">
                                                     <input type="number" name="price" class="form-control"
-                                                           placeholder="Nhập vào giá">
+                                                        placeholder="Nhập vào giá">
                                                 </div>
                                             </div>
                                             <!-- /.card-body -->

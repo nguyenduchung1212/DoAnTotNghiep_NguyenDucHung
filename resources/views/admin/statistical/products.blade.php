@@ -190,7 +190,11 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">Thống kê sản phẩm @if (isset($date)) từ ngày {{date('d-m-Y', strtotime($date['start']))}} đến ngày {{date('d-m-Y', strtotime($date['end']))}} @endif</h1>
+                        <h1 class="m-0">Thống kê sản phẩm @if (isset($date))
+                                từ ngày {{ date('d-m-Y', strtotime($date['start'])) }} đến ngày
+                                {{ date('d-m-Y', strtotime($date['end'])) }}
+                            @endif
+                        </h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -218,50 +222,49 @@
                             <div class="card-body">
                                 <form action="{{ URL::to(route('admin.statistical.products')) }}" method="GET">
                                     <div class="form-group row">
-                                        <div class="w-75">
-                                            <label>Chọn mốc thời gian:</label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">
-                                                        <i class="far fa-calendar-alt"></i>
-                                                    </span>
-                                                </div>
-                                                <input type="text" name="date" class="form-control float-right" id="reservation">
+                                        <label>Chọn mốc thời gian:</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="far fa-calendar-alt"></i>
+                                                </span>
                                             </div>
-                                        </div>                                       
-                                        <!-- /.input group -->
-                                        <div class="text-center w-25 align-self-end">
-                                            <label></label>                                           
-                                            <button type="submit" class="btn btn-primary">Xác nhận</button>
-                                            
+                                            <input type="text" name="date" class="form-control float-right"
+                                                id="reservation">
+                                            <div class="input-group-append">
+                                                <button type="submit" class="btn btn-primary">Xác nhận</button>
+                                            </div>
                                         </div>
-                                    </div>                                   
-                                </form>                            
+                                    </div>
+                                </form>
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
+                                            <th>Số thứ tự</th>
                                             <th>Sản phẩm</th>
                                             <th>Số lượng bán</th>
                                             <th>Thời gian tạo</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <?php $i = 1; ?>
                                         @if (isset($infoProducts))
-                                        @foreach ($infoProducts->sortByDesc('id') as $key => $infoProduct) 
-                                        @if (isset($products))
-                                        @foreach ($products as $key => $product)
-                                        @if($infoProduct->id == $key)
-                                        <tr>
-                                            <td>{{$infoProduct->name}}</td>
-                                            <td>{{$product}}</td>
-                                            <td>{{$infoProduct->created_at}}</td>
-                                        </tr> 
+                                            @foreach ($infoProducts->sortByDesc('id') as $key => $infoProduct)
+                                                @if (isset($products))
+                                                    @foreach ($products as $key => $product)
+                                                        @if ($infoProduct->id == $key)
+                                                            <tr>
+                                                                <td>{{ $i++ }}</td>
+                                                                <td>{{ $infoProduct->name }}</td>
+                                                                <td>{{ $product }}</td>
+                                                                <td>{{ $infoProduct->created_at }}</td>
+                                                            </tr>
+                                                        @endif
+                                                    @endforeach
+                                                @endif
+                                            @endforeach
                                         @endif
-                                        @endforeach
-                                        @endif
-                                        @endforeach
-                                        @endif
-                                        </tfoot>
+                                    </tbody>
                                 </table>
                             </div>
                             <!-- /.card-body -->

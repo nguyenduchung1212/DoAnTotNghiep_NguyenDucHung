@@ -1,11 +1,9 @@
 $(function () {
-    var col = $('#example1').find("th:contains('Thời gian tạo')")[0].cellIndex;
+    var col = $('#example1').find("th:contains('Số thứ tự')")[0].cellIndex;
     $("#example1").DataTable({
-        "responsive": true, "lengthChange": false, "autoWidth": false, "order": [col, "desc"],
+        "responsive": true, "lengthChange": false, "autoWidth": false, "order": [col, "asc"],
         "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-    
-
     $('#example2').DataTable({
         "paging": true,
         "lengthChange": false,
@@ -14,7 +12,7 @@ $(function () {
         "info": true,
         "autoWidth": false,
         "responsive": true,
-    });
+      });
 });
 
 $(function () {
@@ -173,3 +171,12 @@ document.querySelector("#actions .start").onclick = function () {
 document.querySelector("#actions .cancel").onclick = function () {
     myDropzone.removeAllFiles(true)
 }
+
+$("#delete-button").click(function(){
+    if(confirm("Bạn có muốn hủy đơn hàng ?")){
+        $("#delete-button").attr("href", "query.php?ACTION=delete&ID='1'");
+    }
+    else{
+        return false;
+    }
+});

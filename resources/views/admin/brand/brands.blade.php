@@ -14,7 +14,7 @@
             <div class="form-inline">
                 <div class="input-group" data-widget="sidebar-search">
                     <input class="form-control form-control-sidebar" type="search" placeholder="Tìm kiếm"
-                           aria-label="Search">
+                        aria-label="Search">
                     <div class="input-group-append">
                         <button class="btn btn-sidebar">
                             <i class="fas fa-search fa-fw"></i>
@@ -24,8 +24,7 @@
             </div>
             <!-- Sidebar Menu -->
             <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                    data-accordion="false">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                     <li class="nav-item">
                         <a href="{{ URL::to(route('screen_admin_home')) }}" class="nav-link">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -163,7 +162,7 @@
                             <p>Thống kê khách hàng</p>
                         </a>
                     </li>
-                    @if(auth()->user()->role->name === Config::get('auth.roles.manager'))
+                    @if (auth()->user()->role->name === Config::get('auth.roles.manager'))
                         <li class="nav-header">Tài khoản</li>
                         <li class="nav-item">
                             <a href="{{ URL::to(route('admin.account.index')) }}" class="nav-link">
@@ -214,36 +213,40 @@
                                 <div class="card-header">
                                     <p class="noti">{{ session('message') }}</p>
                                 </div>
-                        @endif
-                        <!-- /.card-header -->
+                            @endif
+                            <!-- /.card-header -->
                             <div class="card-body">
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
-                                    <tr>
-                                        <th>Tên thương hiệu</th>
-                                        @if(auth()->user()->role->name === Config::get('auth.roles.manager'))
-                                            <th>Người tạo</th>
-                                        @endif
-                                        <th>Thời gian tạo</th>
-                                        <th>Thao tác</th>
-                                    </tr>
+                                        <tr>
+                                            <th>Số thứ tự</th>
+                                            <th>Tên thương hiệu</th>
+                                            @if (auth()->user()->role->name === Config::get('auth.roles.manager'))
+                                                <th>Người tạo</th>
+                                            @endif
+                                            <th>Thời gian tạo</th>
+                                            <th>Thao tác</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach ($brands as $key => $brand)
-                                        <tr>
-                                            <td>{{ $brand->name }}</td>
-                                            @if(auth()->user()->role->name === Config::get('auth.roles.manager'))
-                                                <td>{{ $brand->user->name }}</td>
-                                            @endif
-                                            <td>{{ $brand->created_at }}</td>
-                                            <td class="act">
-                                                <a href="{{ URL::to(route('admin.brand.edit', ['brand' => $brand->id])) }}">
-                                                    <i class="fas fa-edit ico"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                    </tfoot>
+                                        <?php $i = 1; ?>
+                                        @foreach ($brands as $key => $brand)
+                                            <tr>
+                                                <td>{{ $i++ }}</td>
+                                                <td>{{ $brand->name }}</td>
+                                                @if (auth()->user()->role->name === Config::get('auth.roles.manager'))
+                                                    <td>{{ $brand->user->name }}</td>
+                                                @endif
+                                                <td>{{ $brand->created_at }}</td>
+                                                <td class="act">
+                                                    <a
+                                                        href="{{ URL::to(route('admin.brand.edit', ['brand' => $brand->id])) }}">
+                                                        <i class="fas fa-edit ico"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
                                 </table>
                             </div>
                             <!-- /.card-body -->

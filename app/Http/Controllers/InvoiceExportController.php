@@ -34,7 +34,8 @@ class InvoiceExportController extends Controller
      * @return Application|Factory|View|RedirectResponse
      * @throws RoleAdminException
      */
-    public function orders(){
+    public function orders()
+    {
         $this->checkRoleAdmin();
         $response = $this->model->getOrders();
         $orders = $response['data'];
@@ -52,7 +53,8 @@ class InvoiceExportController extends Controller
      * @return Application|Factory|View|RedirectResponse
      * @throws RoleAdminException
      */
-    public function order($id){
+    public function order($id)
+    {
         $this->checkRoleAdmin();
         $response = $this->model->getOrder($id);
         $order = $response['data'];
@@ -70,7 +72,8 @@ class InvoiceExportController extends Controller
      * @return Application|RedirectResponse|Redirector
      * @throws RoleAdminException
      */
-    public function acceptOrder($id){
+    public function acceptOrder($id)
+    {
         $this->checkRoleAdmin();
         $response = $this->model->acceptOrder($id);
         $message = $response['message'];
@@ -87,7 +90,8 @@ class InvoiceExportController extends Controller
      * @return RedirectResponse
      * @throws RoleAdminException
      */
-    public function cancelOrder($id){
+    public function cancelOrder($id)
+    {
         $this->checkRoleAdmin();
         $response = $this->model->cancelOrder($id);
         $message = $response['message'];
@@ -100,7 +104,8 @@ class InvoiceExportController extends Controller
      * @return Application|Factory|View|RedirectResponse
      * @throws RoleAdminException
      */
-    public function invoices(){
+    public function invoices()
+    {
         $this->checkRoleAdmin();
         $response = $this->model->getInvoices();
         $invoices = $response['data'];
@@ -118,7 +123,8 @@ class InvoiceExportController extends Controller
      * @return RedirectResponse
      * @throws RoleAdminException
      */
-    public function upStatusShip($id){
+    public function upStatusShip($id)
+    {
         $this->checkRoleAdmin();
         $response = $this->model->upStatusShip($id);
         $message = $response['message'];
@@ -132,7 +138,8 @@ class InvoiceExportController extends Controller
      * @return Application|Factory|View|RedirectResponse
      * @throws RoleAdminException
      */
-    public function invoice($id){
+    public function invoice($id)
+    {
         $this->checkRoleAdmin();
         $response = $this->model->getInvoice($id);
         $invoice = $response['data'];
@@ -149,7 +156,8 @@ class InvoiceExportController extends Controller
      * @return Application|Factory|View|RedirectResponse
      * @throws RoleAdminException
      */
-    public function closeOrders(){
+    public function closeOrders()
+    {
         $this->checkRoleAdmin();
         $response = $this->model->getCloseOrders();
         $closeOrders = $response['data'];
@@ -167,7 +175,8 @@ class InvoiceExportController extends Controller
      * @return Application|Factory|View|RedirectResponse
      * @throws RoleAdminException
      */
-    public function closeOrder($id){
+    public function closeOrder($id)
+    {
         $this->checkRoleAdmin();
         $response = $this->model->getCloseOrder($id);
         $closeOrder = $response['data'];
