@@ -14,7 +14,7 @@
             <div class="form-inline">
                 <div class="input-group" data-widget="sidebar-search">
                     <input class="form-control form-control-sidebar" type="search" placeholder="Tìm kiếm"
-                           aria-label="Search">
+                        aria-label="Search">
                     <div class="input-group-append">
                         <button class="btn btn-sidebar">
                             <i class="fas fa-search fa-fw"></i>
@@ -24,8 +24,7 @@
             </div>
             <!-- Sidebar Menu -->
             <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                    data-accordion="false">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                     <li class="nav-item">
                         <a href="{{ URL::to(route('screen_admin_home')) }}" class="nav-link">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -177,6 +176,29 @@
                                 <p>Cấp tài khoản mới</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-sliders-h"></i>
+                                <p>
+                                    Sidebar
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ URL::to(route('admin.sidebar.index')) }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Danh sách sidebar</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ URL::to(route('admin.sidebar.create')) }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Thêm Side bar</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                     @endif
                 </ul>
             </nav>
@@ -215,39 +237,42 @@
                                     <p class="noti">{{ session('message') }}</p>
                                 </div>
                             @endif
-                        <!-- /.card-header -->
+                            <!-- /.card-header -->
                             <div class="card-body">
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
-                                    <tr>
-                                        <th>Mã đơn hàng</th>
-                                        <th>Thời gian tạo</th>                                        
-                                        <th>Tổng tiền</th>
-                                        <th>Trạng thái đơn hàng</th>
-                                        <th>Thao tác</th>
-                                    </tr>
+                                        <tr>
+                                            <th>Số thứ tự</th>
+                                            <th>Mã đơn hàng</th>
+                                            <th>Thời gian tạo</th>
+                                            <th>Tổng tiền</th>
+                                            <th>Trạng thái đơn hàng</th>
+                                            <th>Thao tác</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach ($orders as $key => $order)                                        
-                                        <tr>
-                                            <td>{{ $order->code_invoice }}</td>
-                                            <td>{{ $order->created_at }}</td>                                        
-                                            <td> {{ Lang::get('message.before_unit_money') . number_format($order->into_money, 0, ',', '.') . Lang::get('message.after_unit_money') }}
-                                            </td>
-                                            <td>{{ $order->status_ship }}</td>                            
-                                            <td class="act">
-                                                <a
-                                                    href="{{ URL::to(route('admin.invoice_export.order_view', ['id' => $order->id])) }}">
-                                                    <i class="text-success fas fa-eye ico"></i>
-                                                </a>                                                
-                                                <a
-                                                    href="{{ URL::to(route('admin.invoice_export.cancel_order', ['id' => $order->id])) }}">
-                                                    <i class="text-danger fas fa-ban ico"></i>
-                                                </a>                                               
-                                            </td>                                          
-                                        </tr>
-                                    @endforeach
-                                    </tfoot>
+                                        <?php $i = 1; ?>
+                                        @foreach ($orders as $key => $order)
+                                            <tr>
+                                                <td>{{ $i++ }}</td>
+                                                <td>{{ $order->code_invoice }}</td>
+                                                <td>{{ $order->created_at }}</td>
+                                                <td> {{ Lang::get('message.before_unit_money') . number_format($order->into_money, 0, ',', '.') . Lang::get('message.after_unit_money') }}
+                                                </td>
+                                                <td>{{ $order->status_ship }}</td>
+                                                <td class="act">
+                                                    <a
+                                                        href="{{ URL::to(route('admin.invoice_export.order_view', ['id' => $order->id])) }}">
+                                                        <i class="text-success fas fa-eye ico"></i>
+                                                    </a>
+                                                    <a href="{{ URL::to(route('admin.invoice_export.cancel_order', ['id' => $order->id])) }}"
+                                                        onclick="return confirm( '{{ Lang::get('message.do_u_cancel') }} {{ $order->code_invoice }}?');">
+                                                        <i class="text-danger fas fa-ban ico"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
                                 </table>
                             </div>
                             <!-- /.card-body -->

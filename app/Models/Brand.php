@@ -38,7 +38,7 @@ class Brand extends Model
     /**
      * Get brands
      *
-     * @return array|void
+     * @return array
      */
     public function getBrands()
     {
@@ -58,7 +58,8 @@ class Brand extends Model
     /**
      * Get brand
      *
-     * @return void
+     * @param $id
+     * @return array
      */
     public function getBrand($id)
     {
@@ -83,8 +84,8 @@ class Brand extends Model
     /**
      * Add brand
      *
-     * @param mixed $request
-     * @return void
+     * @param $request
+     * @return array
      */
     public function addBrand($request)
     {
@@ -113,7 +114,7 @@ class Brand extends Model
      *
      * @param $request
      * @param $id
-     * @return array|void
+     * @return array
      */
     public function updateBrand($request, $id)
     {

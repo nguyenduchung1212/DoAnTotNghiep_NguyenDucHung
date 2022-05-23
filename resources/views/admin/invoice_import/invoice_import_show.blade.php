@@ -14,7 +14,7 @@
             <div class="form-inline">
                 <div class="input-group" data-widget="sidebar-search">
                     <input class="form-control form-control-sidebar" type="search" placeholder="Tìm kiếm"
-                           aria-label="Search">
+                        aria-label="Search">
                     <div class="input-group-append">
                         <button class="btn btn-sidebar">
                             <i class="fas fa-search fa-fw"></i>
@@ -24,8 +24,7 @@
             </div>
             <!-- Sidebar Menu -->
             <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                    data-accordion="false">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                     <li class="nav-item">
                         <a href="{{ URL::to(route('screen_admin_home')) }}" class="nav-link">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -163,7 +162,7 @@
                             <p>Thống kê khách hàng</p>
                         </a>
                     </li>
-                    @if(auth()->user()->role->name === Config::get('auth.roles.manager'))
+                    @if (auth()->user()->role->name === Config::get('auth.roles.manager'))
                         <li class="nav-header">Tài khoản</li>
                         <li class="nav-item">
                             <a href="{{ URL::to(route('admin.account.index')) }}" class="nav-link">
@@ -176,6 +175,29 @@
                                 <i class="nav-icon fas fa-user-plus"></i>
                                 <p>Cấp tài khoản mới</p>
                             </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-sliders-h"></i>
+                                <p>
+                                    Sidebar
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ URL::to(route('admin.sidebar.index')) }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Danh sách sidebar</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ URL::to(route('admin.sidebar.create')) }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Thêm Side bar</p>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                     @endif
                 </ul>
@@ -212,30 +234,36 @@
                             <div class="card-header">
                                 <p class="noti">{{ session('message') }}</p>
                             </div>
-                    @endif
-                    <!-- Main content -->
+                        @endif
+                        <!-- Main content -->
                         <div class="invoice p-3 mb-3">
                             <!-- Table row -->
                             <div class="row">
                                 <div class="col-12 table-responsive">
                                     <table class="table table-striped">
                                         <thead>
-                                        <tr>
-                                            <th>Sản phẩm</th>
-                                            <th>Số lượng</th>
-                                            <th>Đơn giá</th>
-                                            <th>Thành tiền</th>
-                                        </tr>
+                                            <tr>
+                                                <th>Số thứ tự</th>
+                                                <th>Sản phẩm</th>
+                                                <th>Số lượng</th>
+                                                <th>Đơn giá</th>
+                                                <th>Thành tiền</th>
+                                            </tr>
                                         </thead>
                                         <tbody>
-                                        @foreach($invoiceImport->detailInvoiceImport->sortByDesc('created_at') as $key => $detailInvoiceImport)
-                                            <tr>
-                                                <td> {{$detailInvoiceImport->product->name}}</td>
-                                                <td> {{number_format($detailInvoiceImport->quantity, 0, ",", ".")}}</td>
-                                                <td> {{Lang::get('message.before_unit_money'). number_format($detailInvoiceImport->price, 0, ",", "."). Lang::get('message.after_unit_money')}}</td>
-                                                <td> {{Lang::get('message.before_unit_money'). number_format($detailInvoiceImport->into_money, 0, ",", "."). Lang::get('message.after_unit_money')}}</td>
-                                            </tr>
-                                        @endforeach
+                                            <?php $i = 1; ?>
+                                            @foreach ($invoiceImport->detailInvoiceImport->sortByDesc('created_at') as $key => $detailInvoiceImport)
+                                                <tr>
+                                                    <td>{{ $i++ }}</td>
+                                                    <td> {{ $detailInvoiceImport->product->name }}</td>
+                                                    <td> {{ number_format($detailInvoiceImport->quantity, 0, ',', '.') }}
+                                                    </td>
+                                                    <td> {{ Lang::get('message.before_unit_money') . number_format($detailInvoiceImport->price, 0, ',', '.') . Lang::get('message.after_unit_money') }}
+                                                    </td>
+                                                    <td> {{ Lang::get('message.before_unit_money') . number_format($detailInvoiceImport->into_money, 0, ',', '.') . Lang::get('message.after_unit_money') }}
+                                                    </td>
+                                                </tr>
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>
@@ -250,12 +278,13 @@
                                         <table class="table">
                                             <tr>
                                                 <th style="width:50%">Tổng tiền</th>
-                                                <td> {{Lang::get('message.before_unit_money'). number_format($invoiceImport->into_money, 0, ",", "."). Lang::get('message.after_unit_money')}}</td>
+                                                <td> {{ Lang::get('message.before_unit_money') . number_format($invoiceImport->into_money, 0, ',', '.') . Lang::get('message.after_unit_money') }}
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <th>Trạng thái:</th>
                                                 <td>
-                                                    @if($invoiceImport->status)
+                                                    @if ($invoiceImport->status)
                                                         <span class="badge bg-success">Đã thanh toán</span>
                                                     @else
                                                         <span class="badge bg-danger">Chưa thanh toán</span>

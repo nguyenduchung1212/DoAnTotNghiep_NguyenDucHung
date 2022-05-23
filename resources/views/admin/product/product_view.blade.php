@@ -14,7 +14,7 @@
             <div class="form-inline">
                 <div class="input-group" data-widget="sidebar-search">
                     <input class="form-control form-control-sidebar" type="search" placeholder="Tìm kiếm"
-                           aria-label="Search">
+                        aria-label="Search">
                     <div class="input-group-append">
                         <button class="btn btn-sidebar">
                             <i class="fas fa-search fa-fw"></i>
@@ -24,8 +24,7 @@
             </div>
             <!-- Sidebar Menu -->
             <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                    data-accordion="false">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                     <li class="nav-item">
                         <a href="{{ URL::to(route('screen_admin_home')) }}" class="nav-link">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -163,7 +162,7 @@
                             <p>Thống kê khách hàng</p>
                         </a>
                     </li>
-                    @if(auth()->user()->role->name === Config::get('auth.roles.manager'))
+                    @if (auth()->user()->role->name === Config::get('auth.roles.manager'))
                         <li class="nav-header">Tài khoản</li>
                         <li class="nav-item">
                             <a href="{{ URL::to(route('admin.account.index')) }}" class="nav-link">
@@ -176,6 +175,29 @@
                                 <i class="nav-icon fas fa-user-plus"></i>
                                 <p>Cấp tài khoản mới</p>
                             </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-sliders-h"></i>
+                                <p>
+                                    Sidebar
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ URL::to(route('admin.sidebar.index')) }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Danh sách sidebar</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ URL::to(route('admin.sidebar.create')) }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Thêm Side bar</p>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                     @endif
                 </ul>
@@ -216,28 +238,27 @@
                                 <div class="card-header">
                                     <p class="noti">{{ session('message') }}</p>
                                 </div>
-                        @endif
-                        <!-- /.card-header -->
+                            @endif
+                            <!-- /.card-header -->
                             <!-- form start -->
                             <div class="card-body">
                                 <div class="form-group">
                                     <label class="required">Tên sản phẩm</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
-                                                <span class="input-group-text">
-                                                    <i class="fas fa-address-card"></i>
-                                                </span>
+                                            <span class="input-group-text">
+                                                <i class="fas fa-address-card"></i>
+                                            </span>
                                         </div>
                                         <input type="text" name="name" class="form-control"
-                                            placeholder="Nhập vào tên sản phẩm" value="{{ $product->name }}"
-                                            disabled>
+                                            placeholder="Nhập vào tên sản phẩm" value="{{ $product->name }}" disabled>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="required">Thương hiệu</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-th"></i></span>
+                                            <span class="input-group-text"><i class="fas fa-bookmark"></i></span>
                                         </div>
                                         <select class="form-control select2bs4" name="brand" disabled>
                                             <option>
@@ -266,7 +287,7 @@
                                             <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
                                         </div>
                                         <input type="text" name="price" class="form-control" placeholder="Nhập vào giá"
-                                            value="{{Lang::get('message.before_unit_money'). number_format($product->price, 0, ",", "."). Lang::get('message.after_unit_money')}}"
+                                            value="{{ Lang::get('message.before_unit_money') . number_format($product->price, 0, ',', '.') . Lang::get('message.after_unit_money') }}"
                                             disabled>
                                     </div>
                                 </div>
@@ -276,25 +297,25 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-info-circle"></i></span>
                                         </div>
-                                        <textarea class="form-control" name="short_description" rows="2"
-                                                  placeholder="Nhập vào mô tả"
-                                                  disabled>{{$product->short_description}}</textarea>
+                                        <textarea class="form-control" name="short_description" rows="2" placeholder="Nhập vào mô tả"
+                                            disabled>{{ $product->short_description }}</textarea>
                                     </div>
                                 </div>
-                                @if($product->image)
+                                @if ($product->image)
                                     <div class="form-group">
                                         <label>Hình ảnh</label>
                                         <div class="input-group">
 
                                         </div>
-                                        <img class="img-vie" src="{{asset (''.$product->image) }}"/>
+                                        <img class="img-vie" src="{{ asset('' . $product->image) }}" />
                                     </div>
                                 @endif
                                 <div class="form-group row pt-3">
                                     <div class="col-md-6">
                                         <div class="custom-control custom-switch">
                                             <input type="checkbox" name="active" class="custom-control-input"
-                                                   id="customSwitch1" disabled @if ($product->active) checked @endif>
+                                                id="customSwitch1" disabled
+                                                @if ($product->active) checked @endif>
                                             <label class="custom-control-label" for="customSwitch1">Hoạt dộng</label>
                                         </div>
                                     </div>

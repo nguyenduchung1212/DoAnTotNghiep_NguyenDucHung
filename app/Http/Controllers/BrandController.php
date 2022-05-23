@@ -61,7 +61,7 @@ class BrandController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created resource i n storage.
      *
      * @param Request $request
      * @return RedirectResponse

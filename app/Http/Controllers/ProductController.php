@@ -143,7 +143,9 @@ class ProductController extends Controller
             $brands = $responseBramd['data'];
             $responseCate = $this->modelCategory->getCategories();
             $categories = $responseCate['data'];
-            return view('admin.product.product_edit', compact('product', 'brands', 'categories'));
+            $responseCate = $this->model->getDetailProduct($id);
+            $detailsProduct = $responseCate['data'];
+            return view('admin.product.product_edit', compact('product', 'brands', 'categories', 'detailsProduct'));
         }
         $message = Lang::get('message.not_have_role');
         return redirect(route('screen_admin_login'))->with('message', $message);

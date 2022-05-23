@@ -14,7 +14,7 @@
             <div class="form-inline">
                 <div class="input-group" data-widget="sidebar-search">
                     <input class="form-control form-control-sidebar" type="search" placeholder="Tìm kiếm"
-                           aria-label="Search">
+                        aria-label="Search">
                     <div class="input-group-append">
                         <button class="btn btn-sidebar">
                             <i class="fas fa-search fa-fw"></i>
@@ -24,8 +24,7 @@
             </div>
             <!-- Sidebar Menu -->
             <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                    data-accordion="false">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                     <li class="nav-item">
                         <a href="{{ URL::to(route('screen_admin_home')) }}" class="nav-link">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -163,7 +162,7 @@
                             <p>Thống kê khách hàng</p>
                         </a>
                     </li>
-                    @if(auth()->user()->role->name === Config::get('auth.roles.manager'))
+                    @if (auth()->user()->role->name === Config::get('auth.roles.manager'))
                         <li class="nav-header">Tài khoản</li>
                         <li class="nav-item">
                             <a href="{{ URL::to(route('admin.account.index')) }}" class="nav-link active">
@@ -176,6 +175,29 @@
                                 <i class="nav-icon fas fa-user-plus"></i>
                                 <p>Cấp tài khoản mới</p>
                             </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-sliders-h"></i>
+                                <p>
+                                    Sidebar
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ URL::to(route('admin.sidebar.index')) }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Danh sách sidebar</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ URL::to(route('admin.sidebar.create')) }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Thêm Side bar</p>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                     @endif
                 </ul>
@@ -214,41 +236,39 @@
                                 <div class="card-header">
                                     <p class="noti">{{ session('message') }}</p>
                                 </div>
-                        @endif
-                        <!-- /.card-header -->
+                            @endif
+                            <!-- /.card-header -->
                             <div class="card-body">
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
-                                    <tr>
-                                        <th>Tên</th>
-                                        <th>Email</th>
-                                        <th>Tài khoản</th>
-                                        <th>Số điện thoại</th>
-                                        <th>Thời gian tạo</th>
-                                        <th>Thao tác</th>
-                                    </tr>
+                                        <tr>
+                                            <th>Số thứ tự</th>
+                                            <th>Tên</th>
+                                            <th>Email</th>
+                                            <th>Tài khoản</th>
+                                            <th>Số điện thoại</th>
+                                            <th>Thời gian tạo</th>
+                                            <th>Thao tác</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach ($admins as $key => $admin)
-                                        <tr>
-                                            <td>{{ $admin->name }}</td>
-                                            <td>{{ $admin->email }}</td>
-                                            <td>{{ $admin->username }}</td>
-                                            <td>{{ $admin->phone }}</td>
-                                            <td>{{ $admin->created_at }}</td>
-                                            <td class="act">
-                                                <form
-                                                    action="{{ URL::to(route('admin.account.destroy', ['account'=>$admin->id])) }}"
-                                                    method="POST">
-                                                    @csrf
-                                                    <input name="_method" type="hidden" value="DELETE">
-                                                    <button class="btn-ico" type="submit"><i
-                                                            class="text-danger fas fa-trash-alt ico"></i></button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                    </tfoot>
+                                        <?php $i = 1; ?>
+                                        @foreach ($admins as $key => $admin)
+                                            <tr>
+                                                <td>{{ $i++ }}</td>
+                                                <td>{{ $admin->name }}</td>
+                                                <td>{{ $admin->email }}</td>
+                                                <td>{{ $admin->username }}</td>
+                                                <td>{{ $admin->phone }}</td>
+                                                <td>{{ $admin->created_at }}</td>
+                                                <td class="act">
+                                                    <a href="{{ URL::to(route('admin.account.edit', ['account' => $admin->id])) }}">
+                                                        <i class="fas fa-edit ico"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
                                 </table>
                             </div>
                             <!-- /.card-body -->

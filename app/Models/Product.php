@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\DetailProduct;
 use App\Traits\ResponseTraits;
 use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -11,9 +12,12 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Lang;
+use Gloudemans\Shoppingcart\Facades\Cart;
+use Illuminate\Support\Str;
 
 class Product extends Model
 {
+
     use HasFactory, ResponseTraits;
 
     protected $table = 'products';
@@ -75,9 +79,64 @@ class Product extends Model
     }
 
     /**
+     * Relation with detail product
+     *
+     * @return HasMany
+     */
+    public function detailProduct()
+    {
+        return $this->hasMany(DetailProduct::class, 'product_id');
+    }
+
+    /**
+     * Filter with category
+     *
+     * @param $query
+     * @param $request
+     * @return mixed
+     */
+    public function scopeCategory($query, $request)
+    {
+        if ($request->has('category') && !is_null($request->category)) {
+            $query->where('category_id', $request->category);
+        }
+        return $query;
+    }
+
+    /**
+     * Filter with brand
+     *
+     * @param $query
+     * @param $request
+     * @return mixed
+     */
+    public function scopeBrand($query, $request)
+    {
+        if ($request->has('brand') && !is_null($request->brand)) {
+            $query->where('brand_id', $request->brand);
+        }
+        return $query;
+    }
+
+    /**
+     * Filter with name
+     *
+     * @param $query
+     * @param $request
+     * @return mixed
+     */
+    public function scopeTitle($query, $request)
+    {
+        if ($request->has('product') && !is_null($request->product)) {
+            $query->where('name', 'LIKE', '%' . $request->product . '%');
+        }
+        return $query;
+    }
+
+    /**
      * Get products
      *
-     * @return array|void
+     * @return array
      */
     public function getProducts()
     {
@@ -100,7 +159,7 @@ class Product extends Model
      * Get product
      *
      * @param $id
-     * @return array|void
+     * @return array
      */
     public function getProduct($id)
     {
@@ -108,12 +167,37 @@ class Product extends Model
             $status = false;
             $data = null;
             $message = Lang::get('message.can_not_find');
-            $products = Product::find($id);
+            $product = Product::find($id);
 
-            if ($products && !$products->is_deleted) {
+            if ($product && !$product->is_deleted) {
                 $status = true;
                 $message = null;
-                $data = $products;
+                $data = $product;
+            }
+        } catch (Exception $e) {
+            $message = $e->getMessage();
+        }
+        return $this->responseData($status, $message, $data);
+    }
+
+    /**
+     * Get detail product
+     *
+     * @param $id
+     * @return array
+     */
+    public function getDetailProduct($id)
+    {
+        try {
+            $status = false;
+            $data = null;
+            $message = Lang::get('message.can_not_find');
+            $detailsProduct = DetailProduct::where('product_id',$id)->get();
+
+            if ($detailsProduct ) {
+                $status = true;
+                $message = null;
+                $data = $detailsProduct;
             }
         } catch (Exception $e) {
             $message = $e->getMessage();
@@ -125,7 +209,7 @@ class Product extends Model
      * Add product
      *
      * @param $request
-     * @return array|void
+     * @return array
      */
     public function addProduct($request)
     {
@@ -140,9 +224,9 @@ class Product extends Model
             if ($request->image) {
                 $image = $this->checkImage($request->image);
                 if ($image['status']) {
-                    $new_image = date('Ymdhis') . '.' . $request->image->getClientOriginalExtension();
-                    $product->image = $this->url . $new_image;
-                    $request->image->move($this->url, $new_image);
+                    $newImage = date('Ymdhis') . '.' . $request->image->getClientOriginalExtension();
+                    $product->image = $this->url . $newImage;
+                    $request->image->move($this->url, $newImage);
 
                 } else {
                     throw new Exception($image['message']);
@@ -152,6 +236,22 @@ class Product extends Model
                 $product->active = true;
             }
             $product->save();
+            if (isset($request->image_detail)){
+                foreach ($request->image_detail as $image_detail){
+                    $detailProduct = new DetailProduct();
+                    $detailProduct->product_id = $product->id;
+                    $detailImage = $this->checkImage($image_detail);
+                    if($detailImage['status']) {
+                        $newDeatilImage = date('Ymdhis'). Str::random(10) . '.' . $image_detail->getClientOriginalExtension();
+                        $detailProduct->image = $this->url . $newDeatilImage;
+                        $image_detail->move($this->url, $newDeatilImage);
+                        $detailProduct->save();
+                    } else {
+                        throw new Exception($detailImage['message']);
+                    }
+                }
+            }
+
             $status = true;
             $message = Lang::get('message.add_done');
         } catch (Exception $e) {
@@ -166,7 +266,7 @@ class Product extends Model
      *
      * @param $request
      * @param $id
-     * @return array|void
+     * @return array
      */
     public function updateProduct($request, $id)
     {
@@ -202,6 +302,37 @@ class Product extends Model
                 $product->active = true;
             }
             $product->save();
+
+            if (isset($request->image_detail)){
+                foreach ($request->image_detail as $key => $image_detail){
+                    $detailProduct = DetailProduct::find($key);
+                    $detailImage = $this->checkImage($image_detail);
+                    if($detailImage['status']) {
+                        $newDeatilImage = date('Ymdhis'). Str::random(10) . '.' . $image_detail->getClientOriginalExtension();
+                        $detailProduct->image = $this->url . $newDeatilImage;
+                        $image_detail->move($this->url, $newDeatilImage);
+                        $detailProduct->save();
+                    } else {
+                        throw new Exception($detailImage['message']);
+                    }
+                }
+            }
+            if (isset($request->image_detail_new)) {
+                 foreach ($request->image_detail_new as $key => $image_detail_new){
+                    $detailProduct = new DetailProduct();
+                    $detailProduct->product_id = $product->id;
+                    $detailImage = $this->checkImage($image_detail_new);
+                    if($detailImage['status']) {
+                        $newDeatilImage = date('Ymdhis'). Str::random(10) . '.' . $image_detail_new->getClientOriginalExtension();
+                        $detailProduct->image = $this->url . $newDeatilImage;
+                        $image_detail_new->move($this->url, $newDeatilImage);
+                        $detailProduct->save();
+                    } else {
+                        throw new Exception($detailImage['message']);
+                    }
+                }
+            }
+
             $status = true;
             $message = Lang::get('message.update_done');
 
@@ -216,7 +347,7 @@ class Product extends Model
      * Delete product
      *
      * @param $id
-     * @return array|void
+     * @return array
      */
     public function deleteProduct($id)
     {
@@ -242,12 +373,133 @@ class Product extends Model
     }
 
     /**
+     * Search product with scope
+     *
+     * @param $request
+     * @return array
+     */
+    public function searchProducts($request)
+    {
+        try {
+            $status = false;
+            $message = Lang::get('message.can_not_find');
+            $data = '';
+            $products = Product::query()->category($request)->brand($request)->title($request)->where([['active', 1], ['is_deleted', 0], ['quantity', '>', 0]])->orderBy('id', 'DESC')->get();
+            $status = true;
+            $message = '';
+            $data = $products;
+        } catch (Exception $e) {
+            $status = false;
+            $message = $e->getMessage();
+        }
+        return $this->responseData($status, $message, $data);
+    }
+
+    /**
+     * Add product to cart
+     *
+     * @param $request
+     * @param $id
+     * @return array
+     */
+    public function addProductToCart($request, $id)
+    {
+        try {
+            $status = false;
+            $message = Lang::get('message.can_not_find');
+            $data = '';
+            $product = Product::find($id);
+            if ($product && !$product->is_deleted && $product->active) {
+                if ($product->quantity < $request->quantity) {
+                    $message = Lang::get('message.quantity_not_enough');
+                } else {
+                    $status = true;
+                    $message = Lang::get('message.add_done');
+                    Cart::add(['id' => $product->id, 'name' => $product->name, 'price' => $product->price, 'weight' => 0, 'qty' => $request->quanity]);
+                }
+            }
+        } catch (Exception $e) {
+            $status = false;
+            $message = $e->getMessage();
+        }
+        return $this->responseData($status, $message, $data);
+    }
+
+    /**
+     * Buy product
+     *
+     * @param $id
+     * @return array
+     */
+    public function buyProduct($id)
+    {
+        try {
+            $status = false;
+            $message = Lang::get('message.can_not_find');
+            $data = '';
+            $product = Product::find($id);
+            if ($product && !$product->is_deleted) {
+                $status = true;
+                $message = '';
+                Cart::add(['id' => $product->id, 'name' => $product->name, 'price' => $product->price, 'weight' => 0, 'qty' => 1]);
+            }
+        } catch (Exception $e) {
+            $status = false;
+            $message = $e->getMessage();
+        }
+        return $this->responseData($status, $message, $data);
+    }
+
+    /**
+     * Get data cart
+     *
+     * @return array
+     */
+    public function getCart()
+    {
+        try {
+            $status = false;
+            $message = Lang::get('message.can_not_find');
+            $data = Cart::content()->groupBy('id');
+            $status = true;
+            $message = '';
+
+        } catch (Exception $e) {
+            $status = false;
+            $message = $e->getMessage();
+        }
+        return $this->responseData($status, $message, $data);
+    }
+
+    /**
+     * Delete product in cart
+     *
+     * @param $id
+     * @return array
+     */
+    public function deleteProductInCart($id)
+    {
+        try {
+            $status = false;
+            $message = Lang::get('message.can_not_find');
+            Cart::remove($id);
+            $status = true;
+            $message = Lang::get('message.delete_done');
+
+        } catch (Exception $e) {
+            $status = false;
+            $message = $e->getMessage();
+        }
+        return $this->responseData($status, $message);
+    }
+
+    /**
      * Check image
      *
      * @param $image
-     * @return array|void
+     * @return array
      */
-    private function checkImage($image)
+    public function checkImage($image)
     {
         $status = true;
         $message = null;

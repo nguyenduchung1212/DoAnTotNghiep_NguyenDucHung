@@ -24,8 +24,7 @@
             </div>
             <!-- Sidebar Menu -->
             <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                    data-accordion="false">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                     <li class="nav-item">
                         <a href="{{ URL::to(route('screen_admin_home')) }}" class="nav-link">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -177,6 +176,29 @@
                                 <p>Cấp tài khoản mới</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-sliders-h"></i>
+                                <p>
+                                    Sidebar
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ URL::to(route('admin.sidebar.index')) }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Danh sách sidebar</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ URL::to(route('admin.sidebar.create')) }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Thêm Side bar</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                     @endif
                 </ul>
             </nav>
@@ -215,53 +237,61 @@
                                     <p class="noti">{{ session('message') }}</p>
                                 </div>
                             @endif
-                        <!-- /.card-header -->
+                            <!-- /.card-header -->
                             <div class="card-body">
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
-                                    <tr>
-                                        <th>Mã đơn hàng</th>
-                                        <th>Thời gian tạo</th>                                        
-                                        <th>Tổng tiền</th>
-                                        <th>Trạng thái đơn hàng</th>
-                                        <th>Cập nhật trạng thái</th>
-                                        <th>Thao tác</th>
-                                    </tr>
+                                        <tr>
+                                            <th>Số thứ tự</th>
+                                            <th>Mã đơn hàng</th>
+                                            <th>Thời gian tạo</th>
+                                            <th>Tổng tiền</th>
+                                            <th>Trạng thái đơn hàng</th>
+                                            <th>Cập nhật trạng thái</th>
+                                            <th>Thao tác</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach ($invoices as $key => $invoice)                                        
-                                        <tr>
-                                            <td>{{ $invoice->code_invoice }}</td>
-                                            <td>{{ $invoice->created_at }}</td>                                        
-                                            <td> {{ Lang::get('message.before_unit_money') . number_format($invoice->into_money, 0, ',', '.') . Lang::get('message.after_unit_money') }}
-                                            </td>
-                                            <td>{{ $invoice->status_ship }}</td>  
-                                            <td>
-                                                @if($invoice->status_ship == Lang::get('message.ready'))                                
-                                                <a
-                                                    href="{{ URL::to(route('admin.invoice_export.up_status_ship', ['id' => $invoice->id])) }}"> {{ Lang::get('message.shipping') }}
-                                                </a>
-                                                @elseif ($invoice->status_ship == Lang::get('message.shipping'))
-                                                <a
-                                                href="{{ URL::to(route('admin.invoice_export.up_status_ship', ['id' => $invoice->id])) }}"> {{ Lang::get('message.ship_done') }}
-                                                </a>
-                                                @else
-                                                <i class="text-success fas fa-check ico"></i>
-                                                @endif
-                                            </td>                           
-                                            <td class="act">
-                                                <a
-                                                    href="{{ URL::to(route('admin.invoice_export.invoice_view', ['id' => $invoice->id])) }}">
-                                                    <i class="text-success fas fa-eye ico"></i>
-                                                </a>
-                                                <a
-                                                    href="{{ URL::to(route('admin.invoice_export.cancel_order', ['id' => $invoice->id])) }}">
-                                                    <i class="text-danger fas fa-ban ico"></i>
-                                                </a>
-                                            </td>                                            
-                                        </tr>
-                                    @endforeach
-                                    </tfoot>
+                                        <?php $i = 1; ?>
+                                        @foreach ($invoices as $key => $invoice)
+                                            <tr>
+                                                <td>{{ $i++ }}</td>
+                                                <td>{{ $invoice->code_invoice }}</td>
+                                                <td>{{ $invoice->created_at }}</td>
+                                                <td> {{ Lang::get('message.before_unit_money') . number_format($invoice->into_money, 0, ',', '.') . Lang::get('message.after_unit_money') }}
+                                                </td>
+                                                <td>{{ $invoice->status_ship }}</td>
+                                                <td>
+                                                    @if ($invoice->status_ship == Lang::get('message.ready'))
+                                                        <a
+                                                            href="{{ URL::to(route('admin.invoice_export.up_status_ship', ['id' => $invoice->id])) }}">
+                                                            {{ Lang::get('message.shipping') }}
+                                                        </a>
+                                                    @elseif ($invoice->status_ship == Lang::get('message.shipping'))
+                                                        <a
+                                                            href="{{ URL::to(route('admin.invoice_export.up_status_ship', ['id' => $invoice->id])) }}">
+                                                            {{ Lang::get('message.ship_done') }}
+                                                        </a>
+                                                    @else
+                                                        <i class="text-success fas fa-check ico"></i>
+                                                    @endif
+                                                </td>
+                                                <td class="act">
+                                                    <a
+                                                        href="{{ URL::to(route('admin.invoice_export.invoice_view', ['id' => $invoice->id])) }}">
+                                                        <i class="text-success fas fa-eye ico"></i>
+                                                    </a>
+                                                    @if ($invoice->status_ship != Lang::get('message.ship_done'))
+                                                    <a id="delete-button"
+                                                        href="{{ URL::to(route('admin.invoice_export.cancel_order', ['id' => $invoice->id])) }}"
+                                                        onclick="return confirm( '{{ Lang::get('message.do_u_cancel') }} {{ $invoice->code_invoice }}?');">
+                                                        <i class="text-danger fas fa-ban ico"></i>
+                                                    </a>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
                                 </table>
                             </div>
                             <!-- /.card-body -->

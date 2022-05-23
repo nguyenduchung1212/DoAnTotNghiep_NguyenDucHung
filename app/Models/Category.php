@@ -38,7 +38,7 @@ class Category extends Model
     /**
      * Get categories
      *
-     * @return array|void
+     * @return array
      */
     public function getCategories()
     {
@@ -59,7 +59,7 @@ class Category extends Model
      * Get category
      *
      * @param $id
-     * @return array|void
+     * @return array
      */
     public function getCategory($id)
     {
@@ -85,7 +85,7 @@ class Category extends Model
      * Add category
      *
      * @param $request
-     * @return array|void
+     * @return array
      */
     public function addCategory($request)
     {
@@ -114,7 +114,7 @@ class Category extends Model
      *
      * @param $request
      * @param $id
-     * @return array|void
+     * @return array
      */
     public function updateCategory($request, $id)
     {

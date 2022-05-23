@@ -46,7 +46,6 @@ class CategoryController extends Controller
             return back()->with('message', $message);
         }
         return view('admin.category.categories', compact('categories'));
-
     }
 
     /**

@@ -11,6 +11,7 @@ return [
     'reset_pass' => 'Thay đổi mật khẩu.',
     'can_not_find' => 'Không thể tìm thấy!!!',
     'exist' => 'Đã tồn tại!!!',
+    'quantity_not_enough' => 'Không đủ số lượng',
     'add_done' => 'Thêm thành công.',
     'update_done' => 'Cập nhật thành công.',
     'delete_done' => 'Xóa thành công.',
@@ -33,4 +34,9 @@ return [
     'ship_done' => 'Giao thành công',
     'accept_done' => 'Xác nhận thành công',
     'cancel_done' => 'Hủy thành công',
+    'do_u_delete' => 'Bạn có muốn xóa',
+    'do_u_cancel' => 'Bạn có muốn hủy',
+    'out_of_stock' => 'Tạm hết hàng',
+    'confirm_order' => 'Xác nhận đơn hàng',
+    'no_long_in_business' => 'Sản phẩm tạm ngừng kinh doanh',
 ];

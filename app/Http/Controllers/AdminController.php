@@ -99,7 +99,19 @@ class AdminController extends Controller
      */
     public function edit($id)
     {
-        return back();
+        try {
+            if ($this->checkRoleManager()) {
+                $response = $this->model->getAdmin($id);
+                $admin = $response['data'];
+                $message = $response['message'];
+            } else {
+                $message = Lang::get('message.not_have_role');
+                return redirect(route('screen_admin_login'))->with('message', $message);
+            }
+        } catch (Exception $e) {
+            return back()->with('message', $e->getMessage());
+        }
+        return view('admin.account.account_edit', compact('admin'));
     }
 
     /**
@@ -111,7 +123,23 @@ class AdminController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return back();
+        try {
+            if ($this->checkRoleManager()) {
+                $response = $this->model->updateAdmin($request, $id);
+                if ($response['status']) {
+                    $message = $response['message'];
+                    return redirect(route('admin.account.index'))->with('message', $message);
+                } else {
+                    $message = $response['message'];
+                    return back()->with('message', $message);
+                }
+            } else {
+                $message = Lang::get('message.not_have_role');
+                return redirect(route('screen_admin_login'))->with('message', $message);
+            }
+        } catch (Exception $e) {
+            return back()->with('message', $e->getMessage());
+        }
     }
 
     /**
@@ -122,17 +150,6 @@ class AdminController extends Controller
      */
     public function destroy($id)
     {
-        try {
-            if ($this->checkRoleManager()) {
-                $response = $this->model->deleteAdmin($id);
-                $message = $response['message'];
-            } else {
-                $message = Lang::get('message.not_have_role');
-                return redirect(route('screen_admin_login'))->with('message', $message);
-            }
-        } catch (Exception $e) {
-            $message = $e->getMessage();
-        }
-        return back()->with('message', $message);
+        return back();
     }
 }

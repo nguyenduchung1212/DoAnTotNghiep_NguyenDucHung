@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Models\Role;
 use App\Models\User;
 use App\Traits\ResponseTraits;
@@ -19,7 +20,11 @@ use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Config;
-use function Sodium\compare;
+use App\Exceptions\RoleAdminException;
+use App\Models\Brand;
+use App\Models\Category;
+use App\Models\InvoiceExport;
+use App\Models\SideBar;
 
 class AuthController extends Controller
 {
@@ -28,7 +33,9 @@ class AuthController extends Controller
     public $manager;
     public $admin;
     public $user;
-
+    private $modelUser;
+    private $modelInvoiceExport;
+    
     /**
      * Constructor
      *
@@ -39,6 +46,8 @@ class AuthController extends Controller
         $this->manager = Config::get('auth.roles.manager');
         $this->admin = Config::get('auth.roles.admin');
         $this->user = Config::get('auth.roles.user');
+        $this->modelUser = new User();
+        $this->modelInvoiceExport = new InvoiceExport();
     }
 
     // Admin
@@ -54,7 +63,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Credential login
+     * Login admin
      *
      * @param Request $request
      * @return Application|RedirectResponse|Redirector
@@ -112,7 +121,7 @@ class AuthController extends Controller
             $data = array("name" => $user->name, "body" => $link_reset_pass, "email" => $user->email);
 
             Mail::send('mail.mail_forgot_password', $data, function ($message) use ($data) {
-                $message->to($data['email'])->subject('Reset password');
+                $message->to($data['email'])->subject(Lang::get('message.reset_pass'));
             });
             $message = Lang::get('message.check_mail');
             return back()->with('message', $message);
@@ -169,6 +178,7 @@ class AuthController extends Controller
      * Request screen home
      *
      * @return Application|Factory|View
+     * @throws RoleAdminException
      */
     public function indexAdmin()
     {
@@ -180,13 +190,13 @@ class AuthController extends Controller
      * Logout
      *
      * @return Application|RedirectResponse|Redirector
+     * @throws RoleAdminException
      */
     public function logoutAdmin()
     {
         $this->checkRoleAdmin();
         Auth::guard('web')->logout();
         return redirect(route('screen_admin_login'));
-
     }
 
 
@@ -274,7 +284,17 @@ class AuthController extends Controller
      */
     public function index()
     {
-        return view('user.home');
+        $products = Product::where([['active', '1'], ['is_deleted', '0']])->orderBy('id', 'desc')->get();
+        $brands = Brand::all();
+        $categories = Category::all();
+        $response = $this->modelInvoiceExport->getProductPaidFromInvoiceExport(date('Y-m-d', strtotime('-3 months')), date('Y-m-d', strtotime('now')));
+        $productsMax = $response['data'];
+        $sidebars = SideBar::orderBy('id', 'desc')->get();
+        return view('user.home')->with('products', $products)
+                                ->with('brands', $brands)
+                                ->with('categories', $categories)
+                                ->with('productsMax', $productsMax)
+                                ->with('sidebars', $sidebars);
     }
 
     /**
@@ -287,7 +307,6 @@ class AuthController extends Controller
         return view('user.forgot_password');
     }
 
-
     /**
      * Credential email
      *
@@ -298,7 +317,11 @@ class AuthController extends Controller
     {
         try {
             $this->validateForgotPassword($request);
-            $user = User::where('email', $request->email)->first();
+            $role = Role::where([['name', $this->user]])->first();
+            $user = User::where([['email', $request->email], ['role_id', $role->id]])->first();
+            if (!isset($user)){
+                return back()->with('message', Lang::get('message.can_not_find'));
+            }
             $token = Str::random('35');
             $user->remember_token = $token;
             $user->save();
@@ -306,9 +329,8 @@ class AuthController extends Controller
             $link_reset_pass = url('reset-password?email=' . $user->email . '&remember_token=' . $token);
             $data = array("name" => $user->name, "body" => $link_reset_pass, "email" => $user->email);
 
-            Mail::send('mail.mail_forgot_password', $data, function ($message) use ($data) {
-                $message = Lang::get('message.reset_pass');
-                $message->to($data['email'])->subject($message);
+            Mail::send('mail.mail_forgot_password', $data, function ($messages) use ($data) {
+                $messages->to($data['email'])->subject(Lang::get('message.reset_pass'));
             });
             $message = Lang::get('message.check_mail');
             return back()->with('message', $message);
@@ -366,5 +388,66 @@ class AuthController extends Controller
     {
         Auth::guard('web')->logout();
         return redirect(route('screen_home'));
+    }
+
+    /**
+     * Init screen info user
+     *
+     * @return Application|RedirectResponse|Redirector
+     */
+    public function initScreenInfo()
+    {
+        try {
+            if (Auth::user()->role->name === $this->user) {
+                $user = User::find(Auth::id());
+                return view('user.detail')->with('user', $user);
+            } else {
+                return redirect(route('screen_home'));
+            }
+        } catch (Exception $e) {
+            return redirect(route('screen_home'));
+        }
+    }
+
+    /**
+     * Update info user
+     *
+     * @return Application|RedirectResponse|Redirector
+     */
+    public function updateInfo(Request $request)
+    {
+        try {
+            if ($this->checkRoleUser()) {
+                $response = $this->modelUser->updateInfo($request);
+                $message = $response['message'];
+            } else {
+                $message = Lang::get('message.not_have_role');
+                return redirect(route('screen_admin_login'))->with('message', $message);
+            }
+        } catch (Exception $e) {
+            $message = $e->getMessage();
+        }
+        return back()->with('message', $message);
+    }
+
+    /**
+     * Change info user
+     *
+     * @return Application|RedirectResponse|Redirector
+     */
+    public function changePassword(Request $request)
+    {
+        try {
+            if ($this->checkRoleUser()) {
+                $response = $this->modelUser->changePassword($request);
+                $message = $response['message'];
+            } else {
+                $message = Lang::get('message.not_have_role');
+                return redirect(route('screen_admin_login'))->with('message', $message);
+            }
+        } catch (Exception $e) {
+            $message = $e->getMessage();
+        }
+        return back()->with('message', $message);
     }
 }

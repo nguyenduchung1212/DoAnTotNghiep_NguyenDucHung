@@ -14,7 +14,7 @@
             <div class="form-inline">
                 <div class="input-group" data-widget="sidebar-search">
                     <input class="form-control form-control-sidebar" type="search" placeholder="Tìm kiếm"
-                           aria-label="Search">
+                        aria-label="Search">
                     <div class="input-group-append">
                         <button class="btn btn-sidebar">
                             <i class="fas fa-search fa-fw"></i>
@@ -24,8 +24,7 @@
             </div>
             <!-- Sidebar Menu -->
             <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                    data-accordion="false">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                     <li class="nav-item">
                         <a href="{{ URL::to(route('screen_admin_home')) }}" class="nav-link">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -177,6 +176,29 @@
                                 <p>Cấp tài khoản mới</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-sliders-h"></i>
+                                <p>
+                                    Sidebar
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ URL::to(route('admin.sidebar.index')) }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Danh sách sidebar</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ URL::to(route('admin.sidebar.create')) }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Thêm Side bar</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                     @endif
                 </ul>
             </nav>
@@ -214,53 +236,56 @@
                                 <div class="card-header">
                                     <p class="noti">{{ session('message') }}</p>
                                 </div>
-                        @endif
-                        <!-- /.card-header -->
+                            @endif
+                            <!-- /.card-header -->
                             <div class="card-body">
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
-                                    <tr>
-                                        <th>Thời gian tạo</th>
-                                        @if (auth()->user()->role->name === Config::get('auth.roles.manager'))
-                                            <th>Người tạo</th>
-                                        @endif
-                                        <th>Tổng tiền</th>
-                                        <th>Trạng thái</th>
-                                        <th>Thao tác</th>
-                                    </tr>
+                                        <tr>
+                                            <th>Số thứ tự</th>
+                                            <th>Thời gian tạo</th>
+                                            @if (auth()->user()->role->name === Config::get('auth.roles.manager'))
+                                                <th>Người tạo</th>
+                                            @endif
+                                            <th>Tổng tiền</th>
+                                            <th>Trạng thái</th>
+                                            <th>Thao tác</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach ($invoicesImport as $key => $invoiceImport)
-                                        <tr>
-                                            <td>{{ $invoiceImport->created_at }}</td>
-                                            @if (auth()->user()->role->name === Config::get('auth.roles.manager'))
-                                                <td>{{ $invoiceImport->user->name }}</td>
-                                            @endif
-                                            <td> {{ Lang::get('message.before_unit_money') . number_format($invoiceImport->into_money, 0, ',', '.') . Lang::get('message.after_unit_money') }}
-                                            </td>
-                                            <td>
-                                                @if ($invoiceImport->status)
-                                                    <span class="badge bg-success">Đã thanh toán</span>
-                                                @else
-                                                    <span class="badge bg-danger">Chưa thanh toán</span>
+                                        <?php $i = 1; ?>
+                                        @foreach ($invoicesImport as $key => $invoiceImport)
+                                            <tr>
+                                                <td>{{ $i++ }}</td>
+                                                <td>{{ $invoiceImport->created_at }}</td>
+                                                @if (auth()->user()->role->name === Config::get('auth.roles.manager'))
+                                                    <td>{{ $invoiceImport->user->name }}</td>
                                                 @endif
-                                            </td>
-                                            <td class="act">
-                                                @if ($invoiceImport->status)
-                                                    <a
-                                                        href="{{ URL::to(route('admin.invoice_import.show', ['invoice_import' => $invoiceImport->id])) }}">
-                                                        <i class="text-success fas fa-eye ico"></i>
-                                                    </a>
-                                                @else
-                                                    <a
-                                                        href="{{ URL::to(route('admin.invoice_import.edit', ['invoice_import' => $invoiceImport->id])) }}">
-                                                        <i class="fas fa-edit ico"></i>
-                                                    </a>
-                                                @endif
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                    </tfoot>
+                                                <td> {{ Lang::get('message.before_unit_money') . number_format($invoiceImport->into_money, 0, ',', '.') . Lang::get('message.after_unit_money') }}
+                                                </td>
+                                                <td>
+                                                    @if ($invoiceImport->status)
+                                                        <span class="badge bg-success">Đã thanh toán</span>
+                                                    @else
+                                                        <span class="badge bg-danger">Chưa thanh toán</span>
+                                                    @endif
+                                                </td>
+                                                <td class="act">
+                                                    @if ($invoiceImport->status)
+                                                        <a
+                                                            href="{{ URL::to(route('admin.invoice_import.show', ['invoice_import' => $invoiceImport->id])) }}">
+                                                            <i class="text-success fas fa-eye ico"></i>
+                                                        </a>
+                                                    @else
+                                                        <a
+                                                            href="{{ URL::to(route('admin.invoice_import.edit', ['invoice_import' => $invoiceImport->id])) }}">
+                                                            <i class="fas fa-edit ico"></i>
+                                                        </a>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
                                 </table>
                             </div>
                             <!-- /.card-body -->

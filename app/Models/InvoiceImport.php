@@ -51,7 +51,7 @@ class InvoiceImport extends Model
     /**
      * Get invoices import
      *
-     * @return array|void
+     * @return array
      */
     public function getInvoicesImport()
     {
@@ -72,7 +72,7 @@ class InvoiceImport extends Model
      * Get invoice import
      *
      * @param $id
-     * @return array|void
+     * @return array
      */
     public function getInvoiceImport($id)
     {
@@ -98,7 +98,7 @@ class InvoiceImport extends Model
      * Get invoice import paid
      *
      * @param $id
-     * @return array|void
+     * @return array
      */
     public function getInvoiceImportPaid($id)
     {
@@ -124,7 +124,7 @@ class InvoiceImport extends Model
      * Get invoice import not paid
      *
      * @param $id
-     * @return array|void
+     * @return array
      */
     public function getInvoiceImportNotPaid($id)
     {
@@ -150,7 +150,7 @@ class InvoiceImport extends Model
      * Get invoice import from detail
      *
      * @param $id
-     * @return array|void
+     * @return array
      */
     public function getInvoiceImportFromDetail($id)
     {
@@ -176,7 +176,7 @@ class InvoiceImport extends Model
      * Add invoice import
      *
      * @param $request
-     * @return array|void
+     * @return array
      */
     public function addInvoiceImport($request)
     {
@@ -212,7 +212,7 @@ class InvoiceImport extends Model
      *
      * @param $request
      * @param $id
-     * @return array|void
+     * @return array
      */
     public function updateInvoiceImport($request, $id)
     {
@@ -253,7 +253,7 @@ class InvoiceImport extends Model
      * Delete details invoice import
      *
      * @param $id
-     * @return array|void
+     * @return array
      */
     public function deleteDetailsInvoiceImport($id)
     {
@@ -284,7 +284,7 @@ class InvoiceImport extends Model
      * Pay invoice import
      *
      * @param $id
-     * @return array|void
+     * @return array
      */
     public function pay($id)
     {
@@ -297,9 +297,9 @@ class InvoiceImport extends Model
                 $invoiceImport->save();
                 $status = true;
                 $message = Lang::get('message.pay_done');
-                
+
                 $detailInvoiceImport = DetailInvoiceImport::where('invoice_import_id', $id)->get();
-                foreach ($detailInvoiceImport as $key => $item){
+                foreach ($detailInvoiceImport as $key => $item) {
                     $product = Product::find($item->product_id);
                     $product->quantity = $product->quantity + $item->quantity;
                     $product->save();

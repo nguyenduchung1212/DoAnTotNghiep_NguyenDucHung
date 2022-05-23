@@ -179,6 +179,29 @@
                                 <p>Cấp tài khoản mới</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-sliders-h"></i>
+                                <p>
+                                    Sidebar
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ URL::to(route('admin.sidebar.index')) }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Danh sách sidebar</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ URL::to(route('admin.sidebar.create')) }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Thêm Side bar</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                     @endif
                 </ul>
             </nav>
@@ -213,11 +236,11 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
-                    @if (session('message'))
-                    <div class="card-header">
-                        <p class="noti">{{ session('message') }}</p>
-                    </div>
-                    @endif
+                        @if (session('message'))
+                            <div class="card-header">
+                                <p class="noti">{{ session('message') }}</p>
+                            </div>
+                        @endif
                         <!-- Main content -->
                         <div class="invoice p-3 mb-3">
                             <!-- Table row -->
@@ -231,7 +254,8 @@
                                         <input name="_method" type="hidden" value="PUT">
                                         <div class="card-body">
                                             <div class="form-group">
-                                                <label for="exampleInputEmail1" class="required">Chọn sản phẩm</label>
+                                                <label for="exampleInputEmail1" class="required">Chọn sản
+                                                    phẩm</label>
                                                 <div class="input-group">
                                                     <select class="select2bs4" name="product">
                                                         <option selected="selected" disabled>Chọn 1 sản phẩm</option>
@@ -298,6 +322,7 @@
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
+                                                <th>Số thứ tự</th>
                                                 <th>Sản phẩm</th>
                                                 <th>Số lượng</th>
                                                 <th>Đơn giá</th>
@@ -306,8 +331,10 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php $i = 1; ?>
                                             @foreach ($invoiceImport->detailInvoiceImport->sortByDesc('created_at') as $key => $detailInvoiceImport)
                                                 <tr>
+                                                    <td>{{ $i++ }}</td>
                                                     <td> {{ $detailInvoiceImport->product->name }}</td>
                                                     <td> {{ number_format($detailInvoiceImport->quantity, 0, ',', '.') }}
                                                     </td>
@@ -316,10 +343,13 @@
                                                     <td> {{ Lang::get('message.before_unit_money') . number_format($detailInvoiceImport->into_money, 0, ',', '.') . Lang::get('message.after_unit_money') }}
                                                     </td>
                                                     <td>
-                                                        <form action="{{ URL::to(route('admin.invoice_import.destroy', ['invoice_import'=>$detailInvoiceImport->id])) }}" method="POST">
+                                                        <form
+                                                            action="{{ URL::to(route('admin.invoice_import.destroy', ['invoice_import' => $detailInvoiceImport->id])) }}"
+                                                            method="POST">
                                                             @csrf
                                                             <input name="_method" type="hidden" value="DELETE">
-                                                            <button class="btn-ico" type="submit"><i class="text-danger fas fa-minus-circle"></i></button>
+                                                            <button class="btn-ico" type="submit"><i
+                                                                    class="text-danger fas fa-minus-circle"></i></button>
                                                         </form>
                                                     </td>
                                                 </tr>
@@ -335,7 +365,8 @@
                             <div class="row no-print">
                                 <div class="col-6"></div>
                                 <div class="col-6">
-                                    <a href="{{URL::to(route('admin.invoice_import.pay', ['invoice_import'=>$invoiceImport->id]))}}" class="btn btn-success float-right">
+                                    <a href="{{ URL::to(route('admin.invoice_import.pay', ['invoice_import' => $invoiceImport->id])) }}"
+                                        class="btn btn-success float-right">
                                         <i class="far fa-credit-card"></i>
                                         Thanh toán
                                     </a>

@@ -176,6 +176,29 @@
                                 <p>Cấp tài khoản mới</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-sliders-h"></i>
+                                <p>
+                                    Sidebar
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ URL::to(route('admin.sidebar.index')) }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Danh sách sidebar</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ URL::to(route('admin.sidebar.create')) }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Thêm Side bar</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                     @endif
                 </ul>
             </nav>
@@ -190,7 +213,11 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">Thống kê khách hàng @if (isset($date)) từ ngày {{date('d-m-Y', strtotime($date['start']))}} đến ngày {{date('d-m-Y', strtotime($date['end']))}} @endif</h1>
+                        <h1 class="m-0">Thống kê khách hàng @if (isset($date))
+                                từ ngày {{ date('d-m-Y', strtotime($date['start'])) }} đến ngày
+                                {{ date('d-m-Y', strtotime($date['end'])) }}
+                            @endif
+                        </h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -218,51 +245,47 @@
                             <div class="card-body">
                                 <form action="{{ URL::to(route('admin.statistical.users')) }}" method="GET">
                                     <div class="form-group row">
-                                        <div class="w-75">
-                                            <label>Chọn mốc thời gian:</label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">
-                                                        <i class="far fa-calendar-alt"></i>
-                                                    </span>
-                                                </div>
-                                                <input type="text" name="date" class="form-control float-right" id="reservation">
+                                        <label>Chọn mốc thời gian:</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="far fa-calendar-alt"></i>
+                                                </span>
                                             </div>
-                                        </div>                                       
-                                        <!-- /.input group -->
-                                        <div class="text-center w-25 align-self-end">
-                                            <label></label>                                           
-                                            <button type="submit" class="btn btn-primary">Xác nhận</button>                                            
+                                            <input type="text" name="date" class="form-control float-right"
+                                                id="reservation">
+                                            <div class="input-group-append">
+                                                <button type="submit" class="btn btn-primary">Xác nhận</button>
+                                            </div>
                                         </div>
-                                    </div>                                   
-                                </form>                            
-                                <table id="example1" class="table table-bordered table-striped">
+                                    </div>
+                                </form>
+                                <table id="example1" class="table table-bordered table-hover">
                                     <thead>
                                         <tr>
+                                            <th>Số thứ tự</th>
                                             <th>Khách hàng</th>
-                                            <th>Số hóa đơn</th>
-                                            <th>Tổng tiền</th>
                                             <th>Số điện thoại</th>
-                                            <th>Thời gian tạo</th>
+                                            <th>Số lượng hóa đơn</th>
+                                            <th>Tổng tiền</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @if($invoices)
-                                        @foreach ($invoices as $key => $invoice)
-                                        @if($users)
-                                        @foreach ($users as $key => $user )
-                                        <tr>
-                                            <td>{{$invoice->user->name}}</td>
-                                            <td>{{$invoice->count()}}</td>
-                                            <td>{{ Lang::get('message.before_unit_money'). number_format($invoice->sum('into_money'), 0, ",", "."). Lang::get('message.after_unit_money')}}</td>
-                                            
-                                        </tr>
-                                        @endforeach
+                                        @if ($invoices)
+                                            <?php $i = 1; ?>
+                                            @foreach ($invoices as $key => $invoice)
+                                                <tr>
+                                                    <th>{{ $i++ }}</th>
+                                                    <td>{{ $invoice->name_user }}</td>
+                                                    <td>{{ $invoice->phone_user }}</td>
+                                                    <td>{{ $invoice->quantity_invoice }}</td>
+                                                    <td>{{ Lang::get('message.before_unit_money') . number_format($invoice->sum_money, 0, ',', '.') . Lang::get('message.after_unit_money') }}
+                                                    </td>
+                                                </tr>
+                                            @endforeach
                                         @endif
-                                        @endforeach
-                                        @endif
-                                        </tfoot>
-                                </table>                               
+                                    </tbody>
+                                </table>
                             </div>
                             <!-- /.card-body -->
                         </div>

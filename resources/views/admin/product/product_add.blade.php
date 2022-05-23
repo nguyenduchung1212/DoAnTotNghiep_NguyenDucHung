@@ -14,7 +14,7 @@
             <div class="form-inline">
                 <div class="input-group" data-widget="sidebar-search">
                     <input class="form-control form-control-sidebar" type="search" placeholder="Tìm kiếm"
-                           aria-label="Search">
+                        aria-label="Search">
                     <div class="input-group-append">
                         <button class="btn btn-sidebar">
                             <i class="fas fa-search fa-fw"></i>
@@ -24,8 +24,7 @@
             </div>
             <!-- Sidebar Menu -->
             <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                    data-accordion="false">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                     <li class="nav-item">
                         <a href="{{ URL::to(route('screen_admin_home')) }}" class="nav-link">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -163,7 +162,7 @@
                             <p>Thống kê khách hàng</p>
                         </a>
                     </li>
-                    @if(auth()->user()->role->name === Config::get('auth.roles.manager'))
+                    @if (auth()->user()->role->name === Config::get('auth.roles.manager'))
                         <li class="nav-header">Tài khoản</li>
                         <li class="nav-item">
                             <a href="{{ URL::to(route('admin.account.index')) }}" class="nav-link">
@@ -176,6 +175,29 @@
                                 <i class="nav-icon fas fa-user-plus"></i>
                                 <p>Cấp tài khoản mới</p>
                             </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-sliders-h"></i>
+                                <p>
+                                    Sidebar
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ URL::to(route('admin.sidebar.index')) }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Danh sách sidebar</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ URL::to(route('admin.sidebar.create')) }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Thêm Side bar</p>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                     @endif
                 </ul>
@@ -216,29 +238,28 @@
                                 <div class="card-header">
                                     <p class="noti">{{ session('message') }}</p>
                                 </div>
-                        @endif
-                        <!-- /.card-header -->
+                            @endif
+                            <!-- /.card-header -->
                             <!-- form start -->
                             <form id="quickForm" action="{{ URL::to(route('admin.product.store')) }}"
-                                  enctype="multipart/form-data" method="POST">
+                                enctype="multipart/form-data" method="POST">
                                 @csrf
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label class="required">Tên sản phẩm</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text"><i
-                                                        class="fas fa-address-card"></i></span>
+                                                <span class="input-group-text"><i class="fas fa-address-card"></i></span>
                                             </div>
                                             <input type="text" name="name" class="form-control"
-                                                   placeholder="Nhập vào tên sản phẩm">
+                                                placeholder="Nhập vào tên sản phẩm">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="required">Thương hiệu</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text"><i class="fas fa-th"></i></span>
+                                                <span class="input-group-text"><i class="fas fa-bookmark"></i></span>
                                             </div>
                                             <select class="form-control select2bs4" name="brand">
                                                 <option selected="selected" disabled>Chọn 1 thương hiệu</option>
@@ -269,7 +290,7 @@
                                                 <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
                                             </div>
                                             <input type="number" name="price" class="form-control"
-                                                   placeholder="Nhập vào giá">
+                                                placeholder="Nhập vào giá">
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -278,29 +299,86 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fas fa-info-circle"></i></span>
                                             </div>
-                                            <textarea class="form-control" name="short_description" rows="2"
-                                                      placeholder="Nhập vào mô tả"></textarea>
+                                            <textarea class="form-control" name="short_description" rows="2" placeholder="Nhập vào mô tả"></textarea>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label>Hình ảnh</label>
+                                        <label>Hình ảnh đại diện</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fas fa-image"></i></span>
                                             </div>
                                             <div class="custom-file">
-                                                <input type="file" name="image" accept="image/*"
-                                                       class="custom-file-input" id="customFile">
+                                                <input type="file" name="image" accept="image/*" class="custom-file-input"
+                                                    id="customFile">
                                                 <label class="custom-file-label" for="customFile">Chọn 1 hình
                                                     ảnh</label>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group row pt-3">
+                                    <div class="form-group">
+                                        <label>Hình ảnh mô tả</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-image"></i></span>
+                                            </div>
+                                            <div class="custom-file">
+                                                <input type="file" name="image_detail[]" accept="image/*" class="custom-file-input"
+                                                    id="customFile">
+                                                <label class="custom-file-label" for="customFile">Chọn 1 hình
+                                                    ảnh</label>
+                                            </div>
+                                        </div>
+                                        <div class="input-group mt-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-image"></i></span>
+                                            </div>
+                                            <div class="custom-file">
+                                                <input type="file" name="image_detail[]" accept="image/*" class="custom-file-input"
+                                                    id="customFile">
+                                                <label class="custom-file-label" for="customFile">Chọn 1 hình
+                                                    ảnh</label>
+                                            </div>
+                                        </div>
+                                        <div class="input-group mt-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-image"></i></span>
+                                            </div>
+                                            <div class="custom-file">
+                                                <input type="file" name="image_detail[]" accept="image/*" class="custom-file-input"
+                                                    id="customFile">
+                                                <label class="custom-file-label" for="customFile">Chọn 1 hình
+                                                    ảnh</label>
+                                            </div>
+                                        </div>
+                                        <div class="input-group mt-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-image"></i></span>
+                                            </div>
+                                            <div class="custom-file">
+                                                <input type="file" name="image_detail[]" accept="image/*" class="custom-file-input"
+                                                    id="customFile">
+                                                <label class="custom-file-label" for="customFile">Chọn 1 hình
+                                                    ảnh</label>
+                                            </div>
+                                        </div>
+                                        <div class="input-group mt-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-image"></i></span>
+                                            </div>
+                                            <div class="custom-file">
+                                                <input type="file" name="image_detail[]" accept="image/*" class="custom-file-input"
+                                                    id="customFile">
+                                                <label class="custom-file-label" for="customFile">Chọn 1 hình
+                                                    ảnh</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row pt-3 mt-3">
                                         <div class="col-md-6">
                                             <div class="custom-control custom-switch">
                                                 <input type="checkbox" name="active" class="custom-control-input"
-                                                       id="customSwitch1">
+                                                    id="customSwitch1">
                                                 <label class="custom-control-label" for="customSwitch1">Hoạt
                                                     động</label>
                                             </div>
