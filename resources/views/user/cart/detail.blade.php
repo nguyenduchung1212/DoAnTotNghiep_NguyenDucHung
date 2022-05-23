@@ -17,7 +17,7 @@
                                             <img src="{{ asset('' . $product->image) }}" />
                                         </div>
                                         <div class="product-name d-flex">
-                                            <h5>{{ $product->name }}</h5><a href="{{ URL::to(route('delete_cart', ['id'=>$productCart[0]['rowId']])) }}">Xóa</a>
+                                            <h5>{{ $product->name }}</h5>
                                             <p>Số lượng: {{ $productCart[0]['qty'] }}</p>
                                             <p>Đơn giá:
                                                 {{ Lang::get('message.before_unit_money') . number_format($productCart[0]['price'], 0, ',', '.') . Lang::get('message.after_unit_money') }}
@@ -26,6 +26,9 @@
                                                 {{ Lang::get('message.before_unit_money') . number_format($productCart[0]['qty'] * $productCart[0]['price'], 0, ',', '.') . Lang::get('message.after_unit_money') }}
                                             </p>
                                             <?php $total = (int) $total + (int) $productCart[0]['qty'] * (int) $productCart[0]['price']; ?>
+                                        </div>
+                                        <div class="product-item d-flex justify-content-end">
+                                            <a href="{{ URL::to(route('delete_cart', ['id'=>$productCart[0]['rowId']])) }}">Xóa</a>
                                         </div>
                                     </div>
                                 @endif

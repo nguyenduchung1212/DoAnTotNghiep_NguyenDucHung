@@ -151,7 +151,9 @@ class UserController extends Controller
         if (!$response['status']) {
             return back()->with('message', $message);
         }
-        return view('user.cart.detail', compact('products', 'message', 'user'));
+        $brands = Brand::all();
+        $categories = Category::all();
+        return view('user.cart.detail', compact('products', 'message', 'user', 'brands', 'categories'));
     }
 
     /**
@@ -208,7 +210,9 @@ class UserController extends Controller
         if (!$response['status']) {
             $message = $response['message'];
         }
-        return view('user.order.search', compact('message', 'order'));
+        $brands = Brand::all();
+        $categories = Category::all();
+        return view('user.order.search', compact('message', 'order', 'brands', 'categories'));
     }
 
     /**
