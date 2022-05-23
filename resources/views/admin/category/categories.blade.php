@@ -244,6 +244,7 @@
                                         <tr>
                                             <th>Số thứ tự</th>
                                             <th>Tên danh mục</th>
+                                            <th>Hình ảnh</th>
                                             @if (auth()->user()->role->name === Config::get('auth.roles.manager'))
                                                 <th>Người tạo</th>
                                             @endif
@@ -257,6 +258,16 @@
                                             <tr>
                                                 <td>{{ $i++ }}</td>
                                                 <td>{{ $category->name }}</td>
+                                                <td>
+                                                    @if ($category->image)
+                                                        <img class="img-ctr"
+                                                            src="{{ asset('' . $category->image) }}" />
+                                                    @else
+                                                        <img class="img-ctr"
+                                                            src="{{ asset('' . Config::get('app.image.default')) }}" />
+                                                        <img>
+                                                    @endif
+                                                </td>
                                                 @if (auth()->user()->role->name === Config::get('auth.roles.manager'))
                                                     <td>{{ $category->user->name }}</td>
                                                 @endif

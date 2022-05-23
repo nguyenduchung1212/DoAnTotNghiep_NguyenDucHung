@@ -6,9 +6,6 @@ const collapseMenuBtn = document.getElementById('menu_collapse_btn')
 const closeBtn = document.getElementById('close_collapse')
 
 
-
-
-
 if (collapseMenuBtn) {
     collapseMenuBtn.addEventListener('click', () => {
         collapseMenu.style.visibility = 'visible';

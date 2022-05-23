@@ -79,6 +79,56 @@ class UserController extends Controller
     }
 
     /**
+     * Search category with scope
+     *
+     *
+     * @return Application|Factory|View|RedirectResponse
+     */
+    public function searchCategories()
+    {
+        $response = $this->modelCategory->getCategories();
+        $categories = $response['data'];
+        $message = $response['message'];
+        if (!$response['status']) {
+            return back()->with('message', $message);
+        }
+
+        $response = $this->modelBrand->getBrands();
+        $brands = $response['data'];
+        $message = $response['message'];
+        if (!$response['status']) {
+            return back()->with('message', $message);
+        }
+
+        return view('user.product.category', compact('categories', 'brands'));
+    }
+
+    /**
+     * Search brand with scope
+     *
+     *
+     * @return Application|Factory|View|RedirectResponse
+     */
+    public function searchBrands()
+    {
+        $response = $this->modelCategory->getCategories();
+        $categories = $response['data'];
+        $message = $response['message'];
+        if (!$response['status']) {
+            return back()->with('message', $message);
+        }
+
+        $response = $this->modelBrand->getBrands();
+        $brands = $response['data'];
+        $message = $response['message'];
+        if (!$response['status']) {
+            return back()->with('message', $message);
+        }
+
+        return view('user.product.brand', compact('categories', 'brands'));
+    }
+    
+    /**
      * Init screen detail product
      *
      * @param $id
@@ -154,6 +204,22 @@ class UserController extends Controller
         $brands = Brand::all();
         $categories = Category::all();
         return view('user.cart.detail', compact('products', 'message', 'user', 'brands', 'categories'));
+    }
+    
+
+    /**
+     * Delete cart
+     *
+     * @return RedirectResponse
+     */
+    public function updateCart(Request $request)
+    {
+        $response = $this->modelProduct->updateProductInCart($request);
+        $message = $response['message'];
+        if (!$response['status']) {
+            $message = $response['message'];
+        }
+        return redirect(route('cart'))->with('message', $message);
     }
 
     /**

@@ -22,8 +22,8 @@
                             <img class="img-fluid" src="{{ asset('' . $sidebar->image) }}" alt="" />
                         </div>
                     </div>
-                </div>
-            @endif
+        </div>
+        @endif
         @endforeach
     </div>
     <a class="carousel-control-prev text-decoration-none w-auto ps-3" href="#template-mo-zay-hero-carousel" role="button"
@@ -71,4 +71,72 @@
         </div>
     </section>
     <!-- End Categories of The Month -->
+
+    <section class="bg-light">
+        <div class="container py-5">
+            <div class="row text-center py-3">
+                <div class="col-lg-6 m-auto">
+                    <h1 class="h1">{{$brands->first()->name}}</h1>
+                    <p>
+                        Một số sản phẩm về thương hiệu {{$brands->first()->name}} mà bạn không thể bỏ qua
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                @foreach ($brands->first()->product->take(3) as $key =>$pro) 
+                <div class="col-12 col-md-4 mb-4">
+                    <div class="card h-100">
+                        <a href="shop-single.html">
+                            <img src="@if(isset ($pro->image)){{ asset('' . $pro->image) }} @else {{ asset('' . Config::get('app.image.default')) }} @endif" class="card-img-top" alt="..." />
+                        </a>
+                        <div class="card-body">
+                            <ul class="list-unstyled d-flex justify-content-between">
+                                <li class="text-muted text-right"> {{ Lang::get('message.before_unit_money') . number_format($pro->price, 0, ',', '.') . Lang::get('message.after_unit_money') }}
+                                </li>
+                            </ul>
+                            <a href="shop-single.html" class="h2 text-decoration-none text-dark">{{$pro->name}}</a>
+                            <p class="card-text">
+                            </p>
+                            <p class="text-muted">{{$pro->comment->count()}} Review</p>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>            
+        </div>
+    </section>
+
+    <section class="bg-light">
+        <div class="container py-5">
+            <div class="row text-center py-3">
+                <div class="col-lg-6 m-auto">
+                    <h1 class="h1">{{$categories->first()->name}}</h1>
+                    <p>
+                        Một số sản phẩm về danh mục {{$categories->first()->name}} mà bạn không thể bỏ qua
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                @foreach ($categories->first()->product->take(3) as $key =>$pro) 
+                <div class="col-12 col-md-4 mb-4">
+                    <div class="card h-100">
+                        <a href="shop-single.html">
+                            <img src="@if(isset ($pro->image)){{ asset('' . $pro->image) }} @else {{ asset('' . Config::get('app.image.default')) }} @endif" class="card-img-top" alt="..." />
+                        </a>
+                        <div class="card-body">
+                            <ul class="list-unstyled d-flex justify-content-between">
+                                <li class="text-muted text-right"> {{ Lang::get('message.before_unit_money') . number_format($pro->price, 0, ',', '.') . Lang::get('message.after_unit_money') }}
+                                </li>
+                            </ul>
+                            <a href="shop-single.html" class="h2 text-decoration-none text-dark">{{$pro->name}}</a>
+                            <p class="card-text">
+                            </p>
+                            <p class="text-muted">{{$pro->comment->count()}} Review</p>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>            
+        </div>
+    </section>
 @endsection

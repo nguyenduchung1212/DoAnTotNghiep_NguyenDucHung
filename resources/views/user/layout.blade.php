@@ -28,7 +28,7 @@
                     <i class="fas fa-outdent"></i>
                 </a>
             </li>
-            <p class="tit">Thương hiệu</p>
+            <a href="{{ URL::to(route('search_brands')) }}" class="tit">Thương hiệu</a>
             @foreach ( $brands as $key => $brand)
             <li>
                 <a href="{{ URL::to(route('search_products')) }}?brand={{$brand->name}}" class="dropdown-item" id="filter_menu" type="button">
@@ -36,7 +36,7 @@
                 </a>
             </li>
             @endforeach
-            <p class="tit">Danh mục</p>
+            <a href="{{ URL::to(route('search_categories')) }}" class="tit">Danh mục</a>
             @foreach ( $categories as $key => $category)
             <li>
                 <a href="{{ URL::to(route('search_products')) }}?category={{$category->name}}" class="dropdown-item" id="filter_menu" type="button">

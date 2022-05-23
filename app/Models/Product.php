@@ -89,6 +89,16 @@ class Product extends Model
     }
 
     /**
+     * Relation with detail comment
+     *
+     * @return HasMany
+     */
+    public function comment()
+    {
+        return $this->hasMany(Comment::class, 'product_id');
+    }
+
+    /**
      * Filter with category
      *
      * @param $query
@@ -469,6 +479,37 @@ class Product extends Model
             $message = $e->getMessage();
         }
         return $this->responseData($status, $message, $data);
+    }
+
+    /**
+     * update product in cart
+     *
+     * @param $request
+     * @return array
+     */
+    public function updateProductInCart($request)
+    {
+        try {
+            $status = false;
+            $message = Lang::get('message.can_not_find');
+            foreach ($request->toArray() as $key => $product){
+                if ($key != '_token') {
+                    if ($product < 1){
+                        $message = Lang::get('message.quantity_more_than_1');
+                        return $this->responseData($status, $message);
+                    } else {
+                        Cart::update($key, $product);
+                    }
+                }
+            }
+            $status = true;
+            $message = Lang::get('message.update_done');
+
+        } catch (Exception $e) {
+            $status = false;
+            $message = $e->getMessage();
+        }
+        return $this->responseData($status, $message);
     }
 
     /**

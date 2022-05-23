@@ -224,21 +224,30 @@ class AuthController extends Controller
             $this->validateRegister($request);
 
             $roles = Role::where('name', 'user')->first();
-            $user = User::create([
-                'email' => $request->email,
-                'name' => $request->name,
-                'username' => $request->username,
-                'password' => Hash::make($request->password),
-                'role_id' => $roles->id
-            ]);
-            $credentials = request(['username', 'password']);
-            if (!Auth::attempt($credentials)) {
-                $message = Lang::get('message.wrong_email_password');
-                return redirect(route('screen_admin_login'))->with("message", $message);
+            $checkEmail = User::where('email', $request->email)->first();
+            $checkUserName = User::where('username', $request->username)->first();
+            if ($checkEmail) {
+                $message = Lang::get('message.exist_email');
+            } elseif ($checkUserName) {
+                $message = Lang::get('message.exist_username');
+            } else {
+                $user = User::create([
+                    'email' => $request->email,
+                    'name' => $request->name,
+                    'username' => $request->username,
+                    'password' => Hash::make($request->password),
+                    'role_id' => $roles->id
+                ]);
+                $credentials = request(['username', 'password']);
+                if (!Auth::attempt($credentials)) {
+                    $message = Lang::get('message.wrong_email_password');
+                    return redirect(route('screen_login'))->with("message", $message);
+                }
+                $user->createToken('authToken')->plainTextToken;
+    
+                return redirect(route('screen_home'));
             }
-            $user->createToken('authToken')->plainTextToken;
-
-            return redirect(route('screen_admin_home'));
+            return back()->with('message', $message);
         } catch (Exception $e) {
             return back()->with('message', $e->getMessage());
         }

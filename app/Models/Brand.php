@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Exception;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Lang;
 
 class Brand extends Model
@@ -23,7 +24,22 @@ class Brand extends Model
      */
     protected $fillable = [
         'name',
+        'image',
     ];
+
+    private $modelProduct;
+    private $url;
+
+    /**
+     * Constructor
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->modelProduct = new Product();
+        $this->url = Config::get('app.image.url');
+    }
 
     /**
      * Relation with user
@@ -33,6 +49,16 @@ class Brand extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Relation with brand
+     *
+     * @return HasMany
+     */
+    public function product()
+    {
+        return $this->hasMany(Product::class, 'brand_id');
     }
 
     /**
@@ -96,12 +122,22 @@ class Brand extends Model
                 return $this->responseData($status, $message);
             }
 
-            $category = new Brand();
-            $category->name = $request->name;
-            $category->user_id = Auth::id();
-            $category->save();
-            $status = true;
-            $message = Lang::get('message.add_done');
+            $brand = new Brand();
+            $brand->name = $request->name;
+            $brand->user_id = Auth::id();
+            if ($request->image_brand) {
+                $image = $this->modelProduct->checkImage($request->image_brand);
+                if ($image['status']) {
+                    $newImage = date('Ymdhis') . '.' . $request->image_brand->getClientOriginalExtension();
+                    $brand->image = $this->url . $newImage;
+                    $request->image_brand->move($this->url, $newImage);
+                    $brand->save();
+                    $status = true;
+                    $message = Lang::get('message.add_done');
+                } else {
+                    throw new Exception($image['message']);
+                }
+            }
         } catch (Exception $e) {
             $status = false;
             $message = $e->getMessage();
@@ -130,6 +166,18 @@ class Brand extends Model
                 }
                 $brand->name = $request->name;
                 $brand->user_id = Auth::id();
+
+                if ($request->image_brand_edit) {
+                    $image = $this->modelProduct->checkImage($request->image_brand);
+                    if ($image['status']) {
+                        $newImage = date('Ymdhis') . '.' . $request->image_brand->getClientOriginalExtension();
+                        $brand->image = $this->url . $newImage;
+                        $request->image_brand->move($this->url, $newImage);
+                    } else {
+                        throw new Exception($image['message']);
+                    }
+                }
+
                 $brand->save();
                 $status = true;
                 $message = Lang::get('message.update_done');

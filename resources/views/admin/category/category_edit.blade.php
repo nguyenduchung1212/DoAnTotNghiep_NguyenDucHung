@@ -241,8 +241,8 @@
                             @endif
                             <!-- /.card-header -->
                             <!-- form start -->
-                            <form id="quickForm"
-                                action="{{ URL::to(route('admin.category.update', ['category' => $category->id])) }}"
+                            <form id="quickForm" enctype="multipart/form-data"
+                                action="{{ URL::to(route('admin.category.update', ['category' => $category->id])) }}" 
                                 method="POST">
                                 @csrf
                                 <input name="_method" type="hidden" value="PUT">
@@ -256,6 +256,23 @@
                                             <input type="text" name="name" class="form-control" id="exampleInputEmail1"
                                                 value="{{ $category->name }}" placeholder="Nhập vào tên danh mục">
                                         </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Hình ảnh</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-image"></i></span>
+                                            </div>
+                                            <div class="custom-file">
+                                                <input type="file" name="image_category_edit" accept="image/*" class="custom-file-input"
+                                                    id="customFile">
+                                                <label class="custom-file-label" for="customFile">Chọn 1 hình
+                                                    ảnh</label>
+                                            </div>
+                                        </div>
+                                        @if ($category->image)
+                                        <img class="img-ctr" src="{{ asset('' . $category->image) }}" />
+                                        @endif
                                     </div>
                                 </div>
                                 <!-- /.card-body -->

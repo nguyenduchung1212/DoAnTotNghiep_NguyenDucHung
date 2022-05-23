@@ -120,16 +120,7 @@
                                             <ul class="list-inline pb-3">
                                                 <li class="list-inline-item text-right">
                                                     Số lượng
-                                                    <input type="hidden" name="quanity" id="product_quantity" value="1" />
-                                                </li>
-                                                <li class="list-inline-item">
-                                                    <span class="btn btn-success" id="btn-minus">-</span>
-                                                </li>
-                                                <li class="list-inline-item">
-                                                    <span class="badge bg-secondary" id="var-value">1</span>
-                                                </li>
-                                                <li class="list-inline-item">
-                                                    <span class="btn btn-success" id="btn-plus">+</span>
+                                                    <input type="number" name="quanity" min="1" required id="product_quantity" value="1" />
                                                 </li>
                                             </ul>
                                         </div>

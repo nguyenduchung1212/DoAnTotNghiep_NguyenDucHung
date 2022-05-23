@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Lang;
 
 class Category extends Model
@@ -23,6 +24,7 @@ class Category extends Model
      */
     protected $fillable = [
         'name',
+        'image',
     ];
 
     /**
@@ -34,6 +36,31 @@ class Category extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * Relation with category
+     *
+     * @return HasMany
+     */
+    public function product()
+    {
+        return $this->hasMany(Product::class, 'category_id');
+    }
+
+    private $modelProduct;
+    private $url;
+
+    /**
+     * Constructor
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->modelProduct = new Product();
+        $this->url = Config::get('app.image.url');
+    }
+
 
     /**
      * Get categories
@@ -99,9 +126,19 @@ class Category extends Model
             $category = new Category();
             $category->name = $request->name;
             $category->user_id = Auth::id();
-            $category->save();
-            $status = true;
-            $message = Lang::get('message.add_done');
+            if ($request->image_category) {
+                $image = $this->modelProduct->checkImage($request->image_category);
+                if ($image['status']) {
+                    $newImage = date('Ymdhis') . '.' . $request->image_category->getClientOriginalExtension();
+                    $category->image = $this->url . $newImage;
+                    $request->image_category->move($this->url, $newImage);
+                    $category->save();
+                    $status = true;
+                    $message = Lang::get('message.add_done');
+                } else {
+                    throw new Exception($image['message']);
+                }
+            }
         } catch (Exception $e) {
             $status = false;
             $message = $e->getMessage();
@@ -130,6 +167,16 @@ class Category extends Model
                 }
                 $category->name = $request->name;
                 $category->user_id = Auth::id();
+                if ($request->image_category_edit) {
+                    $image = $this->modelProduct->checkImage($request->image_category_edit);
+                    if ($image['status']) {
+                        $newImage = date('Ymdhis') . '.' . $request->image_category_edit->getClientOriginalExtension();
+                        $category->image = $this->url . $newImage;
+                        $request->image_category_edit->move($this->url, $newImage);
+                    } else {
+                        throw new Exception($image['message']);
+                    }
+                }
                 $category->save();
                 $status = true;
                 $message = Lang::get('message.update_done');

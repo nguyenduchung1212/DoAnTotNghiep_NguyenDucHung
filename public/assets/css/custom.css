@@ -102,14 +102,21 @@ Custom Css
   
   #card_container .list-product .products .product-item .product-event .action p {
     margin: 0;
-    flex-basis: 20%;
-    padding: 0 20%;
   }
-  
-  #card_container .list-product .products .product-item .product-event .action a {
-    cursor: pointer;
-  }
-  
+
+  #card_container
+  .list-product
+  .products
+  .product-item
+  .product-event
+  .action
+  input {
+  margin: 0;
+  width: 25%;
+  font-weight: 500;
+  margin: 0 10%;
+}
+
   #card_container .box-2 {
     padding: 2% 0;
   }
