@@ -1,23 +1,22 @@
 const btnBuy = document.getElementById('buy_product');
 
 const btnSearchOrderStatus = document.getElementById('find_status_order');
-const orderStatus = document.getElementById('order_status')
+const collapseMenu = document.getElementById('collapse_menu')
+const collapseMenuBtn = document.getElementById('menu_collapse_btn')
+const closeBtn = document.getElementById('close_collapse')
 
 
-function moveToCart() {
-    location.href = "cart.html";
+
+
+
+if (collapseMenuBtn) {
+    collapseMenuBtn.addEventListener('click', () => {
+        collapseMenu.style.visibility = 'visible';
+    })
 }
 
-
-// if (btnBuy) {
-//     btnBuy.addEventListener('click', () => {
-//         location.href = "cart.html";
-//     });
-// }
-
-
-if (btnSearchOrderStatus) {
-    btnSearchOrderStatus.addEventListener('click', () => {
-        orderStatus.style.visibility = 'visible';
+if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+        collapseMenu.style.visibility = 'hidden';
     })
 }

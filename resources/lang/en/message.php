@@ -37,5 +37,6 @@ return [
     'do_u_delete' => 'Bạn có muốn xóa',
     'do_u_cancel' => 'Bạn có muốn hủy',
     'out_of_stock' => 'Tạm hết hàng',
+    'confirm_order' => 'Xác nhận đơn hàng',
     'no_long_in_business' => 'Sản phẩm tạm ngừng kinh doanh',
 ];

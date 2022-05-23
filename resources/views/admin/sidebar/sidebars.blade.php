@@ -59,7 +59,7 @@
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-th"></i>
                             <p>
-                                Danh mục sản phẩm
+                                Danh mục
                                 <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>
@@ -138,7 +138,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ URL::to(route('admin.invoice_export.close_orders')) }}" class="nav-link active">
+                        <a href="{{ URL::to(route('admin.invoice_export.close_orders')) }}" class="nav-link">
                             <i class="nav-icon fas fa-times-circle"></i>
                             <p>Đơn đã hủy</p>
                         </a>
@@ -176,8 +176,8 @@
                                 <p>Cấp tài khoản mới</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
+                        <li class="nav-item menu-open">
+                            <a href="#" class="nav-link active">
                                 <i class="nav-icon fas fa-sliders-h"></i>
                                 <p>
                                     Sidebar
@@ -186,7 +186,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ URL::to(route('admin.sidebar.index')) }}" class="nav-link">
+                                    <a href="{{ URL::to(route('admin.sidebar.index')) }}" class="nav-link active">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Danh sách sidebar</p>
                                     </a>
@@ -213,125 +213,67 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">Thông tin đơn đặt hàng {{ $closeOrder->code_invoice }}</h1>
+                        <h1 class="m-0">Danh sách sidebar</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{ URL::to(route('screen_admin_home')) }}">Trang
                                     chủ</a></li>
-                            <li class="breadcrumb-item active">Hóa đơn</li>
+                            <li class="breadcrumb-item active">Sidebar</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
             </div><!-- /.container-fluid -->
         </div>
         <!-- /.content-header -->
+        <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
-                        @if (session('message'))
-                            <div class="card-header">
-                                <p class="noti">{{ session('message') }}</p>
-                            </div>
-                        @endif
-                        <!-- Main content -->
-                        <div class="invoice p-3 mb-3">
-                            <!-- Table row -->
-                            <div class="row">
-                                <div class="col-12 table-responsive">
-                                    <table class="table table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>Số thứ tự</th>
-                                                <th>Sản phẩm</th>
-                                                <th>Số lượng</th>
-                                                <th>Đơn giá</th>
-                                                <th>Thành tiền</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php $i = 1; ?>
-                                            @foreach ($closeOrder->detailInvoiceExport->sortByDesc('created_at') as $key => $detailInvoiceExport)
-                                                <tr>
-                                                    <td>{{ $i++ }}</td>
-                                                    <td> {{ $detailInvoiceExport->product->name }}</td>
-                                                    <td> {{ number_format($detailInvoiceExport->quantity, 0, ',', '.') }}
-                                                    </td>
-                                                    <td> {{ Lang::get('message.before_unit_money') . number_format($detailInvoiceExport->product->price, 0, ',', '.') . Lang::get('message.after_unit_money') }}
-                                                    </td>
-                                                    <td> {{ Lang::get('message.before_unit_money') . number_format($detailInvoiceExport->into_money, 0, ',', '.') . Lang::get('message.after_unit_money') }}
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                        <div class="card">
+                            @if (session('message'))
+                                <div class="card-header">
+                                    <p class="noti">{{ session('message') }}</p>
                                 </div>
-                                <!-- /.col -->
-                            </div>
-                            <!-- /.row -->
-                            <div class="row">
-                                <div class="col-6"></div>
-                                <div class="col-6">
-                                    <p class="lead">Thông tin đơn đặt hàng </p>
-                                    <div class="table-responsive">
-                                        <table class="table">
+                            @endif
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Số thứ tự</th>                                           
+                                            <th>Hình ảnh</th>                                        
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php $i = 1; ?>
+                                        @foreach ($sidebars as $sidebar)
                                             <tr>
-                                                <th style="width:50%">Tổng tiền</th>
-                                                <td> {{ Lang::get('message.before_unit_money') . number_format($closeOrder->into_money, 0, ',', '.') . Lang::get('message.after_unit_money') }}
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th style="width:50%">Khách hàng</th>
-                                                <td> {{ $closeOrder->name_user }}</td>
-                                            </tr>
-                                            <tr>
-                                                <th style="width:50%">Số điện thoại</th>
-                                                <td> {{ $closeOrder->phone_user }}</td>
-                                            </tr>
-                                            <tr>
-                                                <th style="width:50%">Phương thức thanh toán</th>
+                                                <td>{{ $i++ }}</td>
                                                 <td>
-                                                    @if ($closeOrder->is_pay_cod)
-                                                        {{ Lang::get('message.pay_cod') }}
+                                                    @if ($sidebar->image)
+                                                        <img class="img-ctr"
+                                                            src="{{ asset('' . $sidebar->image) }}" />
                                                     @else
-                                                        {{ Lang::get('message.pay_online') }}
+                                                        <img class="img-ctr"
+                                                            src="{{ asset('' . Config::get('app.image.default')) }}" />
+                                                        <img>
                                                     @endif
                                                 </td>
-                                            </tr>
-                                            <tr>
-                                                <th style="width:50%">Trạng thái thanh toán</th>
-                                                <td>
-                                                    @if ($closeOrder->is_payment)
-                                                        {{ Lang::get('message.paid') }}
-                                                    @else
-                                                        {{ Lang::get('message.pay_not') }}
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th style="width:50%">Thông tin đơn hàng</th>
-                                                <td> {{ $closeOrder->status_ship }}</td>
-                                            </tr>
-                                            <tr>
-                                                <th style="width:50%">Lý do</th>
-                                                <td> {{ $closeOrder->reason }}</td>
-                                            </tr>
-                                            <tr>
-                                                <th style="width:50%">Thông tin thêm</th>
-                                                <td> {{ $closeOrder->message }}</td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </div>
-                                <!-- /.col -->
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
-                            <!-- /.row -->
+                            <!-- /.card-body -->
                         </div>
-                        <!-- /.invoice -->
-                    </div><!-- /.col -->
-                </div><!-- /.row -->
-            </div><!-- /.container-fluid -->
+                        <!-- /.card -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
         </section>
         <!-- /.content -->
     </div>

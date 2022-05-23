@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Lang;
 
 class UserController extends Controller
 {
@@ -98,7 +99,9 @@ class UserController extends Controller
         if (!$response['status']){
             return back()->with('message', $message);
         }
-        return view('user.product.detail', compact('product', 'comments'));
+        $brands = Brand::all();
+        $categories = Category::all();
+        return view('user.product.detail', compact('product', 'comments', 'brands', 'categories'));
     }
 
     /**
@@ -184,7 +187,7 @@ class UserController extends Controller
             $data = array("name" => $order->name_user, "code" => $order->code_invoice, "email" => $order->email_user);
 
             Mail::send('mail.mail_confirm_order', $data, function ($message) use ($data) {
-                $message->to($data['email'])->subject('Xác nhận đơn hàng');
+                $message->to($data['email'])->subject(Lang::get('message.confirm_order'));
             });
             Cart::destroy();
         }
@@ -216,12 +219,7 @@ class UserController extends Controller
      */
     public function addComment(Request $request, $id)
     {
-        $response = $this->modelComment->addComments($request, $id);
-        $message = $response['message'];
-        $order = $response['data'];
-        if (!$response['status']) {
-            $message = $response['message'];
-        }
+        $this->modelComment->addComments($request, $id);
         return back();
     }
 }

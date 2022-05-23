@@ -53,6 +53,9 @@ $(function () {
             product: {
                 required: true
             },
+            image_sidebar: {
+                required: true
+            },
             quantity: {
                 required: true,
                 min: 0,
@@ -74,6 +77,7 @@ $(function () {
             phone: "Nhập vào số điện thoại",
             product: "Nhập vào sản phẩm",
             quantity: "Nhập vào số lượng",
+            image_sidebar: "Chọn 1 hình ảnh",
         },
         errorElement: 'span',
         errorPlacement: function (error, element) {

@@ -176,6 +176,29 @@
                                 <p>Cấp tài khoản mới</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-sliders-h"></i>
+                                <p>
+                                    Sidebar
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ URL::to(route('admin.sidebar.index')) }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Danh sách sidebar</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ URL::to(route('admin.sidebar.create')) }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Thêm Side bar</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                     @endif
                 </ul>
             </nav>
@@ -239,14 +262,9 @@
                                                 <td>{{ $admin->phone }}</td>
                                                 <td>{{ $admin->created_at }}</td>
                                                 <td class="act">
-                                                    <form
-                                                        action="{{ URL::to(route('admin.account.destroy', ['account' => $admin->id])) }}"
-                                                        method="POST">
-                                                        @csrf
-                                                        <input name="_method" type="hidden" value="DELETE">
-                                                        <button class="btn-ico" type="submit"><i
-                                                                class="text-danger fas fa-trash-alt ico"></i></button>
-                                                    </form>
+                                                    <a href="{{ URL::to(route('admin.account.edit', ['account' => $admin->id])) }}">
+                                                        <i class="fas fa-edit ico"></i>
+                                                    </a>
                                                 </td>
                                             </tr>
                                         @endforeach

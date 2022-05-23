@@ -176,6 +176,29 @@
                                 <p>Cấp tài khoản mới</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-sliders-h"></i>
+                                <p>
+                                    Sidebar
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ URL::to(route('admin.sidebar.index')) }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Danh sách sidebar</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ URL::to(route('admin.sidebar.create')) }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Thêm Side bar</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                     @endif
                 </ul>
             </nav>
@@ -289,6 +312,10 @@
                                             <tr>
                                                 <th style="width:50%">Thông tin đơn hàng</th>
                                                 <td> {{ $invoice->status_ship }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th style="width:50%">Tiền cần thanh toán</th>
+                                                <td> {{ Lang::get('message.before_unit_money') . number_format($invoice->need_pay, 0, ',', '.') . Lang::get('message.after_unit_money') }}</td>
                                             </tr>
                                             <tr>
                                                 <th style="width:50%">Thông tin thêm</th>

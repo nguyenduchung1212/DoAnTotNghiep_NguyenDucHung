@@ -8,6 +8,7 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\InvoiceImportController;
 use App\Http\Controllers\InvoiceExportController;
+use App\Http\Controllers\SideBarController;
 use App\Http\Controllers\StatisticalController;
 use App\Http\Controllers\UserController;
 
@@ -65,6 +66,7 @@ Route::prefix('admin')->group(function () {
 
         //Admin account
         Route::resource('account',                          AdminController::class,                                     ['names' => 'admin.account']);
+        Route::resource('sidebar',                          SideBarController::class,                                   ['names' => 'admin.sidebar']);
     });
 });
 

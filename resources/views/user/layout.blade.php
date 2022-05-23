@@ -21,8 +21,35 @@
 </head>
 
 <body>
+    <div id="collapse_menu" class="collapse-menu">
+        <ul class="collapse-menu-item">
+            <li>
+                <a id="close_collapse" href="#" class="dropdown-item" type="button">
+                    <i class="fas fa-outdent"></i>
+                </a>
+            </li>
+            <p class="tit">Thương hiệu</p>
+            @foreach ( $brands as $key => $brand)
+            <li>
+                <a href="{{ URL::to(route('search_products')) }}?brand={{$brand->name}}" class="dropdown-item" id="filter_menu" type="button">
+                    {{$brand->name}}
+                </a>
+            </li>
+            @endforeach
+            <p class="tit">Danh mục</p>
+            @foreach ( $categories as $key => $category)
+            <li>
+                <a href="{{ URL::to(route('search_products')) }}?category={{$category->name}}" class="dropdown-item" id="filter_menu" type="button">
+                    {{$category->name}}
+                </a>
+            </li>
+            @endforeach
+        </ul>
+    </div>
+
     <!-- Header -->
     <nav class="navbar navbar-expand-lg navbar-light shadow">
+
         <div class="container d-flex justify-content-between align-items-center">
             <a class="navbar-brand text-success logo h1 align-self-center" href="{{ URL::to(route('screen_home')) }}">
                 Mỹ phẩm ABC
@@ -69,7 +96,8 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
                                 <li>
-                                    <a href="{{ URL::to(route('screen_info')) }}" class="dropdown-item" id="filter_menu" type="button">
+                                    <a href="{{ URL::to(route('screen_info')) }}" class="dropdown-item"
+                                        id="filter_menu" type="button">
                                         {{ auth()->user()->name }}
                                     </a>
                                 </li>
@@ -84,6 +112,12 @@
                                 <i class="fa fa-fw fa-sign-in-alt text-dark mr-3"></i>
                             </a>
                         @endif
+                    </div>
+                    <div>
+                        <a class="nav-icon position-relative text-decoration-none" href="#" type="button"
+                            id="menu_collapse_btn">
+                            <i class="fas fa-bars text-dark mr-3"></i>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -120,94 +154,47 @@
             <div class="row">
                 <div class="col-md-4 pt-5">
                     <h2 class="h2 text-success border-bottom pb-3 border-light logo">
-                        Zay Shop
+                        Mỹ phẩm ABC
                     </h2>
                     <ul class="list-unstyled text-light footer-link-list">
                         <li>
                             <i class="fas fa-map-marker-alt fa-fw"></i>
-                            123 Consectetur at ligula 10660
+                            450 Lê Văn Việt TP Thủ Đức
                         </li>
                         <li>
                             <i class="fa fa-phone fa-fw"></i>
-                            <a class="text-decoration-none" href="tel:010-020-0340">010-020-0340</a>
+                            <a class="text-decoration-none" href="tel:010-020-0340">0123456789</a>
                         </li>
                         <li>
                             <i class="fa fa-envelope fa-fw"></i>
-                            <a class="text-decoration-none" href="mailto:info@company.com">info@company.com</a>
+                            <a class="text-decoration-none" href="mailto:info@company.com">info@utc2,edu,vn</a>
                         </li>
                     </ul>
                 </div>
 
-                <div class="col-md-4 pt-5">
+                <div class="col-md-4 pt-5 ">
                     <h2 class="h2 text-light border-bottom pb-3 border-light">
-                        Products
+                        Danh mục
                     </h2>
                     <ul class="list-unstyled text-light footer-link-list">
-                        <li><a class="text-decoration-none" href="#">Luxury</a></li>
-                        <li><a class="text-decoration-none" href="#">Sport Wear</a></li>
-                        <li><a class="text-decoration-none" href="#">Men's Shoes</a></li>
-                        <li>
-                            <a class="text-decoration-none" href="#">Women's Shoes</a>
-                        </li>
-                        <li>
-                            <a class="text-decoration-none" href="#">Popular Dress</a>
-                        </li>
-                        <li>
-                            <a class="text-decoration-none" href="#">Gym Accessories</a>
-                        </li>
-                        <li><a class="text-decoration-none" href="#">Sport Shoes</a></li>
+                        @foreach ($categories as $key => $category)
+                        @if($key <5)
+                            <li><a class="text-decoration-none" href="{{ URL::to(route('search_products')) }}?category={{$category->name}}">{{ $category->name }}</a></li>
+                        @endif
+                        @endforeach
                     </ul>
                 </div>
-
                 <div class="col-md-4 pt-5">
                     <h2 class="h2 text-light border-bottom pb-3 border-light">
-                        Further Info
+                        Thương hiệu
                     </h2>
                     <ul class="list-unstyled text-light footer-link-list">
-                        <li><a class="text-decoration-none" href="#">Home</a></li>
-                        <li><a class="text-decoration-none" href="#">About Us</a></li>
-                        <li>
-                            <a class="text-decoration-none" href="#">Shop Locations</a>
-                        </li>
-                        <li><a class="text-decoration-none" href="#">FAQs</a></li>
-                        <li><a class="text-decoration-none" href="#">Contact</a></li>
+                        @foreach ($brands as $key => $brand)
+                        @if($key <5)
+                            <li><a class="text-decoration-none" href="{{ URL::to(route('search_products')) }}?brand={{$brand->name}}">{{ $brand->name }}</a></li>
+                        @endif
+                        @endforeach
                     </ul>
-                </div>
-            </div>
-
-            <div class="row text-light mb-4">
-                <div class="col-12 mb-3">
-                    <div class="w-100 my-3 border-top border-light"></div>
-                </div>
-                <div class="col-auto me-auto">
-                    <ul class="list-inline text-left footer-icons">
-                        <li class="list-inline-item border border-light rounded-circle text-center">
-                            <a class="text-light text-decoration-none" target="_blank" href="http://facebook.com/"><i
-                                    class="fab fa-facebook-f fa-lg fa-fw"></i></a>
-                        </li>
-                        <li class="list-inline-item border border-light rounded-circle text-center">
-                            <a class="text-light text-decoration-none" target="_blank"
-                                href="https://www.instagram.com/"><i class="fab fa-instagram fa-lg fa-fw"></i></a>
-                        </li>
-                        <li class="list-inline-item border border-light rounded-circle text-center">
-                            <a class="text-light text-decoration-none" target="_blank" href="https://twitter.com/"><i
-                                    class="fab fa-twitter fa-lg fa-fw"></i></a>
-                        </li>
-                        <li class="list-inline-item border border-light rounded-circle text-center">
-                            <a class="text-light text-decoration-none" target="_blank"
-                                href="https://www.linkedin.com/"><i class="fab fa-linkedin fa-lg fa-fw"></i></a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-auto">
-                    <label class="sr-only" for="subscribeEmail">Email address</label>
-                    <div class="input-group mb-2">
-                        <input type="text" class="form-control bg-dark border-light" id="subscribeEmail"
-                            placeholder="Email address" />
-                        <div class="input-group-text btn-success text-light">
-                            Subscribe
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -217,7 +204,7 @@
                     <div class="col-12">
                         <p class="text-left text-light">
                             Copyright &copy; 2021 Company Name | Designed by
-                            <a rel="sponsored" href="https://templatemo.com" target="_blank">TemplateMo</a>
+                            <a rel="sponsored" href="https://templatemo.com" target="_blank">PhucTran</a>
                         </p>
                     </div>
                 </div>
@@ -231,6 +218,7 @@
     <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/js/templatemo.js') }}"></script>
     <script src="{{ asset('assets/js/custom.js') }}"></script>
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
     <!-- End Script -->
 
     <script src="{{ asset('assets/js/slick.min.js') }}"></script>
@@ -264,6 +252,60 @@
                 },
             ],
         });
+    </script>
+    <script>
+        var intoMoney = document.getElementById('total').value
+        var total = Math.round((intoMoney / 23083) * 100) / 100
+        total = parseFloat(total)
+
+        paypal.Button.render({
+            // Configure environment
+            env: 'sandbox',
+            client: {
+                sandbox: 'AS_uK5RVtE8H5aiNaPx_HQD_FFax5tPA0_UnXnZddv7_xzq43lbjaRzzXY6xH2m1Ey8emi5mkowbvzxI',
+                production: 'demo_production_client_id'
+            },
+            // Customize button (optional)
+            locale: 'en_US',
+            style: {
+                size: 'large',
+                color: 'gold',
+                shape: 'pill',
+            },
+
+            // Enable Pay Now checkout flow (optional)
+            commit: true,
+
+            // Set up a payment
+            payment: function(data, actions) {
+                return actions.payment.create({
+                    transactions: [{
+                        amount: {
+                            total: total,
+                            currency: 'USD'
+                        }
+                    }]
+                });
+            },
+            // Execute the payment
+            onAuthorize: function(data, actions) {
+                var email = document.getElementById("email").value
+                var name = document.getElementById("name").value
+                var phone = document.getElementById("phone").value
+                var address = document.getElementById("address").value
+
+                if (email && name && phone && address) {
+                    return actions.payment.execute().then(function() {
+                        // Show a confirmation message to the buyer
+                        document.getElementById("is_pay_cod").value = 0;
+                        document.getElementById("create_order").submit();
+                        window.alert('Thank you for your purchase!');
+                    });
+                } else {
+                    window.alert('Bạn chưa nhập đủ thông tin');
+                }
+            }
+        }, '#paypal-button');
     </script>
 </body>
 

@@ -44,46 +44,28 @@
                         @csrf
                         <div class="mb-3">
                             <p class="dis fw-bold mb-2">Email</p>
-                            <input class="form-control" type="email" name="email_user" required @if ($user !== null) value="{{ $user->email }}" @endif/>
+                            <input class="form-control" type="email" id="email" name="email_user" required @if ($user !== null) value="{{ $user->email }}" @endif/>
                         </div>
                         <div class="mb-3">
                             <p class="dis fw-bold mb-2">Tên người nhận</p>
-                            <input class="form-control" type="text" name="name_user" required @if ($user !== null) value="{{ $user->name }}" @endif/>
+                            <input class="form-control" type="text" id="name" name="name_user" required @if ($user !== null) value="{{ $user->name }}" @endif/>
                         </div>
                         <div class="mb-3">
                             <p class="dis fw-bold mb-2">Số điện thoại</p>
-                            <input class="form-control" type="number" name="phone_user" required @if ($user !== null) value="{{ $user->phone }}" @endif/>
+                            <input class="form-control" type="number" id="phone" name="phone_user" required @if ($user !== null) value="{{ $user->phone }}" @endif/>
                         </div>
                         <div class="mb-3">
                             <p class="dis fw-bold mb-2">Địa chỉ</p>
-                            <input class="form-control" type="text" name="address" required @if ($user !== null) value="{{ $user->address }}" @endif/>
+                            <input class="form-control" type="text" id="address" name="address" required @if ($user !== null) value="{{ $user->address }}" @endif/>
                         </div>
                         <div class="mb-3">
                             <p class="dis fw-bold mb-2">Lời nhắn</p>
                             <textarea class="form-control" type="text" name="message"></textarea>
                         </div>
-                        <input class="form-control" type="hidden" name="into_money"  value="{{$total}}"/>
+                        <input class="form-control" type="hidden" name="into_money" id="total" value="{{$total}}"/>
+                        <input class="form-control" type="hidden" name="is_pay_cod" id="is_pay_cod" value="1"/>
                         <div>
                             <div class="address">
-                                <div class="my-3">
-                                    <p class="dis fw-bold mb-2">Phương thức thanh toán</p>
-                                    <div class="inputWithcheck d-flex">
-                                        <div>
-                                            <input class="form-check-input" type="radio" value="0" name="is_pay_cod"
-                                                id="flexRadioDefault2" checked />
-                                            <label class="form-check-label" for="flexRadioDefault2">
-                                                Paypal
-                                            </label>
-                                        </div>
-                                        <div>
-                                            <input class="form-check-input" type="radio" value="1" name="is_pay_cod"
-                                                id="flexRadioDefault2" checked />
-                                            <label class="form-check-label" for="flexRadioDefault2">
-                                                COD
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
                                 <div class="d-flex flex-column dis">
                                     <div class="d-flex align-items-center justify-content-between mb-2">
                                         <p class="fw-bold">Tổng cộng</p>
@@ -92,7 +74,10 @@
                                         </p>
                                     </div>
                                     <button type="submit" class="btn btn-primary mt-2">
-                                        Xác nhận
+                                        Thanh toán COD
+                                    </button>
+                                    <button class="btn ">
+                                        <div id="paypal-button"></div>
                                     </button>
                                 </div>
                             </div>

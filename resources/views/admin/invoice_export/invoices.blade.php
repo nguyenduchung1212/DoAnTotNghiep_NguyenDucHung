@@ -176,6 +176,29 @@
                                 <p>Cấp tài khoản mới</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-sliders-h"></i>
+                                <p>
+                                    Sidebar
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ URL::to(route('admin.sidebar.index')) }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Danh sách sidebar</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ URL::to(route('admin.sidebar.create')) }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Thêm Side bar</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                     @endif
                 </ul>
             </nav>
@@ -258,11 +281,13 @@
                                                         href="{{ URL::to(route('admin.invoice_export.invoice_view', ['id' => $invoice->id])) }}">
                                                         <i class="text-success fas fa-eye ico"></i>
                                                     </a>
+                                                    @if ($invoice->status_ship != Lang::get('message.ship_done'))
                                                     <a id="delete-button"
                                                         href="{{ URL::to(route('admin.invoice_export.cancel_order', ['id' => $invoice->id])) }}"
                                                         onclick="return confirm( '{{ Lang::get('message.do_u_cancel') }} {{ $invoice->code_invoice }}?');">
                                                         <i class="text-danger fas fa-ban ico"></i>
                                                     </a>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endforeach

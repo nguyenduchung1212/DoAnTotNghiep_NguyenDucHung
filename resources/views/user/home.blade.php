@@ -9,7 +9,7 @@
         </ol>
         <div class="carousel-inner">
             <?php $i = 1; ?>
-            @foreach ($products as $key => $product)
+            @foreach ($sidebars as $key => $sidebar)
                 @if ($i <= 3)
                     @if ($i == 1)
                         <div class="carousel-item active">
@@ -19,22 +19,11 @@
                     <?php $i++; ?>
                     <div class="container">
                         <div class="row p-5">
-                            <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
-                                <img class="img-fluid" src="{{ asset('' . $product->image) }}" alt="" />
-                            </div>
-                            <div class="col-lg-6 mb-0 d-flex align-items-center">
-                                <div class="text-align-left align-self-center">
-                                    <h1 class="h1 text-success"><b>Sản phẩm </b> {{ $product->name }}</h1>
-                                    <h3 class="h2">
-                                        {{ Lang::get('message.before_unit_money') . number_format($product->price, 0, ',', '.') . Lang::get('message.after_unit_money') }}
-                                    </h3>
-                                    <p> {{ $product->short_description }} </p>
-                                </div>
-                            </div>
+                            <img class="img-fluid" src="{{ asset('' . $sidebar->image) }}" alt="" />
                         </div>
                     </div>
-        </div>
-        @endif
+                </div>
+            @endif
         @endforeach
     </div>
     <a class="carousel-control-prev text-decoration-none w-auto ps-3" href="#template-mo-zay-hero-carousel" role="button"
@@ -52,23 +41,31 @@
     <section class="container py-5">
         <div class="row text-center pt-3">
             <div class="col-lg-6 m-auto">
-                <h1 class="h1">Các sản phẩm mới nhất</h1>
+                <h1 class="h1">Các sản phẩm nổi bật</h1>
                 <p>
-                    Các sản phẩm nổi bật và mới nhất
+                    Các sản phẩm bán chạy trong 3 tháng gần đây
                 </p>
             </div>
         </div>
         <div class="row">
             <?php $i = 1; ?>
-            @foreach ($products as $key => $product)
+            @foreach ($productsMax as $keyMax => $productMax)
                 @if ($i <= 3)
                     <?php $i++; ?>
-                    <div class="col-12 col-md-4 p-5 mt-3">
-                        <a href="#"><img src="{{ asset('' . $product->image) }}"
-                                class="rounded-circle img-fluid border" /></a>
-                        <h5 class="text-center mt-3 mb-3">{{ $product->name }}</h5>
-                        <p class="text-center"><a class="btn btn-success">Xem chi tiết</a></p>
-                    </div>
+                    @foreach ($products as $key => $product)
+                        @if ($product->id == $keyMax)
+                            <div class="col-12 col-md-4 p-5 mt-3">
+                                <a href="{{ URL::to(route('detail_product', ['id' => $product->id])) }}"><img
+                                        src="{{ asset('' . $product->image) }}"
+                                        class="rounded-circle img-fluid border" /></a>
+                                <h3 class="text-center mt-3 mb-3">{{ $product->name }}</h3>
+                                <h5 class="text-center mt-3 mb-3">Số lượng bán: {{ $productMax }}</h5>
+                                <p class="text-center"><a class="btn btn-success"
+                                        href="{{ URL::to(route('detail_product', ['id' => $product->id])) }}">Xem chi
+                                        tiết</a></p>
+                            </div>
+                        @endif
+                    @endforeach
                 @endif
             @endforeach
         </div>

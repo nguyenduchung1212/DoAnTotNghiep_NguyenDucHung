@@ -21,6 +21,10 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Config;
 use App\Exceptions\RoleAdminException;
+use App\Models\Brand;
+use App\Models\Category;
+use App\Models\InvoiceExport;
+use App\Models\SideBar;
 
 class AuthController extends Controller
 {
@@ -30,7 +34,8 @@ class AuthController extends Controller
     public $admin;
     public $user;
     private $modelUser;
-
+    private $modelInvoiceExport;
+    
     /**
      * Constructor
      *
@@ -42,6 +47,7 @@ class AuthController extends Controller
         $this->admin = Config::get('auth.roles.admin');
         $this->user = Config::get('auth.roles.user');
         $this->modelUser = new User();
+        $this->modelInvoiceExport = new InvoiceExport();
     }
 
     // Admin
@@ -115,7 +121,7 @@ class AuthController extends Controller
             $data = array("name" => $user->name, "body" => $link_reset_pass, "email" => $user->email);
 
             Mail::send('mail.mail_forgot_password', $data, function ($message) use ($data) {
-                $message->to($data['email'])->subject('Reset password');
+                $message->to($data['email'])->subject(Lang::get('message.reset_pass'));
             });
             $message = Lang::get('message.check_mail');
             return back()->with('message', $message);
@@ -279,7 +285,16 @@ class AuthController extends Controller
     public function index()
     {
         $products = Product::where([['active', '1'], ['is_deleted', '0']])->orderBy('id', 'desc')->get();
-        return view('user.home')->with('products', $products);
+        $brands = Brand::all();
+        $categories = Category::all();
+        $response = $this->modelInvoiceExport->getProductPaidFromInvoiceExport(date('Y-m-d', strtotime('-3 months')), date('Y-m-d', strtotime('now')));
+        $productsMax = $response['data'];
+        $sidebars = SideBar::orderBy('id', 'desc')->get();
+        return view('user.home')->with('products', $products)
+                                ->with('brands', $brands)
+                                ->with('categories', $categories)
+                                ->with('productsMax', $productsMax)
+                                ->with('sidebars', $sidebars);
     }
 
     /**
@@ -302,7 +317,11 @@ class AuthController extends Controller
     {
         try {
             $this->validateForgotPassword($request);
-            $user = User::where('email', $request->email)->first();
+            $role = Role::where([['name', $this->user]])->first();
+            $user = User::where([['email', $request->email], ['role_id', $role->id]])->first();
+            if (!isset($user)){
+                return back()->with('message', Lang::get('message.can_not_find'));
+            }
             $token = Str::random('35');
             $user->remember_token = $token;
             $user->save();
@@ -310,9 +329,8 @@ class AuthController extends Controller
             $link_reset_pass = url('reset-password?email=' . $user->email . '&remember_token=' . $token);
             $data = array("name" => $user->name, "body" => $link_reset_pass, "email" => $user->email);
 
-            Mail::send('mail.mail_forgot_password', $data, function ($message) use ($data) {
-                $message = Lang::get('message.reset_pass');
-                $message->to($data['email'])->subject($message);
+            Mail::send('mail.mail_forgot_password', $data, function ($messages) use ($data) {
+                $messages->to($data['email'])->subject(Lang::get('message.reset_pass'));
             });
             $message = Lang::get('message.check_mail');
             return back()->with('message', $message);

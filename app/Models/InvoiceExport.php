@@ -160,7 +160,7 @@ class InvoiceExport extends Model
             $status = false;
             $data = null;
             $message = Lang::get('message.can_not_find');
-            $order = InvoiceExport::where('id', $id)->first();
+            $order = InvoiceExport::where([['id', $id],['status_ship', '<>', Lang::get('message.ship_done')]])->first();
 
             if ($order) {
                 $order->status_ship = Lang::get('message.canceled');
@@ -446,7 +446,7 @@ class InvoiceExport extends Model
             $invoiceExport->is_pay_cod = $request->is_pay_cod;
             $invoiceExport->is_payment = 0;
             $invoiceExport->need_pay = $request->into_money;
-            if ($request->is_pay_cod === 0) {
+            if ($request->is_pay_cod == 0) {
                 $invoiceExport->is_payment = 1;
                 $invoiceExport->need_pay = 0;
             }

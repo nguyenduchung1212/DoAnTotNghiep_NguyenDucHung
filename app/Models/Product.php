@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\DetailProduct;
 use App\Traits\ResponseTraits;
 use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Lang;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use Illuminate\Support\Str;
 
 class Product extends Model
 {
@@ -74,6 +76,16 @@ class Product extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Relation with detail product
+     *
+     * @return HasMany
+     */
+    public function detailProduct()
+    {
+        return $this->hasMany(DetailProduct::class, 'product_id');
     }
 
     /**
@@ -169,6 +181,31 @@ class Product extends Model
     }
 
     /**
+     * Get detail product
+     *
+     * @param $id
+     * @return array
+     */
+    public function getDetailProduct($id)
+    {
+        try {
+            $status = false;
+            $data = null;
+            $message = Lang::get('message.can_not_find');
+            $detailsProduct = DetailProduct::where('product_id',$id)->get();
+
+            if ($detailsProduct ) {
+                $status = true;
+                $message = null;
+                $data = $detailsProduct;
+            }
+        } catch (Exception $e) {
+            $message = $e->getMessage();
+        }
+        return $this->responseData($status, $message, $data);
+    }
+
+    /**
      * Add product
      *
      * @param $request
@@ -187,9 +224,9 @@ class Product extends Model
             if ($request->image) {
                 $image = $this->checkImage($request->image);
                 if ($image['status']) {
-                    $new_image = date('Ymdhis') . '.' . $request->image->getClientOriginalExtension();
-                    $product->image = $this->url . $new_image;
-                    $request->image->move($this->url, $new_image);
+                    $newImage = date('Ymdhis') . '.' . $request->image->getClientOriginalExtension();
+                    $product->image = $this->url . $newImage;
+                    $request->image->move($this->url, $newImage);
 
                 } else {
                     throw new Exception($image['message']);
@@ -199,6 +236,22 @@ class Product extends Model
                 $product->active = true;
             }
             $product->save();
+            if (isset($request->image_detail)){
+                foreach ($request->image_detail as $image_detail){
+                    $detailProduct = new DetailProduct();
+                    $detailProduct->product_id = $product->id;
+                    $detailImage = $this->checkImage($image_detail);
+                    if($detailImage['status']) {
+                        $newDeatilImage = date('Ymdhis'). Str::random(10) . '.' . $image_detail->getClientOriginalExtension();
+                        $detailProduct->image = $this->url . $newDeatilImage;
+                        $image_detail->move($this->url, $newDeatilImage);
+                        $detailProduct->save();
+                    } else {
+                        throw new Exception($detailImage['message']);
+                    }
+                }
+            }
+
             $status = true;
             $message = Lang::get('message.add_done');
         } catch (Exception $e) {
@@ -249,6 +302,37 @@ class Product extends Model
                 $product->active = true;
             }
             $product->save();
+
+            if (isset($request->image_detail)){
+                foreach ($request->image_detail as $key => $image_detail){
+                    $detailProduct = DetailProduct::find($key);
+                    $detailImage = $this->checkImage($image_detail);
+                    if($detailImage['status']) {
+                        $newDeatilImage = date('Ymdhis'). Str::random(10) . '.' . $image_detail->getClientOriginalExtension();
+                        $detailProduct->image = $this->url . $newDeatilImage;
+                        $image_detail->move($this->url, $newDeatilImage);
+                        $detailProduct->save();
+                    } else {
+                        throw new Exception($detailImage['message']);
+                    }
+                }
+            }
+            if (isset($request->image_detail_new)) {
+                 foreach ($request->image_detail_new as $key => $image_detail_new){
+                    $detailProduct = new DetailProduct();
+                    $detailProduct->product_id = $product->id;
+                    $detailImage = $this->checkImage($image_detail_new);
+                    if($detailImage['status']) {
+                        $newDeatilImage = date('Ymdhis'). Str::random(10) . '.' . $image_detail_new->getClientOriginalExtension();
+                        $detailProduct->image = $this->url . $newDeatilImage;
+                        $image_detail_new->move($this->url, $newDeatilImage);
+                        $detailProduct->save();
+                    } else {
+                        throw new Exception($detailImage['message']);
+                    }
+                }
+            }
+
             $status = true;
             $message = Lang::get('message.update_done');
 
@@ -415,7 +499,7 @@ class Product extends Model
      * @param $image
      * @return array
      */
-    private function checkImage($image)
+    public function checkImage($image)
     {
         $status = true;
         $message = null;

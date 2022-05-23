@@ -138,7 +138,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ URL::to(route('admin.invoice_export.close_orders')) }}" class="nav-link active">
+                        <a href="{{ URL::to(route('admin.invoice_export.close_orders')) }}" class="nav-link">
                             <i class="nav-icon fas fa-times-circle"></i>
                             <p>Đơn đã hủy</p>
                         </a>
@@ -165,7 +165,7 @@
                     @if (auth()->user()->role->name === Config::get('auth.roles.manager'))
                         <li class="nav-header">Tài khoản</li>
                         <li class="nav-item">
-                            <a href="{{ URL::to(route('admin.account.index')) }}" class="nav-link">
+                            <a href="{{ URL::to(route('admin.account.index')) }}" class="nav-link active">
                                 <i class="nav-icon fas fa-address-book"></i>
                                 <p>Danh sách tài khoản</p>
                             </a>
@@ -213,124 +213,94 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">Thông tin đơn đặt hàng {{ $closeOrder->code_invoice }}</h1>
+                        <h1 class="m-0">Cập nhật tài khoản</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{ URL::to(route('screen_admin_home')) }}">Trang
                                     chủ</a></li>
-                            <li class="breadcrumb-item active">Hóa đơn</li>
+                            <li class="breadcrumb-item active">Tài khoản</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
             </div><!-- /.container-fluid -->
         </div>
         <!-- /.content-header -->
+        <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-12">
-                        @if (session('message'))
-                            <div class="card-header">
-                                <p class="noti">{{ session('message') }}</p>
-                            </div>
-                        @endif
-                        <!-- Main content -->
-                        <div class="invoice p-3 mb-3">
-                            <!-- Table row -->
-                            <div class="row">
-                                <div class="col-12 table-responsive">
-                                    <table class="table table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>Số thứ tự</th>
-                                                <th>Sản phẩm</th>
-                                                <th>Số lượng</th>
-                                                <th>Đơn giá</th>
-                                                <th>Thành tiền</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php $i = 1; ?>
-                                            @foreach ($closeOrder->detailInvoiceExport->sortByDesc('created_at') as $key => $detailInvoiceExport)
-                                                <tr>
-                                                    <td>{{ $i++ }}</td>
-                                                    <td> {{ $detailInvoiceExport->product->name }}</td>
-                                                    <td> {{ number_format($detailInvoiceExport->quantity, 0, ',', '.') }}
-                                                    </td>
-                                                    <td> {{ Lang::get('message.before_unit_money') . number_format($detailInvoiceExport->product->price, 0, ',', '.') . Lang::get('message.after_unit_money') }}
-                                                    </td>
-                                                    <td> {{ Lang::get('message.before_unit_money') . number_format($detailInvoiceExport->into_money, 0, ',', '.') . Lang::get('message.after_unit_money') }}
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                    <!-- left column -->
+                    <div class="col-md-12">
+                        <!-- jquery validation -->
+                        <div class="card">
+                            @if (session('message'))
+                                <div class="card-header">
+                                    <p class="noti">{{ session('message') }}</p>
                                 </div>
-                                <!-- /.col -->
-                            </div>
-                            <!-- /.row -->
-                            <div class="row">
-                                <div class="col-6"></div>
-                                <div class="col-6">
-                                    <p class="lead">Thông tin đơn đặt hàng </p>
-                                    <div class="table-responsive">
-                                        <table class="table">
-                                            <tr>
-                                                <th style="width:50%">Tổng tiền</th>
-                                                <td> {{ Lang::get('message.before_unit_money') . number_format($closeOrder->into_money, 0, ',', '.') . Lang::get('message.after_unit_money') }}
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th style="width:50%">Khách hàng</th>
-                                                <td> {{ $closeOrder->name_user }}</td>
-                                            </tr>
-                                            <tr>
-                                                <th style="width:50%">Số điện thoại</th>
-                                                <td> {{ $closeOrder->phone_user }}</td>
-                                            </tr>
-                                            <tr>
-                                                <th style="width:50%">Phương thức thanh toán</th>
-                                                <td>
-                                                    @if ($closeOrder->is_pay_cod)
-                                                        {{ Lang::get('message.pay_cod') }}
-                                                    @else
-                                                        {{ Lang::get('message.pay_online') }}
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th style="width:50%">Trạng thái thanh toán</th>
-                                                <td>
-                                                    @if ($closeOrder->is_payment)
-                                                        {{ Lang::get('message.paid') }}
-                                                    @else
-                                                        {{ Lang::get('message.pay_not') }}
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th style="width:50%">Thông tin đơn hàng</th>
-                                                <td> {{ $closeOrder->status_ship }}</td>
-                                            </tr>
-                                            <tr>
-                                                <th style="width:50%">Lý do</th>
-                                                <td> {{ $closeOrder->reason }}</td>
-                                            </tr>
-                                            <tr>
-                                                <th style="width:50%">Thông tin thêm</th>
-                                                <td> {{ $closeOrder->message }}</td>
-                                            </tr>
-                                        </table>
+                            @endif
+                            <!-- /.card-header -->
+                            <!-- form start -->
+                            <form action="{{ URL::to(route('admin.account.update', ['account' => $admin->id])) }}" method="POST">
+                                @csrf
+                                <input name="_method" type="hidden" value="PUT">
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1" class="required">Tên nhân viên</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-address-card"></i></span>
+                                            </div>
+                                            <input type="text" name="name" class="form-control" value="{{$admin->name}}"
+                                                placeholder="Nhập vào tên nhân viên">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1" class="required">Email</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                            </div>
+                                            <input type="email" name="email" class="form-control" value="{{$admin->email}}"
+                                                placeholder="Nhập vào email">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1" class="required">Số điện thoại</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                            </div>
+                                            <input type="text" name="phone" class="form-control" value="{{$admin->phone}}"
+                                                placeholder="Nhập vào số điện thoại">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Mật khẩu</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                            </div>
+                                            <input type="password" name="reset_password" class="form-control"
+                                                placeholder="Nhập vào mật khẩu">
+                                        </div>
                                     </div>
                                 </div>
-                                <!-- /.col -->
-                            </div>
-                            <!-- /.row -->
+                                <!-- /.card-body -->
+                                <div class="card-footer text-center">
+                                    <button type="submit" class="btn btn-primary">Lưu</button>
+                                </div>
+                            </form>
                         </div>
-                        <!-- /.invoice -->
-                    </div><!-- /.col -->
-                </div><!-- /.row -->
+                        <!-- /.card -->
+                    </div>
+                    <!--/.col (left) -->
+                    <!-- right column -->
+                    <div class="col-md-6">
+                    </div>
+                    <!--/.col (right) -->
+                </div>
+                <!-- /.row -->
             </div><!-- /.container-fluid -->
         </section>
         <!-- /.content -->

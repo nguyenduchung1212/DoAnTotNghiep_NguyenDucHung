@@ -212,6 +212,29 @@
                                 <p>Cấp tài khoản mới</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-sliders-h"></i>
+                                <p>
+                                    Sidebar
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ URL::to(route('admin.sidebar.index')) }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Danh sách sidebar</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ URL::to(route('admin.sidebar.create')) }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Thêm Side bar</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                     @endif
                 </ul>
             </nav>
@@ -340,6 +363,43 @@
                                             </div>
                                             @if ($product->image)
                                                 <img class="img-ctr" src="{{ asset('' . $product->image) }}" />
+                                            @endif
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Hình ảnh mô tả</label>
+                                            <?php $num = 0?>
+                                            @foreach ($detailsProduct as $key => $detailProduct)
+                                            <?php $num++?>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fas fa-image"></i></span>
+                                                </div>
+                                                <div class="custom-file">
+                                                    <input type="file" name="image_detail[{{$detailProduct->id}}]" accept="image/*" class="custom-file-input"
+                                                        id="customFile">
+                                                    <label class="custom-file-label" for="customFile">Chọn 1 hình
+                                                        ảnh</label>
+                                                </div>
+                                            </div>
+                                            @if ($detailProduct->image)
+                                            <img class="img-ctr" src="{{ asset('' . $detailProduct->image) }}" />
+                                            @endif
+                                            @endforeach
+                                            @if($num<5)
+                                            <?php $rest = 5 - $num?>
+                                            @for($rest; $rest >=1; $rest--)
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fas fa-image"></i></span>
+                                                </div>
+                                                <div class="custom-file">
+                                                    <input type="file" name="image_detail_new[]" accept="image/*" class="custom-file-input"
+                                                        id="customFile">
+                                                    <label class="custom-file-label" for="customFile">Chọn 1 hình
+                                                        ảnh</label>
+                                                </div>
+                                            </div>
+                                            @endfor
                                             @endif
                                         </div>
                                         <div class="form-group row pt-3">
