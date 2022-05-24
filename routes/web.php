@@ -83,10 +83,13 @@ Route::get('/reset-password',                               [AuthController::cla
 Route::post('/update-password',                             [AuthController::class, 'updatePassword'])                  ->name('update_password');
 
 Route::get('/search',                                       [UserController::class, 'searchProducts'])                  ->name('search_products');
+Route::get('/search-category',                              [UserController::class, 'searchCategories'])                ->name('search_categories');
+Route::get('/search-brand',                                 [UserController::class, 'searchBrands'])                    ->name('search_brands');
 Route::get('/product/{id}',                                 [UserController::class, 'detailProduct'])                   ->name('detail_product');
 Route::post('/product/{id}',                                [UserController::class, 'addCart'])                         ->name('add_cart');
 Route::get('/buy-product/{id}',                             [UserController::class, 'buyProduct'])                      ->name('buy_product');
 Route::get('/cart',                                         [UserController::class, 'detailCart'])                      ->name('cart');
+Route::post('/update-cart',                                 [UserController::class, 'updateCart'])                      ->name('update_cart');
 Route::get('/delete-cart/{id}',                             [UserController::class, 'deleteCart'])                      ->name('delete_cart');
 Route::post('/create-order',                                [UserController::class, 'createOrder'])                     ->name('create_order');
 Route::get('/search-order',                                 [UserController::class, 'searchOrder'])                     ->name('search_order');

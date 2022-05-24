@@ -56,6 +56,12 @@ $(function () {
             image_sidebar: {
                 required: true
             },
+            image_brand: {
+                required: true
+            },
+            image_category: {
+                required: true
+            },
             quantity: {
                 required: true,
                 min: 0,
@@ -78,6 +84,8 @@ $(function () {
             product: "Nhập vào sản phẩm",
             quantity: "Nhập vào số lượng",
             image_sidebar: "Chọn 1 hình ảnh",
+            image_brand: "Chọn 1 hình ảnh",
+            image_category: "Chọn 1 hình ảnh",
         },
         errorElement: 'span',
         errorPlacement: function (error, element) {

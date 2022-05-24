@@ -74,12 +74,13 @@ class SideBar extends Model
                     $sidebar->image = $this->url . $newImage;
                     $request->image_sidebar->move($this->url, $newImage);
                     $sidebar->save();
+                    
+                    $status = true;
+                    $message = Lang::get('message.add_done');
                 } else {
                     throw new Exception($image['message']);
                 }
             }
-            $status = true;
-            $message = Lang::get('message.add_done');
         } catch (Exception $e) {
             $status = false;
             $message = $e->getMessage();

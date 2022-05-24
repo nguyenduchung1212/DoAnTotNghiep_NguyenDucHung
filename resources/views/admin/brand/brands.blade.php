@@ -244,6 +244,7 @@
                                         <tr>
                                             <th>Số thứ tự</th>
                                             <th>Tên thương hiệu</th>
+                                            <th>Hình ảnh</th>
                                             @if (auth()->user()->role->name === Config::get('auth.roles.manager'))
                                                 <th>Người tạo</th>
                                             @endif
@@ -257,6 +258,16 @@
                                             <tr>
                                                 <td>{{ $i++ }}</td>
                                                 <td>{{ $brand->name }}</td>
+                                                <td>
+                                                    @if ($brand->image)
+                                                        <img class="img-ctr"
+                                                            src="{{ asset('' . $brand->image) }}" />
+                                                    @else
+                                                        <img class="img-ctr"
+                                                            src="{{ asset('' . Config::get('app.image.default')) }}" />
+                                                        <img>
+                                                    @endif
+                                                </td>
                                                 @if (auth()->user()->role->name === Config::get('auth.roles.manager'))
                                                     <td>{{ $brand->user->name }}</td>
                                                 @endif

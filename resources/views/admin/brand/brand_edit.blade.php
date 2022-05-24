@@ -243,7 +243,7 @@
                             <!-- /.card-header -->
                             <!-- form start -->
                             <form id="quickForm"
-                                action="{{ URL::to(route('admin.brand.update', ['brand' => $brand->id])) }}" method="POST">
+                                action="{{ URL::to(route('admin.brand.update', ['brand' => $brand->id])) }}" enctype="multipart/form-data" method="POST">
                                 @csrf
                                 <input name="_method" type="hidden" value="PUT">
                                 <div class="card-body">
@@ -256,6 +256,23 @@
                                             <input type="text" name="name" class="form-control" id="exampleInputEmail1"
                                                 value="{{ $brand->name }}" placeholder="Nhập vào tên thương hiệu">
                                         </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Hình ảnh</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-image"></i></span>
+                                            </div>
+                                            <div class="custom-file">
+                                                <input type="file" name="image_brand_edit" accept="image/*" class="custom-file-input"
+                                                    id="customFile">
+                                                <label class="custom-file-label" for="customFile">Chọn 1 hình
+                                                    ảnh</label>
+                                            </div>
+                                        </div>
+                                        @if ($brand->image)
+                                        <img class="img-ctr" src="{{ asset('' . $brand->image) }}" />
+                                        @endif
                                     </div>
                                 </div>
                                 <!-- /.card-body -->

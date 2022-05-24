@@ -11,6 +11,8 @@ return [
     'reset_pass' => 'Thay đổi mật khẩu.',
     'can_not_find' => 'Không thể tìm thấy!!!',
     'exist' => 'Đã tồn tại!!!',
+    'exist_email' => 'Mail đã được sử dụng!!!',
+    'exist_username' => 'Tài khoản đã được sử dụng!!!',
     'quantity_not_enough' => 'Không đủ số lượng',
     'add_done' => 'Thêm thành công.',
     'update_done' => 'Cập nhật thành công.',
@@ -39,4 +41,5 @@ return [
     'out_of_stock' => 'Tạm hết hàng',
     'confirm_order' => 'Xác nhận đơn hàng',
     'no_long_in_business' => 'Sản phẩm tạm ngừng kinh doanh',
+    'quantity_more_than_1' => 'Số lượng phải lớn hơn 1',
 ];

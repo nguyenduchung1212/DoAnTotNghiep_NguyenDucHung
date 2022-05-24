@@ -59,9 +59,6 @@
                                 <div class="card-body">
                                     <a href="{{ URL::to(route('detail_product', ['id' => $product->id])) }}"
                                         class="h3 text-decoration-none">{{ $product->name }}</a>
-                                    <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
-                                        <li>M/L/X/XL</li>
-                                    </ul>
                                     <p class="text-center mb-0">
                                         {{ Lang::get('message.before_unit_money') . number_format($product->price, 0, ',', '.') . Lang::get('message.after_unit_money') }}
                                     </p>

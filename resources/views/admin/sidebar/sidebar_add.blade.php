@@ -258,7 +258,6 @@
                                                     ảnh</label>
                                             </div>
                                         </div>
-                                        
                                     </div>
                                     <div class="text-right col-md-6">
                                         <button type="submit" class="btn btn-primary">Lưu</button>

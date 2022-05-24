@@ -241,7 +241,7 @@
                             @endif
                             <!-- /.card-header -->
                             <!-- form start -->
-                            <form id="quickForm" action="{{ URL::to(route('admin.brand.store')) }}" method="POST">
+                            <form id="quickForm" action="{{ URL::to(route('admin.brand.store')) }}" enctype="multipart/form-data" method="POST">
                                 @csrf
                                 <div class="card-body">
                                     <div class="form-group">
@@ -252,6 +252,20 @@
                                             </div>
                                             <input type="text" name="name" class="form-control" id="exampleInputEmail1"
                                                 placeholder="Nhập vào tên thương hiệu">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1" class="required">Hình ảnh</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-image"></i></span>
+                                            </div>
+                                            <div class="custom-file">
+                                                <input type="file" name="image_brand" accept="image/*" class="custom-file-input required"
+                                                    id="customFile">
+                                                <label class="custom-file-label" for="customFile">Chọn 1 hình
+                                                    ảnh</label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
