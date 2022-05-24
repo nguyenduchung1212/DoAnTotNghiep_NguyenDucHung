@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -37,5 +38,13 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    public function render($request, Throwable $exception)
+    {
+        if ($exception instanceof RoleAdminException) {
+            return redirect(route('screen_admin_login'))->with('message', $exception->getMessage());
+        }
+        return redirect(route('screen_login'))->with('message', $exception->getMessage());
     }
 }
