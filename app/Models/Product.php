@@ -108,7 +108,8 @@ class Product extends Model
     public function scopeCategory($query, $request)
     {
         if ($request->has('category') && !is_null($request->category)) {
-            $query->where('category_id', $request->category);
+            $category = Category::select('id')->where('name', 'LIKE', '%' . $request->category . '%')->get();
+            $query->whereIn('category_id', $category);
         }
         return $query;
     }
@@ -123,7 +124,8 @@ class Product extends Model
     public function scopeBrand($query, $request)
     {
         if ($request->has('brand') && !is_null($request->brand)) {
-            $query->where('brand_id', $request->brand);
+            $brand = Brand::select('id')->where('name', 'LIKE', '%' . $request->brand . '%')->get();
+            $query->where('brand_id', $brand);
         }
         return $query;
     }
