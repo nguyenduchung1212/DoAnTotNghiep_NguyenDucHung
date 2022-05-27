@@ -7,9 +7,6 @@
                     @csrf
                 <div class="dis list-product info d-flex">
                     <div class="products">
-                        @if (session('message'))
-                            <p class="noti">{{ session('message') }}</p>
-                        @endif
                         <?php $total = 0; ?>
                         @foreach (Cart::content()->groupBy('id')->toArray() as $productCart)
                             @foreach ($products as $keyProduct => $product)
