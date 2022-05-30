@@ -13,8 +13,8 @@
                 @if ($i <= 3)
                     @if ($i == 1)
                         <div class="carousel-item active">
-                        @else
-                            <div class="carousel-item">
+                    @else
+                        <div class="carousel-item">
                     @endif
                     <?php $i++; ?>
                     <div class="container">
@@ -86,7 +86,7 @@
                 @foreach ($brands->first()->product->take(3) as $key =>$pro) 
                 <div class="col-12 col-md-4 mb-4">
                     <div class="card h-100">
-                        <a href="shop-single.html">
+                        <a href="{{ URL::to(route('detail_product', ['id' => $pro->id])) }}">
                             <img src="@if(isset ($pro->image)){{ asset('' . $pro->image) }} @else {{ asset('' . Config::get('app.image.default')) }} @endif" class="card-img-top" alt="..." />
                         </a>
                         <div class="card-body">
@@ -94,9 +94,8 @@
                                 <li class="text-muted text-right"> {{ Lang::get('message.before_unit_money') . number_format($pro->price, 0, ',', '.') . Lang::get('message.after_unit_money') }}
                                 </li>
                             </ul>
-                            <a href="shop-single.html" class="h2 text-decoration-none text-dark">{{$pro->name}}</a>
-                            <p class="card-text">
-                            </p>
+                            <a href="{{ URL::to(route('detail_product', ['id' => $pro->id])) }}" class="h2 text-decoration-none text-dark">{{$pro->name}}</a>
+                            <p class="card-text">{{$pro->short_description}}</p>
                             <p class="text-muted">{{$pro->comment->count()}} Review</p>
                         </div>
                     </div>
@@ -120,7 +119,7 @@
                 @foreach ($categories->first()->product->take(3) as $key =>$pro) 
                 <div class="col-12 col-md-4 mb-4">
                     <div class="card h-100">
-                        <a href="shop-single.html">
+                        <a href="{{ URL::to(route('detail_product', ['id' => $pro->id])) }}">
                             <img src="@if(isset ($pro->image)){{ asset('' . $pro->image) }} @else {{ asset('' . Config::get('app.image.default')) }} @endif" class="card-img-top" alt="..." />
                         </a>
                         <div class="card-body">
@@ -128,9 +127,8 @@
                                 <li class="text-muted text-right"> {{ Lang::get('message.before_unit_money') . number_format($pro->price, 0, ',', '.') . Lang::get('message.after_unit_money') }}
                                 </li>
                             </ul>
-                            <a href="shop-single.html" class="h2 text-decoration-none text-dark">{{$pro->name}}</a>
-                            <p class="card-text">
-                            </p>
+                            <a href="{{ URL::to(route('detail_product', ['id' => $pro->id])) }}" class="h2 text-decoration-none text-dark">{{$pro->name}}</a>
+                            <p class="card-text">{{$pro->short_description}}</p>
                             <p class="text-muted">{{$pro->comment->count()}} Review</p>
                         </div>
                     </div>
