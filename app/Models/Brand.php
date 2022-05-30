@@ -168,11 +168,11 @@ class Brand extends Model
                 $brand->user_id = Auth::id();
 
                 if ($request->image_brand_edit) {
-                    $image = $this->modelProduct->checkImage($request->image_brand);
+                    $image = $this->modelProduct->checkImage($request->image_brand_edit);
                     if ($image['status']) {
-                        $newImage = date('Ymdhis') . '.' . $request->image_brand->getClientOriginalExtension();
+                        $newImage = date('Ymdhis') . '.' . $request->image_brand_edit->getClientOriginalExtension();
                         $brand->image = $this->url . $newImage;
-                        $request->image_brand->move($this->url, $newImage);
+                        $request->image_brand_edit->move($this->url, $newImage);
                     } else {
                         throw new Exception($image['message']);
                     }
