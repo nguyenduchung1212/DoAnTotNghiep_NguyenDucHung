@@ -409,7 +409,9 @@ class AuthController extends Controller
         try {
             if (Auth::user()->role->name === $this->user) {
                 $user = User::find(Auth::id());
-                return view('user.detail')->with('user', $user);
+                $brands = Brand::all();
+                $categories = Category::all();
+                return view('user.detail')->with('user', $user)->with('brands', $brands)->with('categories', $categories);
             } else {
                 return redirect(route('screen_home'));
             }
