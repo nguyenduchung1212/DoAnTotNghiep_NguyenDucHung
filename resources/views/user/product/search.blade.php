@@ -7,7 +7,7 @@
                 <h1 class="h2 pb-4">Lọc theo</h1>
                 <form method="GET" action="{{ URL::to(route('search_products')) }}">
                     <input type="text" class="form-control" placeholder="Tìm kiếm" name="product"
-                        @if ($request->product) value ={{ $request->product }} @endif>
+                        @if ($request->product) value = "{{ $request->product }}" @endif>
                     <select class="filter-select py-2 my-2" name="category">
                         <option selected value="">Chọn danh mục</option>
                         @foreach ($categories as $key => $category)
