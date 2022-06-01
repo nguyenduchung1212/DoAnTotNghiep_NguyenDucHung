@@ -309,9 +309,11 @@ class Product extends Model
                     throw new Exception($image['message']);
                 }
             }
-
-            if ($request->active) {
+            
+            if (isset($request->active)) {
                 $product->active = true;
+            } else {
+                $product->active = false;
             }
             $product->save();
 
