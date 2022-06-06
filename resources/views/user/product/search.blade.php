@@ -32,10 +32,12 @@
                 @endif
                 <div class="row">
                     @foreach ($products as $key => $product)
-                        <div class="col-md-4">
+                        <div class="col-md-4 pb-3">
                             <div class="card mb-4 product-wap rounded-0">
                                 <div class="card rounded-0">
-                                    <img class="card-img rounded-0 img-fluid" src="{{ asset('' . $product->image) }}" />
+                                    <div class="shop-image">
+                                        <img class="card-img rounded-0 img-fluid" src="{{ asset('' . $product->image) }}" />
+                                    </div>
                                     <div
                                         class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
                                         <ul class="list-unstyled">
@@ -66,21 +68,6 @@
                             </div>
                         </div>
                     @endforeach
-                </div>
-                <div div="row">
-                    <ul class="pagination pagination-lg justify-content-end">
-                        <li class="page-item disabled">
-                            <a class="page-link active rounded-0 mr-3 shadow-sm border-top-0 border-left-0" href="#"
-                                tabindex="-1">1</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link rounded-0 mr-3 shadow-sm border-top-0 border-left-0 text-dark"
-                                href="#">2</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link rounded-0 shadow-sm border-top-0 border-left-0 text-dark" href="#">3</a>
-                        </li>
-                    </ul>
                 </div>
             </div>
         </div>

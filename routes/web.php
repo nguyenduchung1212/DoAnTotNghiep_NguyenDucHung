@@ -96,9 +96,11 @@ Route::get('/search-order',                                 [UserController::cla
 
 //User Authenticate
 Route::group(['middleware' => 'auth:sanctum'], function () {
-    Route::post('/comment/{id}',                           [UserController::class, 'addComment'])                       ->name('comment');
+    Route::post('/comment/{id}',                            [UserController::class, 'addComment'])                       ->name('comment');
     Route::get('/info',                                     [AuthController::class, 'initScreenInfo'])                   ->name('screen_info');
     Route::post('/update-info',                             [AuthController::class, 'updateInfo'])                       ->name('update_info');
     Route::post('/change-password',                         [AuthController::class, 'changePassword'])                   ->name('change_password');
     Route::get('/logout',                                   [AuthController::class, 'logout'])                           ->name('logout');
+    Route::get('/history-order',                            [UserController::class, 'historyOrder'])                     ->name('history_order');
+    Route::get('/detail-order/{id}',                        [UserController::class, 'detailOrder'])                      ->name('detail_order');
 });

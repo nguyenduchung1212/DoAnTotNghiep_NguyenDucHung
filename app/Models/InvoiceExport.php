@@ -504,4 +504,80 @@ class InvoiceExport extends Model
         }
         return $this->responseData($status, $message, $data);
     }
+
+    /**
+     * Get invoice export paid
+     *
+     * @param $request
+     * @return array
+     */
+    public function historyOrder()
+    {
+        try {
+            $status = false;
+            $data = null;
+            $message = Lang::get('message.can_not_find');
+            $orders = InvoiceExport::where('user_id', Auth::id())->get();
+            if (isset($orders)) {
+                $status = true;
+                $data = $orders;
+                $message = '';
+            }
+        } catch (Exception $e) {
+            $status = false;
+            $message = $e->getMessage();
+        }
+        return $this->responseData($status, $message, $data);
+    }
+
+    /**
+     * Get invoice export paid
+     *
+     * @param $request
+     * @return array
+     */
+    public function detailOrder($id)
+    {
+        try {
+            $status = false;
+            $data = null;
+            $message = Lang::get('message.can_not_find');
+            $order = DetailInvoiceExport::where('invoice_export_id', $id)->get();
+            if (isset($order)) {
+                $status = true;
+                $data = $order;
+                $message = '';
+            }
+        } catch (Exception $e) {
+            $status = false;
+            $message = $e->getMessage();
+        }
+        return $this->responseData($status, $message, $data);
+    }
+
+    /**
+     * Get invoice export paid
+     *
+     * @param $request
+     * @return array
+     */
+    public function getCodeInvoiceExport($id)
+    {
+        try {
+            $status = false;
+            $data = null;
+            $message = Lang::get('message.can_not_find');
+            $order = InvoiceExport::find($id);
+            if (isset($order)) {
+                $status = true;
+                $data = $order;
+                $message = '';
+            }
+        } catch (Exception $e) {
+            $status = false;
+            $message = $e->getMessage();
+        }
+        return $this->responseData($status, $message, $data);
+    }
+    
 }

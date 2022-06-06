@@ -201,6 +201,9 @@ class UserController extends Controller
         if (!$response['status']) {
             return back()->with('message', $message);
         }
+        if (!Cart::count()){
+            return redirect(route('screen_home'));
+        }
         $brands = Brand::all();
         $categories = Category::all();
         return view('user.cart.detail', compact('products', 'message', 'user', 'brands', 'categories'));
@@ -279,6 +282,53 @@ class UserController extends Controller
         $brands = Brand::all();
         $categories = Category::all();
         return view('user.order.search', compact('message', 'order', 'brands', 'categories'));
+    }
+
+    /**
+     * Find order
+     *
+     * @param Request $request
+     * @return Application|Factory|View
+     */
+    public function historyOrder()
+    {
+        $response = $this->modelInvoiceExport->historyOrder();
+        $message = $response['message'];
+        $orders = $response['data'];
+        if (!$response['status']) {
+            $message = $response['message'];
+        }
+        $brands = Brand::all();
+        $categories = Category::all();
+        return view('user.cart.history', compact('message', 'orders', 'brands', 'categories'));
+    }
+
+    /**
+     * Find order
+     *
+     * @param Request $request
+     * @return Application|Factory|View
+     */
+    public function detailOrder($id)
+    {
+        $response = $this->modelInvoiceExport->detailOrder($id);
+        $message = $response['message'];
+        $details = $response['data'];
+        if (!$response['status']) {
+            $message = $response['message'];
+            return redirect(route('screen_home'));
+        }
+
+        $response = $this->modelInvoiceExport->getCodeInvoiceExport($id);
+        $message = $response['message'];
+        $order = $response['data'];
+        if (!$response['status']) {
+            $message = $response['message'];
+            return redirect(route('screen_home'));
+        }
+        $brands = Brand::all();
+        $categories = Category::all();
+        return view('user.cart.detail_history', compact('message', 'details', 'brands', 'categories', 'order'));
     }
 
     /**

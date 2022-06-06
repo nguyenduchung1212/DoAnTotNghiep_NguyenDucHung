@@ -22,28 +22,34 @@
 
 <body>
     <div id="collapse_menu" class="collapse-menu">
-        <ul class="collapse-menu-item">
-            <li>
-                <a id="close_collapse" href="#" class="dropdown-item" type="button">
-                    <i class="fas fa-outdent"></i>
-                </a>
+        <li>
+            <a id="close_collapse" href="#" class="dropdown-item" type="button">
+                <i class="fas fa-outdent"></i>
+            </a>
+        </li>
+        <ul class="list-unstyled templatemo-accordion">
+            <li class="pb-3">
+                <a href="{{ URL::to(route('search_brands')) }}"
+                    class="collapsed d-flex justify-content-between h3 text-decoration-none">Thương hiệu  <i class="fa fa-fw fa-chevron-circle-down mt-1"></i></a>
+                <ul class="collapse show list-unstyled pl-3">
+                    @foreach ($brands as $key => $brand)
+                        <li><a class="text-decoration-none"
+                                href="{{ URL::to(route('search_products')) }}?brand={{ $brand->name }}">
+                                {{ $brand->name }}</a></li>
+                    @endforeach
+                </ul>
             </li>
-            <a href="{{ URL::to(route('search_brands')) }}" class="tit">Thương hiệu</a>
-            @foreach ( $brands as $key => $brand)
-            <li>
-                <a href="{{ URL::to(route('search_products')) }}?brand={{$brand->name}}" class="dropdown-item" id="filter_menu" type="button">
-                    {{$brand->name}}
-                </a>
+            <li class="pb-3">
+                <a href="{{ URL::to(route('search_categories')) }}"
+                    class="collapsed d-flex justify-content-between h3 text-decoration-none">Danh mục <i class="fa fa-fw fa-chevron-circle-down mt-1"></i></a>
+                <ul class="collapse show list-unstyled pl-3">
+                    @foreach ($categories as $key => $category)
+                        <li><a class="text-decoration-none"
+                                href="{{ URL::to(route('search_products')) }}?brand={{ $category->name }}">
+                                {{ $category->name }}</a></li>
+                    @endforeach
+                </ul>
             </li>
-            @endforeach
-            <a href="{{ URL::to(route('search_categories')) }}" class="tit">Danh mục</a>
-            @foreach ( $categories as $key => $category)
-            <li>
-                <a href="{{ URL::to(route('search_products')) }}?category={{$category->name}}" class="dropdown-item" id="filter_menu" type="button">
-                    {{$category->name}}
-                </a>
-            </li>
-            @endforeach
         </ul>
     </div>
 
@@ -51,7 +57,8 @@
     <nav class="navbar navbar-expand-lg navbar-light shadow">
 
         <div class="container d-flex justify-content-between align-items-center">
-            <a class="navbar-brand text-success logo h1 align-self-center" href="{{ URL::to(route('screen_home')) }}">
+            <a class="navbar-brand text-success logo h1 align-self-center"
+                href="{{ URL::to(route('screen_home')) }}">
                 Mỹ phẩm ABC
             </a>
 
@@ -99,6 +106,12 @@
                                     <a href="{{ URL::to(route('screen_info')) }}" class="dropdown-item"
                                         id="filter_menu" type="button">
                                         {{ auth()->user()->name }}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ URL::to(route('history_order')) }}" class="dropdown-item"
+                                        id="filter_menu" type="button">
+                                        Lịch sử đơn hàng
                                     </a>
                                 </li>
                                 <li>
@@ -178,9 +191,11 @@
                     </h2>
                     <ul class="list-unstyled text-light footer-link-list">
                         @foreach ($categories as $key => $category)
-                        @if($key <5)
-                            <li><a class="text-decoration-none" href="{{ URL::to(route('search_products')) }}?category={{$category->name}}">{{ $category->name }}</a></li>
-                        @endif
+                            @if ($key < 5)
+                                <li><a class="text-decoration-none"
+                                        href="{{ URL::to(route('search_products')) }}?category={{ $category->name }}">{{ $category->name }}</a>
+                                </li>
+                            @endif
                         @endforeach
                     </ul>
                 </div>
@@ -190,9 +205,11 @@
                     </h2>
                     <ul class="list-unstyled text-light footer-link-list">
                         @foreach ($brands as $key => $brand)
-                        @if($key <5)
-                            <li><a class="text-decoration-none" href="{{ URL::to(route('search_products')) }}?brand={{$brand->name}}">{{ $brand->name }}</a></li>
-                        @endif
+                            @if ($key < 5)
+                                <li><a class="text-decoration-none"
+                                        href="{{ URL::to(route('search_products')) }}?brand={{ $brand->name }}">{{ $brand->name }}</a>
+                                </li>
+                            @endif
                         @endforeach
                     </ul>
                 </div>
