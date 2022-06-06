@@ -84,7 +84,7 @@ class UserController extends Controller
      *
      * @return Application|Factory|View|RedirectResponse
      */
-    public function searchCategories()
+    public function searchCategories(Request $request)
     {
         $response = $this->modelCategory->getCategories();
         $categories = $response['data'];
@@ -93,6 +93,9 @@ class UserController extends Controller
             return back()->with('message', $message);
         }
 
+        $response = $this->modelCategory->getNameCategory($request);
+        $category = $response['data'];
+
         $response = $this->modelBrand->getBrands();
         $brands = $response['data'];
         $message = $response['message'];
@@ -100,7 +103,7 @@ class UserController extends Controller
             return back()->with('message', $message);
         }
 
-        return view('user.product.category', compact('categories', 'brands'));
+        return view('user.product.category', compact('categories', 'brands', 'category'));
     }
 
     /**
@@ -109,7 +112,7 @@ class UserController extends Controller
      *
      * @return Application|Factory|View|RedirectResponse
      */
-    public function searchBrands()
+    public function searchBrands(Request $request)
     {
         $response = $this->modelCategory->getCategories();
         $categories = $response['data'];
@@ -118,6 +121,9 @@ class UserController extends Controller
             return back()->with('message', $message);
         }
 
+        $response = $this->modelBrand->getNameBrand($request);
+        $brand = $response['data'];
+
         $response = $this->modelBrand->getBrands();
         $brands = $response['data'];
         $message = $response['message'];
@@ -125,7 +131,7 @@ class UserController extends Controller
             return back()->with('message', $message);
         }
 
-        return view('user.product.brand', compact('categories', 'brands'));
+        return view('user.product.brand', compact('categories', 'brands', 'brand'));
     }
     
     /**
@@ -174,9 +180,9 @@ class UserController extends Controller
      * @param $id
      * @return RedirectResponse
      */
-    public function buyProduct($id)
+    public function buyProduct(Request $request, $id)
     {
-        $response = $this->modelProduct->buyProduct($id);
+        $response = $this->modelProduct->buyProduct($request, $id);
         $message = $response['message'];
         if (!$response['status']){
             return back()->with('message', $message);

@@ -292,6 +292,29 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label class="required">Giá khuyến mãi</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                                        </div>
+                                        <input type="text" disabled name="price_down" value="{{ Lang::get('message.before_unit_money') . number_format($product->price_down, 0, ',', '.') . Lang::get('message.after_unit_money') }}"
+                                        class="form-control"
+                                            placeholder="Nhập vào giá">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Thời gian áp dụng:</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="far fa-calendar-alt"></i>
+                                            </span>
+                                        </div>
+                                        <input type="text" disabled name="date_promotion" value="{{$product->start_promotion . " - " . $product->end_promotion}}"class="form-control float-right"
+                                            >
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label>Mô tả</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">

@@ -34,7 +34,7 @@
                 <ul class="collapse show list-unstyled pl-3">
                     @foreach ($brands as $key => $brand)
                         <li><a class="text-decoration-none"
-                                href="{{ URL::to(route('search_products')) }}?brand={{ $brand->name }}">
+                                href="{{ URL::to(route('search_brands')) }}?brand={{ $brand->name }}">
                                 {{ $brand->name }}</a></li>
                     @endforeach
                 </ul>
@@ -45,7 +45,7 @@
                 <ul class="collapse show list-unstyled pl-3">
                     @foreach ($categories as $key => $category)
                         <li><a class="text-decoration-none"
-                                href="{{ URL::to(route('search_products')) }}?brand={{ $category->name }}">
+                                href="{{ URL::to(route('search_categories')) }}?category={{ $category->name }}">
                                 {{ $category->name }}</a></li>
                     @endforeach
                 </ul>

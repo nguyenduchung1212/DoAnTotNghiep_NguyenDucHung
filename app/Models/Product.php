@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\DetailProduct;
 use App\Traits\ResponseTraits;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -31,6 +32,9 @@ class Product extends Model
         'name',
         'category_id',
         'price',
+        'price_down',
+        'start_promotion',
+        'end_promotion',
         'quantity',
         'image',
         'short_description',
@@ -232,6 +236,11 @@ class Product extends Model
             $product->category_id = $request->category;
             $product->price = $request->price;
             $product->short_description = $request->short_description;
+            $product->price_down = $request->price_down;
+            if (isset($request->date_promotion)){
+                $product->start_promotion = date('Y-m-d', strtotime(substr($request->date_promotion, 0, 10)));
+                $product->end_promotion = date('Y-m-d', strtotime(substr($request->date_promotion, 13, 23)));
+            }
             $product->user_id = Auth::id();
             if ($request->image) {
                 $image = $this->checkImage($request->image);
@@ -294,6 +303,11 @@ class Product extends Model
             $product->price = $request->price;
             $product->short_description = $request->short_description;
             $product->user_id = Auth::id();
+            $product->price_down = $request->price_down;
+            if (isset($request->date_promotion)){
+                $product->start_promotion = date('Y-m-d', strtotime(substr($request->date_promotion, 0, 10)));
+                $product->end_promotion = date('Y-m-d', strtotime(substr($request->date_promotion, 13, 23)));
+            }
 
             if ($request->image) {
                 $image = $this->checkImage($request->image);
@@ -332,7 +346,7 @@ class Product extends Model
                 }
             }
             if (isset($request->image_detail_new)) {
-                 foreach ($request->image_detail_new as $key => $image_detail_new){
+                foreach ($request->image_detail_new as $key => $image_detail_new){
                     $detailProduct = new DetailProduct();
                     $detailProduct->product_id = $product->id;
                     $detailImage = $this->checkImage($image_detail_new);
@@ -429,7 +443,12 @@ class Product extends Model
                 } else {
                     $status = true;
                     $message = Lang::get('message.add_done');
-                    Cart::add(['id' => $product->id, 'name' => $product->name, 'price' => $product->price, 'weight' => 0, 'qty' => $request->quanity]);
+                    $now = Carbon::now()->toDateTimeString();
+                    $price = $product->price;
+                    if ($now <= $product->end_promotion && $now >= $product->start_promotion){
+                        $price = $product->price_down;
+                    }
+                    Cart::add(['id' => $product->id, 'name' => $product->name, 'price' => $price, 'weight' => 0, 'qty' => $request->quanity]);
                 }
             }
         } catch (Exception $e) {
@@ -445,7 +464,7 @@ class Product extends Model
      * @param $id
      * @return array
      */
-    public function buyProduct($id)
+    public function buyProduct($request, $id)
     {
         try {
             $status = false;
@@ -455,7 +474,12 @@ class Product extends Model
             if ($product && !$product->is_deleted) {
                 $status = true;
                 $message = '';
-                Cart::add(['id' => $product->id, 'name' => $product->name, 'price' => $product->price, 'weight' => 0, 'qty' => 1]);
+                $now = Carbon::now()->toDateTimeString();
+                $price = $product->price;
+                if ($now <= $product->end_promotion && $now >= $product->start_promotion){
+                    $price = $product->price_down;
+                }
+                Cart::add(['id' => $product->id, 'name' => $product->name, 'price' => $price, 'weight' => 0, 'qty' => $request->quanity]);
             }
         } catch (Exception $e) {
             $status = false;

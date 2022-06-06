@@ -66,13 +66,33 @@ class Brand extends Model
      *
      * @return array
      */
+    public function getNameBrand($request)
+    {
+        try {
+            $brands = Brand::where('name', 'like', '%'.$request->brand.'%')->get();
+            $status = true;
+            $message = null;
+            $data = $brands;
+        } catch (Exception $e) {
+            $status = false;
+            $message = $e->getMessage();
+            $data = null;
+        }
+        return $this->responseData($status, $message, $data);
+    }
+
+    /**
+     * Get brands
+     *
+     * @return array
+     */
     public function getBrands()
     {
         try {
-            $categories = Brand::orderBy('id', 'DESC')->get();
+            $brands = Brand::orderBy('id', 'DESC')->get();
             $status = true;
             $message = null;
-            $data = $categories;
+            $data = $brands;
         } catch (Exception $e) {
             $status = false;
             $message = $e->getMessage();

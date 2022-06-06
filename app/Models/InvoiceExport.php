@@ -445,7 +445,7 @@ class InvoiceExport extends Model
 
             $invoiceExport->is_pay_cod = $request->is_pay_cod;
             $invoiceExport->is_payment = 0;
-            $invoiceExport->need_pay = $request->into_money;
+            $invoiceExport->need_pay = $request->into_money + 30000;
             if ($request->is_pay_cod == 0) {
                 $invoiceExport->is_payment = 1;
                 $invoiceExport->need_pay = 0;

@@ -294,6 +294,28 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
+                                        <label class="required">Giá khuyến mãi</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                                            </div>
+                                            <input type="number" name="price_down" class="form-control"
+                                                placeholder="Nhập vào giá">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Thời gian áp dụng:</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="far fa-calendar-alt"></i>
+                                                </span>
+                                            </div>
+                                            <input type="text" name="date_promotion" class="form-control float-right"
+                                                id="reservation">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
                                         <label>Mô tả</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">

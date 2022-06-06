@@ -87,7 +87,7 @@ Route::get('/search-category',                              [UserController::cla
 Route::get('/search-brand',                                 [UserController::class, 'searchBrands'])                    ->name('search_brands');
 Route::get('/product/{id}',                                 [UserController::class, 'detailProduct'])                   ->name('detail_product');
 Route::post('/product/{id}',                                [UserController::class, 'addCart'])                         ->name('add_cart');
-Route::get('/buy-product/{id}',                             [UserController::class, 'buyProduct'])                      ->name('buy_product');
+Route::post('/buy-product/{id}',                            [UserController::class, 'buyProduct'])                      ->name('buy_product');
 Route::get('/cart',                                         [UserController::class, 'detailCart'])                      ->name('cart');
 Route::post('/update-cart',                                 [UserController::class, 'updateCart'])                      ->name('update_cart');
 Route::get('/delete-cart/{id}',                             [UserController::class, 'deleteCart'])                      ->name('delete_cart');

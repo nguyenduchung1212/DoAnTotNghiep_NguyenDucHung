@@ -17,20 +17,22 @@
                                         </div>
                                         <div class="product-name d-flex">
                                             <h5>{{ $product->name }}</h5>
-                                            <p>Số lượng: {{ $productCart[0]['qty'] }}</p>
-                                            <p>Đơn giá:
-                                                {{ Lang::get('message.before_unit_money') . number_format($productCart[0]['price'], 0, ',', '.') . Lang::get('message.after_unit_money') }}
+                                            <p style="margin: 0"> Số lượng: {{ $productCart[0]['qty'] }}</p>
+                                            <p style="margin: 0">Đơn giá:
+                                                <span style="font-weight:bold!important">
+                                                    {{ Lang::get('message.before_unit_money') . number_format($productCart[0]['price'], 0, ',', '.') . Lang::get('message.after_unit_money') }}
+                                                </span>
                                             </p>
-                                            <p>Thành tiền:
-                                                {{ Lang::get('message.before_unit_money') . number_format($productCart[0]['qty'] * $productCart[0]['price'], 0, ',', '.') . Lang::get('message.after_unit_money') }}
+                                            <p style="margin: 0; font-weigh:bold!important">Thành tiền:
+                                                <span style="font-weight:bold!important">
+                                                    {{ Lang::get('message.before_unit_money') . number_format($productCart[0]['qty'] * $productCart[0]['price'], 0, ',', '.') . Lang::get('message.after_unit_money') }}
+                                                </span>
                                             </p>
                                             <?php $total = (int) $total + (int) $productCart[0]['qty'] * (int) $productCart[0]['price']; ?>
                                         </div>
                                         <div class="product-event d-flex">
                                             <div class="d-flex action">
-                                                <p>
-                                                    Số lượng:
-                                                </p>
+                                                <p style="margin: 0"> Số lượng: </p>
                                                 <input name= "{{$productCart[0]['rowId']}}" value="{{ $productCart[0]['qty'] }}" min="1" required type="number" id="quantity">
                                                 <a type="button"
                                                     href="{{ URL::to(route('delete_cart', ['id' => $productCart[0]['rowId']])) }}">
@@ -88,9 +90,21 @@
                                 <div class="address">
                                     <div class="d-flex flex-column dis">
                                         <div class="d-flex align-items-center justify-content-between mb-2">
-                                            <p class="fw-bold">Tổng cộng</p>
+                                            <p class="fw-bold">Thành tiền</p>
                                             <p class="fw-bold">
                                                 {{ Lang::get('message.before_unit_money') . number_format($total, 0, ',', '.') . Lang::get('message.after_unit_money') }}
+                                            </p>
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-between mb-2">
+                                            <p class="fw-bold">Phí giao hàng</p>
+                                            <p class="fw-bold">
+                                                {{ Lang::get('message.before_unit_money') . number_format(30000, 0, ',', '.') . Lang::get('message.after_unit_money') }}
+                                            </p>
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-between mb-2">
+                                            <p class="fw-bold">Tổng cộng</p>
+                                            <p class="fw-bold">
+                                                {{ Lang::get('message.before_unit_money') . number_format($total + 30000, 0, ',', '.') . Lang::get('message.after_unit_money') }}
                                             </p>
                                         </div>
                                         <button type="submit" class="btn btn-primary mt-2">

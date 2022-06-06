@@ -36,7 +36,8 @@
                             <div class="card mb-4 product-wap rounded-0">
                                 <div class="card rounded-0">
                                     <div class="shop-image">
-                                        <img class="card-img rounded-0 img-fluid" src="{{ asset('' . $product->image) }}" />
+                                        <img class="card-img rounded-0 img-fluid"
+                                            src="{{ asset('' . $product->image) }}" />
                                     </div>
                                     <div
                                         class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
@@ -59,11 +60,26 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <a href="{{ URL::to(route('detail_product', ['id' => $product->id])) }}"
-                                        class="h3 text-decoration-none">{{ $product->name }}</a>
-                                    <p class="text-center mb-0">
-                                        {{ Lang::get('message.before_unit_money') . number_format($product->price, 0, ',', '.') . Lang::get('message.after_unit_money') }}
+                                    <p class="text-center">
+                                        <a href="{{ URL::to(route('detail_product', ['id' => $product->id])) }}" style="font-weight: bold!important"
+                                            class="h3 text-decoration-none">{{ $product->name }}
+                                        </a>
                                     </p>
+                                    <ul class="list-unstyled d-flex justify-content-between">
+                                        <?php $now = Carbon\Carbon::now()->toDateTimeString() ?>
+                                        @if ($now <= $product->end_promotion && $now >= $product->start_promotion)
+                                            <li class="text-right text-dark" style="font-weight: bold!important">
+                                                {{ Lang::get('message.before_unit_money') . number_format($product->price_down, 0, ',', '.') . Lang::get('message.after_unit_money') }}
+                                            </li>
+                                            <li class="text-right text-dark" style="text-decoration: line-through">
+                                                {{ Lang::get('message.before_unit_money') . number_format($product->price, 0, ',', '.') . Lang::get('message.after_unit_money') }}
+                                            </li>
+                                        @else
+                                            <li class="text-right text-dark" style="font-weight: bold!important">
+                                                {{ Lang::get('message.before_unit_money') . number_format($product->price, 0, ',', '.') . Lang::get('message.after_unit_money') }}
+                                            </li>
+                                        @endif
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -76,33 +92,32 @@
 
     <section class="py-5" style="margin-top:24px">
         <div class="container my-4">
-          <div class="row text-center py-3">
-            <div class="col-lg-6 m-auto">
-             
+            <div class="row text-center py-3">
+                <div class="col-lg-6 m-auto">
+
+                </div>
+                <div class="col-lg-9 m-auto tempaltemo-carousel">
+                    <div class="row d-flex flex-row">
+                        <!--Controls-->
+                        <div class="col-1 align-self-center">
+
+                        </div>
+                        <!--End Controls-->
+
+                        <!--Carousel Wrapper-->
+                        <div class="col">
+
+                        </div>
+                        <!--End Carousel Wrapper-->
+
+                        <!--Controls-->
+                        <div class="col-1 align-self-center">
+
+                        </div>
+                        <!--End Controls-->
+                    </div>
+                </div>
             </div>
-            <div class="col-lg-9 m-auto tempaltemo-carousel">
-              <div class="row d-flex flex-row">
-                <!--Controls-->
-                <div class="col-1 align-self-center">
-                  
-                </div>
-                <!--End Controls-->
-  
-                <!--Carousel Wrapper-->
-                <div class="col">
-                 
-                </div>
-                <!--End Carousel Wrapper-->
-  
-                <!--Controls-->
-                <div class="col-1 align-self-center">
-                  
-                </div>
-                <!--End Controls-->
-              </div>
-            </div>
-          </div>
         </div>
-      </section>
-      
+    </section>
 @endsection

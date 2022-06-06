@@ -67,6 +67,26 @@ class Category extends Model
      *
      * @return array
      */
+    public function getNameCategory($request)
+    {
+        try {
+            $categories = Category::where('name', 'like', '%'.$request->category.'%')->get();
+            $status = true;
+            $message = null;
+            $data = $categories;
+        } catch (Exception $e) {
+            $status = false;
+            $message = $e->getMessage();
+            $data = null;
+        }
+        return $this->responseData($status, $message, $data);
+    }
+
+    /**
+     * Get categories
+     *
+     * @return array
+     */
     public function getCategories()
     {
         try {
