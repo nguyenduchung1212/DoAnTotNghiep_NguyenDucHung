@@ -60,7 +60,7 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <p class="text-center">
+                                    <p class="text-center" style="height: 54px;">
                                         <a href="{{ URL::to(route('detail_product', ['id' => $product->id])) }}" style="font-weight: bold!important"
                                             class="h3 text-decoration-none">{{ $product->name }}
                                         </a>

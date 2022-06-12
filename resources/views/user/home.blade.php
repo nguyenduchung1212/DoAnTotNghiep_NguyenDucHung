@@ -110,8 +110,10 @@
                                         </li>
                                     @endif
                                 </ul>
-                                <a href="{{ URL::to(route('detail_product', ['id' => $pro->id])) }}"
-                                    class="h2 text-decoration-none text-dark">{{ $pro->name }}</a>
+                                <div style="height: 73px;">
+                                    <a href="{{ URL::to(route('detail_product', ['id' => $pro->id])) }}"
+                                        class="h2 text-decoration-none text-dark">{{ $pro->name }}</a>
+                                </div>
                                 <p class="text-muted">{{ $pro->comment->count() }} Review</p>
                             </div>
                         </div>
@@ -156,10 +158,11 @@
                                             {{ Lang::get('message.before_unit_money') . number_format($pro->price, 0, ',', '.') . Lang::get('message.after_unit_money') }}
                                         </li>
                                     @endif
-                                   
                                 </ul>
-                                <a href="{{ URL::to(route('detail_product', ['id' => $pro->id])) }}"
-                                    class="h2 text-decoration-none text-dark">{{ $pro->name }}</a>
+                                <div style="height: 73px;">
+                                    <a href="{{ URL::to(route('detail_product', ['id' => $pro->id])) }}"
+                                        class="h2 text-decoration-none text-dark">{{ $pro->name }}</a>
+                                </div>
                                 <p class="text-muted">{{ $pro->comment->count() }} Review</p>
                             </div>
                         </div>
