@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Lang;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class Product extends Model
@@ -144,7 +145,7 @@ class Product extends Model
     public function scopeTitle($query, $request)
     {
         if ($request->has('product') && !is_null($request->product)) {
-            $query->where('name', 'LIKE', '%' . $request->product . '%');
+            $query->where(DB::raw('lower(name)'), 'LIKE',  '%' . Str::lower($request->product) .  '%');
         }
         return $query;
     }

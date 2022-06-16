@@ -119,5 +119,33 @@
                 </div>
             </div>
         </div>
+        <div class="container my-4">
+            <div class="row text-center py-3">
+              <div class="col-lg-6 m-auto">
+               
+              </div>
+              <div class="col-lg-9 m-auto tempaltemo-carousel">
+                <div class="row d-flex flex-row">
+                  <!--Controls-->
+                  <div class="col-1 align-self-center">
+                    
+                  </div>
+                  <!--End Controls-->
+    
+                  <!--Carousel Wrapper-->
+                  <div class="col">
+                   
+                  </div>
+                  <!--End Carousel Wrapper-->
+    
+                  <!--Controls-->
+                  <div class="col-1 align-self-center">
+                    
+                  </div>
+                  <!--End Controls-->
+                </div>
+              </div>
+            </div>
+          </div>
     </section>
 @endsection
