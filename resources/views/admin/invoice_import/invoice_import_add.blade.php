@@ -180,7 +180,7 @@
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-sliders-h"></i>
                                 <p>
-                                    Sidebar
+                                    Slidebar
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
@@ -261,14 +261,14 @@
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1" class="required">Số lượng</label>
                                                 <div class="input-group">
-                                                    <input type="number" name="quantity" class="form-control"
+                                                    <input type="number" name="quantity" min="1" class="form-control"
                                                         placeholder="Nhập vào số lượng">
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1" class="required">Giá</label>
                                                 <div class="input-group">
-                                                    <input type="number" name="price" class="form-control"
+                                                    <input type="number" name="price" min="1" class="form-control"
                                                         placeholder="Nhập vào giá">
                                                 </div>
                                             </div>

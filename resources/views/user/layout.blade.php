@@ -21,45 +21,14 @@
 </head>
 
 <body>
-    <div id="collapse_menu" class="collapse-menu">
-        <li>
-            <a id="close_collapse" href="#" class="dropdown-item" type="button">
-                <i class="fas fa-outdent"></i>
-            </a>
-        </li>
-        <ul class="list-unstyled templatemo-accordion">
-            <li class="pb-3">
-                <a href="{{ URL::to(route('search_brands')) }}"
-                    class="collapsed d-flex justify-content-between h3 text-decoration-none">Thương hiệu  <i class="fa fa-fw fa-chevron-circle-down mt-1"></i></a>
-                <ul class="collapse show list-unstyled pl-3">
-                    @foreach ($brands as $key => $brand)
-                        <li><a class="text-decoration-none"
-                                href="{{ URL::to(route('search_brands')) }}?brand={{ $brand->name }}">
-                                {{ $brand->name }}</a></li>
-                    @endforeach
-                </ul>
-            </li>
-            <li class="pb-3">
-                <a href="{{ URL::to(route('search_categories')) }}"
-                    class="collapsed d-flex justify-content-between h3 text-decoration-none">Danh mục <i class="fa fa-fw fa-chevron-circle-down mt-1"></i></a>
-                <ul class="collapse show list-unstyled pl-3">
-                    @foreach ($categories as $key => $category)
-                        <li><a class="text-decoration-none"
-                                href="{{ URL::to(route('search_categories')) }}?category={{ $category->name }}">
-                                {{ $category->name }}</a></li>
-                    @endforeach
-                </ul>
-            </li>
-        </ul>
-    </div>
-
+    
     <!-- Header -->
     <nav class="navbar navbar-expand-lg navbar-light shadow">
 
         <div class="container d-flex justify-content-between align-items-center">
             <a class="navbar-brand text-success logo h1 align-self-center"
                 href="{{ URL::to(route('screen_home')) }}">
-                Mỹ phẩm ABC
+                Mỹ phẩm MIE
             </a>
 
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
@@ -126,12 +95,7 @@
                             </a>
                         @endif
                     </div>
-                    <div>
-                        <a class="nav-icon position-relative text-decoration-none" href="#" type="button"
-                            id="menu_collapse_btn">
-                            <i class="fas fa-bars text-dark mr-3"></i>
-                        </a>
-                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -192,8 +156,7 @@
                     <ul class="list-unstyled text-light footer-link-list">
                         @foreach ($categories as $key => $category)
                             @if ($key < 5)
-                                <li><a class="text-decoration-none"
-                                        href="{{ URL::to(route('search_products')) }}?category={{ $category->name }}">{{ $category->name }}</a>
+                                <li><a class="text-decoration-none">{{ $category->name }}</a>
                                 </li>
                             @endif
                         @endforeach
@@ -206,8 +169,7 @@
                     <ul class="list-unstyled text-light footer-link-list">
                         @foreach ($brands as $key => $brand)
                             @if ($key < 5)
-                                <li><a class="text-decoration-none"
-                                        href="{{ URL::to(route('search_products')) }}?brand={{ $brand->name }}">{{ $brand->name }}</a>
+                                <li><a class="text-decoration-none">{{ $brand->name }}</a>
                                 </li>
                             @endif
                         @endforeach

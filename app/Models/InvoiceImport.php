@@ -181,24 +181,30 @@ class InvoiceImport extends Model
     public function addInvoiceImport($request)
     {
         try {
-            $message = '';
-            $invoiceImport = new InvoiceImport();
-            $invoiceImport->user_id = Auth::id();
-            $invoiceImport->save();
-
-            $detailInvoiceImport = new DetailInvoiceImport();
-            $detailInvoiceImport->invoice_import_id = $invoiceImport->id;
-            $detailInvoiceImport->product_id = $request->product;
-            $detailInvoiceImport->quantity = $request->quantity;
-            $detailInvoiceImport->price = $request->price;
-            $detailInvoiceImport->into_money = $request->quantity * $request->price;
-            $detailInvoiceImport->save();
-
-            $invoiceImport->into_money = $detailInvoiceImport->into_money;
-            $invoiceImport->save();
-
-            $data = $invoiceImport->id;
-            $status = true;
+            if ((int)$request->quantity <=0 || (int)$request->price <= 0){
+                $status = false;
+                $message = 'Dữ liệu phải lớn hơn 0';
+            } else {
+                $message = '';
+                $invoiceImport = new InvoiceImport();
+                $invoiceImport->user_id = Auth::id();
+                $invoiceImport->save();
+    
+                $detailInvoiceImport = new DetailInvoiceImport();
+                $detailInvoiceImport->invoice_import_id = $invoiceImport->id;
+                $detailInvoiceImport->product_id = $request->product;
+                $detailInvoiceImport->quantity = $request->quantity;
+                $detailInvoiceImport->price = $request->price;
+                $detailInvoiceImport->into_money = $request->quantity * $request->price;
+                $detailInvoiceImport->save();
+    
+                $invoiceImport->into_money = $detailInvoiceImport->into_money;
+                $invoiceImport->save();
+    
+                $data = $invoiceImport->id;
+                $status = true;
+            }
+           
         } catch (Exception $e) {
             $status = false;
             $message = $e->getMessage();

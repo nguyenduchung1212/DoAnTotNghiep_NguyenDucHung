@@ -59,7 +59,9 @@
                                     <a href="{{ URL::to(route('detail_product', ['id' => $product->id])) }}"><img
                                             src="{{ asset('' . $product->image) }}"
                                             class="rounded-circle img-fluid border" /></a>
-                                    <h3 class="text-center mt-3 mb-3">{{ $product->name }}</h3>
+                                    <div>
+                                        <h3 class="text-center mt-3 mb-3" style="height: 67px">{{ $product->name }}</h3>
+                                    </div>
                                     <h5 class="text-center mt-3 mb-3">Số lượng bán: {{ $productMax }}</h5>
                                     <p class="text-center"><a class="btn btn-success"
                                             href="{{ URL::to(route('detail_product', ['id' => $product->id])) }}">Xem chi

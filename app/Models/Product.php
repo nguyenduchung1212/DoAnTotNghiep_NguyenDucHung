@@ -439,7 +439,7 @@ class Product extends Model
             $data = '';
             $product = Product::find($id);
             if ($product && !$product->is_deleted && $product->active) {
-                if ($product->quantity < $request->quantity) {
+                if ($product->quantity < $request->quanity || (int)Cart::count($product->id) + (int)$request->quanity > $product->quantity ) {
                     $message = Lang::get('message.quantity_not_enough');
                 } else {
                     $status = true;
@@ -473,14 +473,18 @@ class Product extends Model
             $data = '';
             $product = Product::find($id);
             if ($product && !$product->is_deleted) {
-                $status = true;
-                $message = '';
-                $now = Carbon::now()->toDateTimeString();
-                $price = $product->price;
-                if ($now <= $product->end_promotion && $now >= $product->start_promotion){
-                    $price = $product->price_down;
+                if ($product->quantity < $request->quanity || (int)Cart::count($product->id) + (int)$request->quanity > $product->quantity ) {
+                    $message = Lang::get('message.quantity_not_enough');
+                } else {
+                    $status = true;
+                    $message = '';
+                    $now = Carbon::now()->toDateTimeString();
+                    $price = $product->price;
+                    if ($now <= $product->end_promotion && $now >= $product->start_promotion){
+                        $price = $product->price_down;
+                    }
+                    Cart::add(['id' => $product->id, 'name' => $product->name, 'price' => $price, 'weight' => 0, 'qty' => $request->quanity]);
                 }
-                Cart::add(['id' => $product->id, 'name' => $product->name, 'price' => $price, 'weight' => 0, 'qty' => $request->quanity]);
             }
         } catch (Exception $e) {
             $status = false;
@@ -523,10 +527,14 @@ class Product extends Model
             $message = Lang::get('message.can_not_find');
             foreach ($request->toArray() as $key => $product){
                 if ($key != '_token') {
+                    $pro = Product::find($product->id);
                     if ($product < 1){
                         $message = Lang::get('message.quantity_more_than_1');
                         return $this->responseData($status, $message);
-                    } else {
+                    } else if ($pro->quantity < $product->quanity || (int)Cart::count($product->id) + (int)$product->quanity > $pro->quantity ) {
+                        $message = Lang::get('message.quantity_not_enough');
+                    } 
+                    else {
                         Cart::update($key, $product);
                     }
                 }

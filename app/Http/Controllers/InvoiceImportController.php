@@ -84,7 +84,11 @@ class InvoiceImportController extends Controller
             $message = $e->getMessage();
             return back()->with('message', $message);
         }
-        return redirect(route('admin.invoice_import.edit', ['invoice_import' => $data]))->with('message', $message);
+        if (!$response['status']){
+            return back()->with('message', $message);
+        }else {
+            return redirect(route('admin.invoice_import.edit', ['invoice_import' => $data]))->with('message', $message);
+        }
     }
 
     /**

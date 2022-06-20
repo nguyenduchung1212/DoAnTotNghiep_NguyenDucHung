@@ -119,6 +119,14 @@
                                     <p><strong>{{ $product->category->name }}</strong></p>
                                 </li>
                             </ul>
+                            <ul class="list-inline">
+                                <li class="list-inline-item">
+                                    <h6>Còn lại:</h6>
+                                </li>
+                                <li class="list-inline-item">
+                                    <p><strong>{{ $product->quantity }}</strong></p>
+                                </li>
+                            </ul>
                             <h6>Chi tiết:</h6>
                             <p>
                                 {{ $product->short_description }}

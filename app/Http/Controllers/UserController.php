@@ -121,17 +121,16 @@ class UserController extends Controller
             return back()->with('message', $message);
         }
 
+        $response = $this->modelProduct->searchProducts($request);
+        $product = $response['data'];
         $response = $this->modelBrand->getNameBrand($request);
-        $brand = $response['data'];
-
-        $response = $this->modelBrand->getBrands();
         $brands = $response['data'];
         $message = $response['message'];
         if (!$response['status']) {
             return back()->with('message', $message);
         }
 
-        return view('user.product.brand', compact('categories', 'brands', 'brand'));
+        return view('user.product.brand', compact('categories', 'brands', 'product'));
     }
     
     /**
