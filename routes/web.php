@@ -41,7 +41,7 @@ Route::prefix('admin')->group(function () {
 
         //Admin invoice import
         Route::get('invoice-import/pay/{invoice_import}',   [InvoiceImportController::class, 'pay'])                    ->name('admin.invoice_import.pay');
-        Route::resource('invoice-import',                   InvoiceImportController::class,                             ['names' => 'admin.invoice_import']);
+        Route::resource('invoice-import',        InvoiceImportController::class,                             ['names' => 'admin.invoice_import']);
 
         //Admin invoice export
         Route::get('order',                                 [InvoiceExportController::class, 'orders'])                 ->name('admin.invoice_export.order');

@@ -113,7 +113,7 @@ class Product extends Model
     public function scopeCategory($query, $request)
     {
         if ($request->has('category') && !is_null($request->category)) {
-            $category = Category::select('id')->where('name', 'LIKE', '%' . $request->category . '%')->get();
+            $category = Category::select('id')->where('id', $request->category)->first();
             $query->whereIn('category_id', $category);
         }
         return $query;
@@ -129,8 +129,8 @@ class Product extends Model
     public function scopeBrand($query, $request)
     {
         if ($request->has('brand') && !is_null($request->brand)) {
-            $brand = Brand::select('id')->where('name', 'LIKE', '%' . $request->brand . '%')->get();
-            $query->where('brand_id', $brand);
+            $brand = Brand::select('id')->where('id', $request->brand)->first();
+            $query->whereIn('brand_id', $brand);
         }
         return $query;
     }
@@ -324,7 +324,7 @@ class Product extends Model
                     throw new Exception($image['message']);
                 }
             }
-            
+
             if (isset($request->active)) {
                 $product->active = true;
             } else {
@@ -527,15 +527,18 @@ class Product extends Model
             $message = Lang::get('message.can_not_find');
             foreach ($request->toArray() as $key => $product){
                 if ($key != '_token') {
-                    $pro = Product::find($product->id);
                     if ($product < 1){
                         $message = Lang::get('message.quantity_more_than_1');
                         return $this->responseData($status, $message);
-                    } else if ($pro->quantity < $product->quanity || (int)Cart::count($product->id) + (int)$product->quanity > $pro->quantity ) {
-                        $message = Lang::get('message.quantity_not_enough');
-                    } 
+                    }
                     else {
+                        $productDetail = Product::find(Cart::get($key)->id);
+                        if ($productDetail->quantity < $product){
+                            $message = Lang::get('message.quantity_not_enough');
+                        } else {
+
                         Cart::update($key, $product);
+                        }
                     }
                 }
             }

@@ -87,7 +87,11 @@
                 </div>
             </div>
             <div class="row">
-                @foreach ($brands->first()->product->take(3) as $key => $pro)
+                <?php $countBra = 0?>
+                @foreach ($brands->first()->product as $key => $pro)
+                     @if ($pro->is_deleted == 0 && $pro->active == 1)
+                        @if($countBra <3)
+                        <?php $countBra++?>
                     <div class="col-12 col-md-4 mb-4">
                         <div class="card">
                             <div class="image-category feature_prod ">
@@ -120,6 +124,8 @@
                             </div>
                         </div>
                     </div>
+                    @endif
+                    @endif
                 @endforeach
             </div>
         </div>
@@ -136,39 +142,45 @@
                 </div>
             </div>
             <div class="row">
-                @foreach ($categories->first()->product->take(3) as $key => $pro)
-                    <div class="col-12 col-md-4 mb-4">
-                        <div class="card">
-                            <div class="image-category feature_prod">
-                                <a href="{{ URL::to(route('detail_product', ['id' => $pro->id])) }}">
-                                    <img src="@if (isset($pro->image)) {{ asset('' . $pro->image) }} @else {{ asset('' . Config::get('app.image.default')) }} @endif"
-                                        class="card-img-top" alt="..." />
-                                </a>
-                            </div>
-                            <div class="card-body">
-                                <ul class="list-unstyled d-flex justify-content-between">
-                                    <?php $now = Carbon\Carbon::now()->toDateTimeString() ?>
-                                    @if ($now <= $pro->end_promotion && $now >= $pro->start_promotion)
-                                        <li class="text-right text-dark" style="font-weight: bold!important">
-                                            {{ Lang::get('message.before_unit_money') . number_format($pro->price_down, 0, ',', '.') . Lang::get('message.after_unit_money') }}
-                                        </li>
-                                        <li class="text-right text-dark" style="text-decoration: line-through">
-                                            {{ Lang::get('message.before_unit_money') . number_format($pro->price, 0, ',', '.') . Lang::get('message.after_unit_money') }}
-                                        </li>
-                                    @else
-                                        <li class="text-right text-dark" style="font-weight: bold!important">
-                                            {{ Lang::get('message.before_unit_money') . number_format($pro->price, 0, ',', '.') . Lang::get('message.after_unit_money') }}
-                                        </li>
-                                    @endif
-                                </ul>
-                                <div style="height: 73px;">
-                                    <a href="{{ URL::to(route('detail_product', ['id' => $pro->id])) }}"
-                                        class="h2 text-decoration-none text-dark">{{ $pro->name }}</a>
+                <?php $countCate = 0?>
+                @foreach ($categories->first()->product as $key => $pro)
+                    @if ($pro->is_deleted == 0 && $pro->active == 1)
+                        @if($countCate <3)
+                        <?php $countCate++?>
+                        <div class="col-12 col-md-4 mb-4">
+                            <div class="card">
+                                <div class="image-category feature_prod">
+                                    <a href="{{ URL::to(route('detail_product', ['id' => $pro->id])) }}">
+                                        <img src="@if (isset($pro->image)) {{ asset('' . $pro->image) }} @else {{ asset('' . Config::get('app.image.default')) }} @endif"
+                                            class="card-img-top" alt="..." />
+                                    </a>
                                 </div>
-                                <p class="text-muted">{{ $pro->comment->count() }} Review</p>
+                                <div class="card-body">
+                                    <ul class="list-unstyled d-flex justify-content-between">
+                                        <?php $now = Carbon\Carbon::now()->toDateTimeString() ?>
+                                        @if ($now <= $pro->end_promotion && $now >= $pro->start_promotion)
+                                            <li class="text-right text-dark" style="font-weight: bold!important">
+                                                {{ Lang::get('message.before_unit_money') . number_format($pro->price_down, 0, ',', '.') . Lang::get('message.after_unit_money') }}
+                                            </li>
+                                            <li class="text-right text-dark" style="text-decoration: line-through">
+                                                {{ Lang::get('message.before_unit_money') . number_format($pro->price, 0, ',', '.') . Lang::get('message.after_unit_money') }}
+                                            </li>
+                                        @else
+                                            <li class="text-right text-dark" style="font-weight: bold!important">
+                                                {{ Lang::get('message.before_unit_money') . number_format($pro->price, 0, ',', '.') . Lang::get('message.after_unit_money') }}
+                                            </li>
+                                        @endif
+                                    </ul>
+                                    <div style="height: 73px;">
+                                        <a href="{{ URL::to(route('detail_product', ['id' => $pro->id])) }}"
+                                            class="h2 text-decoration-none text-dark">{{ $pro->name }}</a>
+                                    </div>
+                                    <p class="text-muted">{{ $pro->comment->count() }} Review</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                        @endif
+                    @endif
                 @endforeach
             </div>
         </div>
