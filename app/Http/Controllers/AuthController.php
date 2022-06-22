@@ -298,6 +298,7 @@ class AuthController extends Controller
         $categories = Category::all();
         $response = $this->modelInvoiceExport->getProductPaidFromInvoiceExport(date('Y-m-d', strtotime('-3 months')), date('Y-m-d', strtotime('now')));
         $productsMax = $response['data'];
+        arsort($productsMax);
         $sidebars = SideBar::orderBy('id', 'desc')->get();
         return view('user.home')->with('products', $products)
                                 ->with('brands', $brands)

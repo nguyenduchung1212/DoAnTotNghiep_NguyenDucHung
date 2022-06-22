@@ -131,7 +131,7 @@
             <div class="row">
                 <div class="col-md-4 pt-5">
                     <h2 class="h2 text-success border-bottom pb-3 border-light logo">
-                        Mỹ phẩm ABC
+                        Mỹ phẩm MIE
                     </h2>
                     <ul class="list-unstyled text-light footer-link-list">
                         <li>
