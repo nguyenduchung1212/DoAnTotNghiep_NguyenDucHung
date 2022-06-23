@@ -189,13 +189,13 @@
                                 <li class="nav-item">
                                     <a href="{{ URL::to(route('admin.sidebar.index')) }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Danh sách sidebar</p>
+                                        <p>Danh sách slider</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{ URL::to(route('admin.sidebar.create')) }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Thêm Side bar</p>
+                                        <p>Thêm Slider</p>
                                     </a>
                                 </li>
                             </ul>

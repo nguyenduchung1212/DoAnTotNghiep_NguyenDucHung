@@ -51,9 +51,9 @@
             <?php $i = 1; ?>
             @foreach ($productsMax as $keyMax => $productMax)
                 @if ($i <= 3)
-                    <?php $i++; ?>
                     @foreach ($products as $key => $product)
                         @if ($product->id == $keyMax)
+                            <?php $i++; ?>
                             <div class="col-12 col-md-4 p-5 mt-3">
                                 <div class="image-category">
                                     <a href="{{ URL::to(route('detail_product', ['id' => $product->id])) }}"><img
